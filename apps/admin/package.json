@@ -1,0 +1,30 @@
+{
+  "name": "@app/admin",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "commit": "pnpm --filter @repo/scripts commit"
+  },
+  "dependencies": {
+    "@repo/ui": "workspace:*",
+    "next": "latest",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/tailwind-config": "workspace:*",
+    "@repo/tsconfig": "workspace:*",
+    "@tailwindcss/postcss": "^4.1.12",
+    "autoprefixer": "latest",
+    "eslint": "^9",
+    "eslint-config-next": "latest",
+    "postcss": "latest",
+    "tailwindcss": "latest",
+    "typescript": "^5.6.2"
+  }
+}

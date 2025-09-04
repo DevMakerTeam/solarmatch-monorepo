@@ -1,0 +1,17 @@
+{
+  "extends": "@repo/tsconfig/base",
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "jsx": "preserve"
+  }
+}

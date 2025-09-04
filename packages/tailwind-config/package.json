@@ -1,0 +1,16 @@
+{
+  "name": "@repo/tailwind-config",
+  "version": "0.0.0",
+  "private": true,
+  "types": "index.d.ts",
+  "exports": {
+    "./postcss-config": {
+      "types": "./postcss-config.d.ts",
+      "default": "./postcss.config.cjs"
+    },
+    "./tailwind-config": {
+      "types": "./tailwind-config.d.ts",
+      "default": "./tailwind.config.cjs"
+    }
+  }
+}

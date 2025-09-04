@@ -1,0 +1,18 @@
+{
+  "name": "@repo/scripts",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Shared scripts for the monorepo",
+  "type": "module",
+  "scripts": {
+    "commit": "tsx src/commit-script.ts"
+  },
+  "dependencies": {
+    "inquirer": "^9.2.12"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.3",
+    "tsx": "^4.7.0",
+    "typescript": "^5.6.2"
+  }
+}
