@@ -34,6 +34,21 @@ const keywords = [
   },
 ];
 
+const appTypes = [
+  {
+    name: "🌐 Web Application - 사용자 웹 프론트엔드",
+    value: "web",
+  },
+  {
+    name: "⚙️  Admin Application - 관리자 백오피스",
+    value: "admin",
+  },
+  {
+    name: "🔧 Common/Shared - 공통 패키지 및 전체 프로젝트",
+    value: null,
+  },
+];
+
 async function runCommitScript() {
   // 스테이징된 파일만 확인
   exec("git status --porcelain", async (error, stdout) => {
@@ -56,6 +71,14 @@ async function runCommitScript() {
     console.log(`스테이징된 파일들: ${stagedFiles.length}개`);
     stagedFiles.forEach(file => console.log(`  ${file}`));
 
+    // 앱 타입 선택 프롬프트
+    const { selectedAppType } = await inquirer.prompt({
+      type: "list",
+      name: "selectedAppType",
+      message: "커밋할 앱을 선택하세요:",
+      choices: appTypes,
+    });
+
     // 키워드 선택 프롬프트
     const { selectedKeyword } = await inquirer.prompt({
       type: "list",
@@ -76,7 +99,15 @@ async function runCommitScript() {
       },
     });
 
-    const fullCommitMessage = `${selectedKeyword}: ${commitMessage}`;
+    // 커밋 메시지에 앱별 prefix 추가
+    let fullCommitMessage: string;
+    if (selectedAppType) {
+      fullCommitMessage = `${selectedKeyword}(${selectedAppType}): ${commitMessage}`;
+    } else {
+      fullCommitMessage = `${selectedKeyword}: ${commitMessage}`;
+    }
+
+    console.log(`\n📝 생성된 커밋 메시지: ${fullCommitMessage}\n`);
 
     exec(`git commit -m "${fullCommitMessage}"`, (error, stdout, stderr) => {
       // 에러가 있으면 커밋 실패
