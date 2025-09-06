@@ -5,7 +5,7 @@
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start -p 3000",
-    "lint": "eslint .",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "commit": "pnpm --filter @repo/scripts commit"
   },
