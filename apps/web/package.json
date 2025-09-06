@@ -12,6 +12,7 @@
   "dependencies": {
     "@repo/styles": "workspace:*",
     "@repo/ui": "workspace:*",
+    "@repo/utils": "workspace:*",
     "next": "latest",
     "react": "^18",
     "react-dom": "^18"
