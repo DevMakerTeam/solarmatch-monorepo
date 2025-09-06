@@ -1,9 +1,9 @@
 {
-  "name": "@repo/tailwind-config",
+  "name": "@repo/styles",
   "version": "0.0.0",
   "private": true,
-  "types": "index.d.ts",
   "exports": {
+    "./globals.css": "./src/globals.css",
     "./postcss-config": {
       "types": "./postcss-config.d.ts",
       "default": "./postcss.config.cjs"
@@ -12,5 +12,8 @@
       "types": "./tailwind-config.d.ts",
       "default": "./tailwind.config.cjs"
     }
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.1.12"
   }
 }
