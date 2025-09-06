@@ -1,20 +1,34 @@
 @import 'tailwindcss';
 
+/* Pretendard Font */
+@font-face {
+  font-family: 'Pretendard Variable';
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src: url('./fonts/PretendardVariable.woff2') format('woff2-variations');
+}
+
 /* CSS Reset & Base Styles */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 body {
-  margin: 0;
-  padding: 0;
+  font-family: var(--font-family-pretendard);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @theme {
+  --font-family-pretendard:
+    'Pretendard Variable', -apple-system, BlinkMacSystemFont, system-ui, Roboto,
+    'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR',
+    'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    sans-serif;
+
   --color-primary: #000440;
   --color-secondary: #0064ff;
 
@@ -71,10 +85,19 @@ body {
   --text-tiny: 10px;
   --text-tiny--line-height: 25px;
   --text-tiny--letter-spacing: 0px;
+
+  --breakpoint-xs: 320px;
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 767px;
+  --breakpoint-lg: 1023px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1440px;
+  --breakpoint-3xl: 1920px;
 }
 
 /* Heavy 시리즈 (font-weight: 800) */
 @utility heavy-heading1 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading1);
   line-height: var(--text-heading1--line-height);
   letter-spacing: var(--text-heading1--letter-spacing);
@@ -82,6 +105,7 @@ body {
 }
 
 @utility heavy-heading2 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading2);
   line-height: var(--text-heading2--line-height);
   letter-spacing: var(--text-heading2--letter-spacing);
@@ -89,6 +113,7 @@ body {
 }
 
 @utility heavy-heading3 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading3);
   line-height: var(--text-heading3--line-height);
   letter-spacing: var(--text-heading3--letter-spacing);
@@ -96,6 +121,7 @@ body {
 }
 
 @utility heavy-heading4 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading4);
   line-height: var(--text-heading4--line-height);
   letter-spacing: var(--text-heading4--letter-spacing);
@@ -103,6 +129,7 @@ body {
 }
 
 @utility heavy-heading5 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading5);
   line-height: var(--text-heading5--line-height);
   letter-spacing: var(--text-heading5--letter-spacing);
@@ -110,6 +137,7 @@ body {
 }
 
 @utility heavy-heading6 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading6);
   line-height: var(--text-heading6--line-height);
   letter-spacing: var(--text-heading6--letter-spacing);
@@ -117,6 +145,7 @@ body {
 }
 
 @utility heavy-body {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
   letter-spacing: var(--text-body--letter-spacing);
@@ -124,6 +153,7 @@ body {
 }
 
 @utility heavy-caption {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-caption);
   line-height: var(--text-caption--line-height);
   letter-spacing: var(--text-caption--letter-spacing);
@@ -131,6 +161,7 @@ body {
 }
 
 @utility heavy-small {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-small);
   line-height: var(--text-small--line-height);
   letter-spacing: var(--text-small--letter-spacing);
@@ -138,6 +169,7 @@ body {
 }
 
 @utility heavy-tiny {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-tiny);
   line-height: var(--text-tiny--line-height);
   letter-spacing: var(--text-tiny--letter-spacing);
@@ -146,6 +178,7 @@ body {
 
 /* Bold 시리즈 (font-weight: 600) */
 @utility bold-heading1 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading1);
   line-height: var(--text-heading1--line-height);
   letter-spacing: var(--text-heading1--letter-spacing);
@@ -153,6 +186,7 @@ body {
 }
 
 @utility bold-heading2 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading2);
   line-height: var(--text-heading2--line-height);
   letter-spacing: var(--text-heading2--letter-spacing);
@@ -160,6 +194,7 @@ body {
 }
 
 @utility bold-heading3 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading3);
   line-height: var(--text-heading3--line-height);
   letter-spacing: var(--text-heading3--letter-spacing);
@@ -167,6 +202,7 @@ body {
 }
 
 @utility bold-heading4 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading4);
   line-height: var(--text-heading4--line-height);
   letter-spacing: var(--text-heading4--letter-spacing);
@@ -174,6 +210,7 @@ body {
 }
 
 @utility bold-heading5 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading5);
   line-height: var(--text-heading5--line-height);
   letter-spacing: var(--text-heading5--letter-spacing);
@@ -181,6 +218,7 @@ body {
 }
 
 @utility bold-heading6 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading6);
   line-height: var(--text-heading6--line-height);
   letter-spacing: var(--text-heading6--letter-spacing);
@@ -188,6 +226,7 @@ body {
 }
 
 @utility bold-body {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
   letter-spacing: var(--text-body--letter-spacing);
@@ -195,6 +234,7 @@ body {
 }
 
 @utility bold-caption {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-caption);
   line-height: var(--text-caption--line-height);
   letter-spacing: var(--text-caption--letter-spacing);
@@ -202,6 +242,7 @@ body {
 }
 
 @utility bold-small {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-small);
   line-height: var(--text-small--line-height);
   letter-spacing: var(--text-small--letter-spacing);
@@ -209,6 +250,7 @@ body {
 }
 
 @utility bold-tiny {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-tiny);
   line-height: var(--text-tiny--line-height);
   letter-spacing: var(--text-tiny--letter-spacing);
@@ -217,6 +259,7 @@ body {
 
 /* Medium 시리즈 (font-weight: 400) */
 @utility medium-heading1 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading1);
   line-height: var(--text-heading1--line-height);
   letter-spacing: var(--text-heading1--letter-spacing);
@@ -224,6 +267,7 @@ body {
 }
 
 @utility medium-heading2 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading2);
   line-height: var(--text-heading2--line-height);
   letter-spacing: var(--text-heading2--letter-spacing);
@@ -231,6 +275,7 @@ body {
 }
 
 @utility medium-heading3 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading3);
   line-height: var(--text-heading3--line-height);
   letter-spacing: var(--text-heading3--letter-spacing);
@@ -238,6 +283,7 @@ body {
 }
 
 @utility medium-heading4 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading4);
   line-height: var(--text-heading4--line-height);
   letter-spacing: var(--text-heading4--letter-spacing);
@@ -245,6 +291,7 @@ body {
 }
 
 @utility medium-heading5 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading5);
   line-height: var(--text-heading5--line-height);
   letter-spacing: var(--text-heading5--letter-spacing);
@@ -252,6 +299,7 @@ body {
 }
 
 @utility medium-heading6 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading6);
   line-height: var(--text-heading6--line-height);
   letter-spacing: var(--text-heading6--letter-spacing);
@@ -259,6 +307,7 @@ body {
 }
 
 @utility medium-body {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
   letter-spacing: var(--text-body--letter-spacing);
@@ -266,6 +315,7 @@ body {
 }
 
 @utility medium-caption {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-caption);
   line-height: var(--text-caption--line-height);
   letter-spacing: var(--text-caption--letter-spacing);
@@ -273,6 +323,7 @@ body {
 }
 
 @utility medium-small {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-small);
   line-height: var(--text-small--line-height);
   letter-spacing: var(--text-small--letter-spacing);
@@ -280,6 +331,7 @@ body {
 }
 
 @utility medium-tiny {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-tiny);
   line-height: var(--text-tiny--line-height);
   letter-spacing: var(--text-tiny--letter-spacing);
@@ -288,6 +340,7 @@ body {
 
 /* Regular 시리즈 (font-weight: 300) */
 @utility regular-heading1 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading1);
   line-height: var(--text-heading1--line-height);
   letter-spacing: var(--text-heading1--letter-spacing);
@@ -295,6 +348,7 @@ body {
 }
 
 @utility regular-heading2 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading2);
   line-height: var(--text-heading2--line-height);
   letter-spacing: var(--text-heading2--letter-spacing);
@@ -302,6 +356,7 @@ body {
 }
 
 @utility regular-heading3 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading3);
   line-height: var(--text-heading3--line-height);
   letter-spacing: var(--text-heading3--letter-spacing);
@@ -309,6 +364,7 @@ body {
 }
 
 @utility regular-heading4 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading4);
   line-height: var(--text-heading4--line-height);
   letter-spacing: var(--text-heading4--letter-spacing);
@@ -316,6 +372,7 @@ body {
 }
 
 @utility regular-heading5 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading5);
   line-height: var(--text-heading5--line-height);
   letter-spacing: var(--text-heading5--letter-spacing);
@@ -323,6 +380,7 @@ body {
 }
 
 @utility regular-heading6 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading6);
   line-height: var(--text-heading6--line-height);
   letter-spacing: var(--text-heading6--letter-spacing);
@@ -330,6 +388,7 @@ body {
 }
 
 @utility regular-body {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
   letter-spacing: var(--text-body--letter-spacing);
@@ -337,6 +396,7 @@ body {
 }
 
 @utility regular-caption {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-caption);
   line-height: var(--text-caption--line-height);
   letter-spacing: var(--text-caption--letter-spacing);
@@ -344,6 +404,7 @@ body {
 }
 
 @utility regular-small {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-small);
   line-height: var(--text-small--line-height);
   letter-spacing: var(--text-small--letter-spacing);
@@ -351,6 +412,7 @@ body {
 }
 
 @utility regular-tiny {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-tiny);
   line-height: var(--text-tiny--line-height);
   letter-spacing: var(--text-tiny--letter-spacing);
@@ -359,6 +421,7 @@ body {
 
 /* Thin 시리즈 (font-weight: 100) */
 @utility thin-heading1 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading1);
   line-height: var(--text-heading1--line-height);
   letter-spacing: var(--text-heading1--letter-spacing);
@@ -366,6 +429,7 @@ body {
 }
 
 @utility thin-heading2 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading2);
   line-height: var(--text-heading2--line-height);
   letter-spacing: var(--text-heading2--letter-spacing);
@@ -373,6 +437,7 @@ body {
 }
 
 @utility thin-heading3 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading3);
   line-height: var(--text-heading3--line-height);
   letter-spacing: var(--text-heading3--letter-spacing);
@@ -380,6 +445,7 @@ body {
 }
 
 @utility thin-heading4 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading4);
   line-height: var(--text-heading4--line-height);
   letter-spacing: var(--text-heading4--letter-spacing);
@@ -387,6 +453,7 @@ body {
 }
 
 @utility thin-heading5 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading5);
   line-height: var(--text-heading5--line-height);
   letter-spacing: var(--text-heading5--letter-spacing);
@@ -394,6 +461,7 @@ body {
 }
 
 @utility thin-heading6 {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-heading6);
   line-height: var(--text-heading6--line-height);
   letter-spacing: var(--text-heading6--letter-spacing);
@@ -401,6 +469,7 @@ body {
 }
 
 @utility thin-body {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
   letter-spacing: var(--text-body--letter-spacing);
@@ -408,6 +477,7 @@ body {
 }
 
 @utility thin-caption {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-caption);
   line-height: var(--text-caption--line-height);
   letter-spacing: var(--text-caption--letter-spacing);
@@ -415,6 +485,7 @@ body {
 }
 
 @utility thin-small {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-small);
   line-height: var(--text-small--line-height);
   letter-spacing: var(--text-small--letter-spacing);
@@ -422,6 +493,7 @@ body {
 }
 
 @utility thin-tiny {
+  font-family: var(--font-family-pretendard);
   font-size: var(--text-tiny);
   line-height: var(--text-tiny--line-height);
   letter-spacing: var(--text-tiny--letter-spacing);
