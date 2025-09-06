@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* CSS Reset & Base Styles */
 *,
@@ -16,20 +16,20 @@ body {
 
 @theme {
   --color-primary: #000440;
-  --color-secondary: #0064FF;
+  --color-secondary: #0064ff;
 
-  --color-gray-50: #F5F5F7;
-  --color-gray-100: #E5E5E8;
-  --color-gray-200: #C2C2C6;
-  --color-gray-300: #C0C0C1;
-  --color-gray-400: #7D7D80;
-  --color-gray-500: #5C5C5E;
+  --color-gray-50: #f5f5f7;
+  --color-gray-100: #e5e5e8;
+  --color-gray-200: #c2c2c6;
+  --color-gray-300: #c0c0c1;
+  --color-gray-400: #7d7d80;
+  --color-gray-500: #5c5c5e;
   --color-gray-600: #404041;
   --color-gray-700: #292929;
-  --color-gray-800: #1A1A1A;
+  --color-gray-800: #1a1a1a;
   --color-gray-900: #141414;
 
-  --color-white: #FFFFFF;
+  --color-white: #ffffff;
   --color-black: #111111;
 
   --text-heading1: 80px;
@@ -37,39 +37,39 @@ body {
   --text-heading1--letter-spacing: 0px;
 
   --text-heading2: 60px;
-  --text-heading2--line-height: 75px;   
+  --text-heading2--line-height: 75px;
   --text-heading2--letter-spacing: 0px;
 
   --text-heading3: 40px;
-  --text-heading3--line-height: 55px; 
+  --text-heading3--line-height: 55px;
   --text-heading3--letter-spacing: 0px;
 
   --text-heading4: 30px;
-  --text-heading4--line-height: 40px; 
+  --text-heading4--line-height: 40px;
   --text-heading4--letter-spacing: 0px;
 
   --text-heading5: 24px;
-  --text-heading5--line-height: 32px; 
+  --text-heading5--line-height: 32px;
   --text-heading5--letter-spacing: 0px;
 
   --text-heading6: 20px;
-  --text-heading6--line-height: 26px; 
+  --text-heading6--line-height: 26px;
   --text-heading6--letter-spacing: 0px;
 
   --text-body: 16px;
-  --text-body--line-height: 24px; 
+  --text-body--line-height: 24px;
   --text-body--letter-spacing: 0px;
 
   --text-caption: 14px;
-  --text-caption--line-height: 20px;  
+  --text-caption--line-height: 20px;
   --text-caption--letter-spacing: 0px;
 
   --text-small: 12px;
-  --text-small--line-height: 18px;    
+  --text-small--line-height: 18px;
   --text-small--letter-spacing: 0px;
 
   --text-tiny: 10px;
-  --text-tiny--line-height: 25px; 
+  --text-tiny--line-height: 25px;
   --text-tiny--letter-spacing: 0px;
 }
 
@@ -427,4 +427,3 @@ body {
   letter-spacing: var(--text-tiny--letter-spacing);
   font-weight: 100;
 }
-
