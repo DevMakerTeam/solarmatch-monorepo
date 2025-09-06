@@ -58,10 +58,10 @@ async function runCommitScript() {
       return;
     }
 
-    // 스테이징된 파일 확인 (A, M, D 등의 상태가 첫 번째 컬럼에 있는 파일들)
+    // 스테이징된 파일 확인 (A, M, D, R 등의 상태가 첫 번째 컬럼에 있는 파일들)
     const stagedFiles = stdout
       .split('\n')
-      .filter(line => line.trim() && /^[AMD]/.test(line));
+      .filter(line => line.trim() && /^[AMDR]/.test(line));
 
     if (stagedFiles.length === 0) {
       console.log("커밋할 변경사항이 없습니다. 먼저 파일을 스테이징하세요 (git add .)");
