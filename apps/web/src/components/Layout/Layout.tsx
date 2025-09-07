@@ -1,11 +1,46 @@
+import Footer from '@/components/Footer';
 import { LayoutHeader } from '@/components/Layout/components';
-import { PropsWithChildren } from 'react';
+import { cn } from '@repo/utils';
+import {
+  DetailedHTMLProps,
+  HTMLAttributes,
+  PropsWithChildren,
+  ReactNode,
+} from 'react';
 
-export default function Layout({ children }: PropsWithChildren) {
+type OmitWrapper<T> = Omit<T, 'children'>;
+type HTMLProps<T extends HTMLElement> = OmitWrapper<
+  DetailedHTMLProps<HTMLAttributes<T>, T>
+>;
+
+interface LayoutProps {
+  wrapperProps?: HTMLProps<HTMLDivElement>;
+  mainProps?: HTMLProps<HTMLElement>;
+  footer?: ReactNode;
+}
+
+export default function Layout({
+  children,
+  footer = <Footer />,
+  wrapperProps = {},
+  mainProps = {},
+}: PropsWithChildren<LayoutProps>) {
+  const { className: wrapperStyles, ...restWrapperProps } = wrapperProps;
+  const { className: mainStyles, ...restMainProps } = mainProps;
+
   return (
-    <div className='relative'>
+    <div className={cn('relative', wrapperStyles)} {...restWrapperProps}>
       <LayoutHeader />
-      <main className='pt-[64px] lg:pt-[115px]'>{children}</main>
+      <main
+        className={cn(
+          'pt-[64px] lg:pt-[80px] max-w-[1150px] mx-auto px-[30px] xl:px-0',
+          mainStyles
+        )}
+        {...restMainProps}
+      >
+        {children}
+      </main>
+      {footer}
     </div>
   );
 }

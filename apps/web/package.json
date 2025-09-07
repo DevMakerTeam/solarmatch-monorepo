@@ -13,6 +13,7 @@
     "@repo/styles": "workspace:*",
     "@repo/ui": "workspace:*",
     "@repo/utils": "workspace:*",
+    "framer-motion": "^12.23.12",
     "next": "latest",
     "react": "^18",
     "react-dom": "^18"
