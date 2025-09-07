@@ -5,7 +5,7 @@ import { PropsWithChildren } from 'react';
 
 export default function LayoutHeader() {
   return (
-    <header className='fixed top-0 left-0 right-0 flex justify-between items-center h-[64px] lg:h-[115px] px-[30px] lg:px-[52px] bg-white z-50'>
+    <header className='fixed top-0 left-0 right-0 flex justify-between items-center h-[64px] lg:h-[80px] px-[30px] lg:px-[32px] bg-white z-50'>
       <Link href='/' role='link' aria-label='홈페이지'>
         <Icon iconName='webLogo' className='h-[20px] lg:h-[30px]' />
       </Link>
@@ -44,7 +44,6 @@ export default function LayoutHeader() {
 }
 
 interface LinkItemProps extends LinkProps {
-  href: string;
   isNav: boolean;
 }
 
@@ -60,9 +59,8 @@ function LinkItem({
       role='link'
       {...props}
       className={cn(
-        isNav && 'hover:text-secondary', // hover
         isNav ? 'text-black' : 'text-[#666666]', // text color
-        'bold-body' // font style
+        'bold-body hover:text-secondary' // font style
       )}
     >
       {children}
