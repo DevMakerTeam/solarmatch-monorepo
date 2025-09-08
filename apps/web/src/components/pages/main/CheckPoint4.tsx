@@ -10,7 +10,7 @@ export default function CheckPoint4() {
           index={4}
           contents={
             <>
-              <div className='heavy-heading3 text-primary'>
+              <div className='heavy-heading4 md:heavy-heading3 text-primary'>
                 <span>
                   <span className='text-secondary'>철저한 검증</span>
                   <span>으로</span>
@@ -22,26 +22,26 @@ export default function CheckPoint4() {
                 <img
                   src='/images/main-8.png'
                   alt='main-8'
-                  className='w-[68px] h-[68px]'
+                  className='w-[44px] h-[44px] md:w-[68px] md:h-[68px]'
                 />
                 <p className='bold-heading6 text-black'>건물주 선호도 1위</p>
               </div>
 
-              <p className='heavy-heading5 text-secondary mt-[22px]'>
+              <p className='heavy-heading6 md:heavy-heading5 text-secondary mt-[22px]'>
                 자격먼허 / 시공경험 / 시공품질
               </p>
             </>
           }
           image={
-            <div className='flex flex-col items-center justify-center gap-[12px]'>
+            <div className='flex flex-col items-center justify-center gap-[12px] mt-[44px] md:mt-0'>
               <img
                 src='/images/main-6.png'
                 alt='main-6'
-                className='w-[62px] h-[62px]'
+                className='w-[52px] h-[52px] md:w-[62px] md:h-[62px]'
               />
 
               <motion.div
-                className='w-full max-w-[300px] bg-white aspect-[2/1]'
+                className='w-full max-w-[279px] md:max-w-[300px] bg-white aspect-[2/1]'
                 animate={
                   isAnimationComplete
                     ? {

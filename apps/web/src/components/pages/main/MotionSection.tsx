@@ -25,7 +25,12 @@ export default function MotionSection({
       initial={{ y: 80, opacity: 0 }}
       animate={itemInView ? { y: 0, opacity: 1 } : { y: 80, opacity: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      onAnimationComplete={() => setAnimationComplete(true)}
+      onAnimationComplete={() => {
+        // 애니메이션이 위로 올라오는 동작이 완료되었을 때만 true로 설정
+        if (itemInView) {
+          setAnimationComplete(true);
+        }
+      }}
       className={cn(className)}
     >
       {typeof children === 'function' ? children(animationComplete) : children}
