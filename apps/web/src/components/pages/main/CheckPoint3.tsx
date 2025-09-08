@@ -13,7 +13,7 @@ export default function CheckPoint3() {
         }
         contents={
           <div className='flex flex-col gap-[15px]'>
-            <div className='heavy-heading3 text-primary'>
+            <div className='heavy-heading4 md:heavy-heading3 text-primary'>
               <span>
                 <span>공사가 전부 </span>
                 <span className='text-secondary'>완료</span>
@@ -27,7 +27,7 @@ export default function CheckPoint3() {
               </span>
             </div>
 
-            <div className='text-black bold-heading6'>
+            <div className='text-black bold-body md:bold-heading6'>
               <p>시공업체와 AS, 환불</p>
               <p>사전 계약으로 보장받아요</p>
             </div>

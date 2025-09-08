@@ -7,13 +7,13 @@ export default function CheckPoint1() {
       <CheckPoint
         index={1}
         image={
-          <div className='aspect-square w-full max-w-[300px]'>
+          <div className='aspect-square w-full max-w-[207px] md:max-w-[300px] mt-[18px] md:mt-0'>
             <img src='/images/main-2.png' alt='main-2' />
           </div>
         }
         contents={
           <div className='flex flex-col gap-[9px]'>
-            <div className='flex flex-col heavy-heading3 text-primary'>
+            <div className='flex flex-col heavy-heading4 md:heavy-heading3 text-primary'>
               <p className=''>시공자재를 숨김없이</p>
               <span>
                 <span className='text-secondary'>투명 공개</span>
@@ -21,7 +21,7 @@ export default function CheckPoint1() {
               </span>
             </div>
 
-            <div className='flex flex-col bold-heading6 text-black'>
+            <div className='flex flex-col bold-body md:bold-heading6 text-black'>
               <p>솔라매치는 시공사가 어떤 자재를 쓰는지</p>
               <p>고객에게 100% 공개해요</p>
             </div>
