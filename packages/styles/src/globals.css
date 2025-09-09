@@ -20,6 +20,7 @@ body {
   font-family: var(--font-family-pretendard);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: var(--color-black);
 }
 
 @theme {
@@ -43,6 +44,11 @@ body {
   --color-gray-700: #292929;
   --color-gray-800: #1a1a1a;
   --color-gray-900: #141414;
+
+  --color-light-gray: #f2f2f2;
+  --color-middle-gray: #cccccc;
+  --color-deep-gray: #666666;
+  --color-border-color: #dadada;
 
   --color-white: #ffffff;
   --color-black: #111111;
