@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 export default function ContractProcess() {
   return (
-    <MotionSection className='w-full mt-[88px] md:mt-[102px]'>
+    <MotionSection className='w-full mt-[88px] md:mt-[102px] px-[30px] xl:px-0 w-full'>
       {isAnimationComplete => (
         <ContractProcessContents isAnimationComplete={isAnimationComplete} />
       )}
@@ -19,10 +19,10 @@ interface AnimationProps {
 
 function ContractProcessContents({ isAnimationComplete }: AnimationProps) {
   return (
-    <div className=''>
+    <>
       <DotAnimation isAnimationComplete={isAnimationComplete} />
       <p className='heavy-heading4 md:heavy-heading3 text-primary'>
-        계약은 이렇게 진행되요
+        계약은 이렇게 진행해요
       </p>
 
       <div className='flex flex-col md:flex-row bold-body md:bold-heading6 mt-[21px] md:mt-[13p]'>
@@ -31,7 +31,7 @@ function ContractProcessContents({ isAnimationComplete }: AnimationProps) {
       </div>
 
       <Process isAnimationComplete={isAnimationComplete} />
-    </div>
+    </>
   );
 }
 

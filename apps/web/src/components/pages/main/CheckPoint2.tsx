@@ -8,7 +8,7 @@ export default function CheckPoint2() {
       <CheckPoint
         index={2}
         image={
-          <div className='aspect-square w-full max-w-[228px] md:max-w-[300px] mt-[32px] md:mt-0'>
+          <div className='aspect-square w-full max-w-[228px] md:max-w-[368px] mt-[32px] md:mt-0'>
             <img src='/images/main-3.png' alt='main-3' />
           </div>
         }

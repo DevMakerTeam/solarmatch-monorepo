@@ -54,11 +54,13 @@ const dummyData = [
 
 export default function Portfolio() {
   return (
-    <MotionSection className='max-w-[526px] w-full bg-light-gray rounded-[20px] pt-[69px] mx-auto mt-[73px] md:mt-[102px]'>
-      {isAnimationComplete => (
-        <PortfolioContents isAnimationComplete={isAnimationComplete} />
-      )}
-    </MotionSection>
+    <div className='px-[30px] xl:px-0 w-full'>
+      <MotionSection className='max-w-[526px] w-full bg-light-gray rounded-[20px] pt-[69px] mx-auto mt-[73px] md:mt-[102px]'>
+        {isAnimationComplete => (
+          <PortfolioContents isAnimationComplete={isAnimationComplete} />
+        )}
+      </MotionSection>
+    </div>
   );
 }
 

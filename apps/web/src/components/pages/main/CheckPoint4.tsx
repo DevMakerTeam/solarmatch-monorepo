@@ -41,11 +41,11 @@ export default function CheckPoint4() {
               />
 
               <motion.div
-                className='w-full max-w-[279px] md:max-w-[300px] bg-white aspect-[2/1]'
+                className='w-full max-w-[279px] md:max-w-[580px] bg-white aspect-[2/1]'
                 animate={
                   isAnimationComplete
                     ? {
-                        y: [0, -10, 0],
+                        y: [0, -15, 0],
                       }
                     : {}
                 }
