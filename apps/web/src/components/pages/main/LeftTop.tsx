@@ -27,7 +27,7 @@ export default function LeftTop() {
         <img
           src='/images/main-1.png'
           alt='main-1'
-          className='aspect-[7/6] w-full'
+          className='aspect-[7/6] w-full object-cover mt-[30px]'
         />
       </div>
     </MotionSection>

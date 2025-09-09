@@ -50,11 +50,11 @@ function useCountUp(
 
 export default function Dashboard() {
   return (
-    <MotionSection className='w-full mt-[74px] md:mt-[132px] flex flex-col gap-[30px] md:gap-[60px]'>
+    <MotionSection className='w-full mt-[74px] md:mt-[132px] flex flex-col gap-[30px] md:gap-[60px] px-[30px] xl:px-0'>
       {isAnimationComplete => (
         <>
           <div className='flex flex-col md:flex-row text-center heavy-heading4 md:heavy-heading3 text-primary'>
-            <p>투명한 태양광 비교견적,</p>
+            <p>투명한 태양광 비교견적,&nbsp;</p>
             <p>솔라매치에서</p>
           </div>
 

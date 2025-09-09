@@ -17,6 +17,7 @@ interface LayoutProps {
   wrapperProps?: HTMLProps<HTMLDivElement>;
   mainProps?: HTMLProps<HTMLElement>;
   footer?: ReactNode;
+  isPx?: boolean;
 }
 
 export default function Layout({
@@ -24,6 +25,7 @@ export default function Layout({
   footer = <Footer />,
   wrapperProps = {},
   mainProps = {},
+  isPx = true,
 }: PropsWithChildren<LayoutProps>) {
   const { className: wrapperStyles, ...restWrapperProps } = wrapperProps;
   const { className: mainStyles, ...restMainProps } = mainProps;
@@ -33,7 +35,8 @@ export default function Layout({
       <LayoutHeader />
       <main
         className={cn(
-          'pt-[64px] lg:pt-[80px] max-w-[1150px] mx-auto px-[30px] xl:px-0',
+          'pt-[64px] lg:pt-[80px] max-w-[1150px] mx-auto',
+          isPx && 'px-[30px] xl:px-0',
           mainStyles
         )}
         {...restMainProps}

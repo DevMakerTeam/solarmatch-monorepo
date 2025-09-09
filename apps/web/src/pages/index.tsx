@@ -11,12 +11,12 @@ import Review from '@/components/pages/main/Review';
 
 export default function Home() {
   return (
-    <Layout>
+    <Layout isPx={false}>
       <div className='flex justify-between gap-[30px] pb-[102px] md:pb-[82px]'>
         {/* left side */}
         <div className='w-full pt-[27px] flex flex-col items-center'>
           <LeftTop />
-          <div className='flex flex-col gap-[60px] md:gap-[120px] w-full'>
+          <div className='flex flex-col gap-[60px] md:gap-[120px] w-full px-[30px] xl:px-0'>
             {/* 체크포인트 1~4 */}
             <CheckPoint1 />
             <CheckPoint2 />
