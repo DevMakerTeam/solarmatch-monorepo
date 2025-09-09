@@ -1,43 +1,55 @@
-import { cva } from 'class-variance-authority';
-import { ButtonHTMLAttributes, ReactNode } from 'react';
+import { cn } from '@repo/utils';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { ButtonHTMLAttributes, forwardRef, ReactNode } from 'react';
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof ButtonVariants> {
   icon?: ReactNode;
 }
 
-const ButtonVariants = cva(``, {
-  variants: {
-    variant: {
-      more: 'bg-transparent hover:underline text-black-800',
-      register: 'bg-black hover:bg-gray-800 text-white',
-      cancel:
-        'bg-transparent border border-gray-300 hover:bg-gray-300 hover:text-white text-gray-500',
+const ButtonVariants = cva(
+  `w-full flex items-center justify-center bold-body rounded-[8px] cursor-pointer disabled:cursor-not-allowed disabled:bg-light-gray disabled:text-deep-gray`,
+  {
+    variants: {
+      variant: {
+        solid:
+          'bg-primary text-white hover:bg-primary-hover active:bg-primary-active',
+        outline:
+          'border border-primary bg-white text-primary hover:bg-primary-hover active:bg-primary-active hover:text-white active:text-white disabled:border-none',
+      },
+      size: {
+        sm: 'h-[30px]',
+        md: 'h-[40px]',
+        lg: 'h-[50px]',
+        xl: 'h-[60px]',
+      },
     },
-    shape: {
-      square: 'rounded-none',
-      primary: 'rounded',
-      full: 'rounded-full',
+    defaultVariants: {
+      variant: 'solid',
+      size: 'md',
     },
-    size: {
-      small: 'text-sm py-1 px-2',
-      medium: 'text-base py-2 px-6',
-      large: 'text-lg py-3 px-6',
-    },
-    weight: {
-      normal: 'font-normal',
-      medium: 'font-medium',
-      semibold: 'font-semibold',
-      bold: 'font-bold',
-    },
-  },
-  defaultVariants: {
-    variant: 'more',
-    shape: 'square',
-    size: 'small',
-    weight: 'normal',
-  },
-});
+  }
+);
 
-export function Button({ icon, ...props }: ButtonProps) {
-  return <button {...props} />;
-}
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  function Button(
+    { icon, variant, size, className, children, type, ...props },
+    ref
+  ) {
+    const resolvedType = type ?? 'button';
+
+    return (
+      <button
+        ref={ref}
+        type={resolvedType}
+        aria-disabled={props.disabled || undefined}
+        className={cn(ButtonVariants({ variant, size }), className)}
+        {...props}
+      >
+        {icon}
+        {children}
+      </button>
+    );
+  }
+);
