@@ -4,6 +4,9 @@
   "private": true,
   "main": "./src/index.ts",
   "types": "./src/index.ts",
+  "dependencies": {
+    "@repo/utils": "workspace:*"
+  },
   "peerDependencies": {
     "react": "^18",
     "react-dom": "^18"
