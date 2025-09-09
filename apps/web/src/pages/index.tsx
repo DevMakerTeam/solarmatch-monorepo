@@ -7,11 +7,12 @@ import ContractProcess from '@/components/pages/main/ContractProcess';
 import Dashboard from '@/components/pages/main/Dashboard';
 import LeftTop from '@/components/pages/main/LeftTop';
 import Portfolio from '@/components/pages/main/Portfolio';
+import Review from '@/components/pages/main/Review';
 
 export default function Home() {
   return (
     <Layout>
-      <div className='flex justify-between gap-[30px]'>
+      <div className='flex justify-between gap-[30px] pb-[102px] md:pb-[82px]'>
         {/* left side */}
         <div className='w-full pt-[27px] flex flex-col items-center'>
           <LeftTop />
@@ -28,8 +29,8 @@ export default function Home() {
           <ContractProcess />
           {/* 대쉬보드 */}
           <Dashboard />
-
-          {/*  */}
+          {/* 리뷰 */}
+          <Review />
         </div>
 
         {/* right side */}

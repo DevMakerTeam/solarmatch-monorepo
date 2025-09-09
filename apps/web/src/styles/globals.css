@@ -1,9 +1,35 @@
 /* 공통 전역 CSS import */
 @import '@repo/styles/globals.css';
 
-@theme {
-  --color-light-gray: #f2f2f2;
-  --color-middle-gray: #cccccc;
-  --color-deep-gray: #666666;
-  --color-border-color: #dadada;
+@layer utilities {
+  @keyframes highlight {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  .highlight-pen {
+    position: relative;
+    display: inline-block;
+  }
+
+  .highlight-pen::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    width: 0%;
+    background-color: color-mix(
+      in srgb,
+      var(--color-secondary) 15%,
+      transparent
+    ); /* 15% opacity */
+    border-radius: 10px; /* 6px rounded corners */
+    z-index: 0;
+    animation: highlight 1s ease-in-out forwards;
+  }
 }
