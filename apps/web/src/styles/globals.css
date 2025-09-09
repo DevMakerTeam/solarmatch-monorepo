@@ -28,7 +28,6 @@
       var(--color-secondary) 15%,
       transparent
     ); /* 15% opacity */
-    border-radius: 10px; /* 6px rounded corners */
     z-index: 0;
     animation: highlight 1s ease-in-out forwards;
   }

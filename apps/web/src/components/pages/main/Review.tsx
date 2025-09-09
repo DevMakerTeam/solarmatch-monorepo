@@ -193,7 +193,7 @@ const renderTextWithHighlights = (
 
 export default function Review() {
   return (
-    <div className='flex flex-col gap-[40px] w-full mt-[65px] md:mt-[56px]'>
+    <div className='flex flex-col gap-[40px] w-full mt-[65px] md:mt-[56px] px-[30px] xl:px-0'>
       {REVIEW_DATA.map((review, index) => {
         const isRight = (index + 1) % 2 === 0;
 
@@ -210,7 +210,7 @@ export default function Review() {
                 className={cn(
                   'flex flex-col gap-[20px] w-full md:w-[90%] rounded-[12px] bg-[#fafafa]',
                   'px-[17px] md:px-[30px] pb-[15px] md:pb-[24px] pt-[23px]',
-                  'shadow-sm'
+                  'shadow-lg'
                 )}
               >
                 {/* md 이하: 하나의 연결된 텍스트 */}
