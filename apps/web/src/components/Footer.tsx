@@ -18,7 +18,7 @@ export default function Footer() {
 
       {/* desktop */}
       <div className="hidden lg:flex">
-        <Icon iconName="webLogo" />
+        <Icon iconName="webLogo" className="w-[174px] h-[20px] text-primary" />
       </div>
     </div>
   );
