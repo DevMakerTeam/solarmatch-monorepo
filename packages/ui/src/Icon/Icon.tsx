@@ -1,6 +1,6 @@
-import * as Icons from './svgs';
+import * as Icons from "./svgs";
 
-import type { SVGProps } from 'react';
+import type { SVGProps } from "react";
 
 interface IconProps extends SVGProps<SVGSVGElement> {
   iconName: keyof typeof Icons;

@@ -1,6 +1,6 @@
-import MotionSection from '@/components/pages/main/MotionSection';
-import Image from 'next/image';
-import { ReactNode, useEffect, useState } from 'react';
+import MotionSection from "@/components/pages/main/MotionSection";
+import Image from "next/image";
+import { ReactNode, useEffect, useState } from "react";
 
 // 숫자 카운트업 애니메이션 훅
 function useCountUp(
@@ -50,10 +50,10 @@ function useCountUp(
 
 export default function Dashboard() {
   return (
-    <MotionSection className='w-full mt-[74px] md:mt-[132px] flex flex-col gap-[30px] md:gap-[60px] px-[30px] xl:px-0'>
+    <MotionSection className="w-full mt-[74px] md:mt-[132px] flex flex-col gap-[30px] md:gap-[60px] px-[30px] xl:px-0">
       {isAnimationComplete => (
         <>
-          <div className='flex flex-col md:flex-row text-center heavy-heading4 md:heavy-heading3 text-primary'>
+          <div className="flex flex-col md:flex-row text-center heavy-heading4 md:heavy-heading3 text-primary">
             <p>투명한 태양광 비교견적,&nbsp;</p>
             <p>솔라매치에서</p>
           </div>
@@ -76,52 +76,52 @@ function DashboardContents({ isAnimationComplete }: DashboardContentsProps) {
   const projects = useCountUp(12359, isAnimationComplete, 3000);
 
   return (
-    <div className='flex flex-col gap-[12px]'>
+    <div className="flex flex-col gap-[12px]">
       <DashboardItem
         title={
-          <div className='flex flex-col md:flex-row bold-heading5'>
+          <div className="flex flex-col md:flex-row bold-heading5">
             <p>솔라매치 평균 견적가&nbsp;</p>
             <p>시중대비 최대</p>
           </div>
         }
         animation={
-          <div className='flex items-center'>
-            <span className='heavy-heading4 md:heavy-heading3'>
+          <div className="flex items-center">
+            <span className="heavy-heading4 md:heavy-heading3">
               {`${percentage}%`}&nbsp;
             </span>
-            <span className='bold-heading5 md:bold-heading4'>절감</span>
+            <span className="bold-heading5 md:bold-heading4">절감</span>
           </div>
         }
-        image={'/images/main-dashboard-1.png'}
+        image={"/images/main-dashboard-1.png"}
       />
 
-      <div className='flex flex-col md:flex-row gap-[12px]'>
+      <div className="flex flex-col md:flex-row gap-[12px]">
         <DashboardItem
-          title={<p className='bold-heading5'>솔라매치의 검증된 시공사</p>}
+          title={<p className="bold-heading5">솔라매치의 검증된 시공사</p>}
           animation={
-            <div className='flex items-center'>
-              <span className='heavy-heading4 md:heavy-heading3'>
+            <div className="flex items-center">
+              <span className="heavy-heading4 md:heavy-heading3">
                 {`${companies}`}&nbsp;
               </span>
-              <span className='bold-heading5 md:bold-heading4'>
+              <span className="bold-heading5 md:bold-heading4">
                 개소(지속 확대 중)
               </span>
             </div>
           }
-          image={'/images/main-dashboard-2.png'}
+          image={"/images/main-dashboard-2.png"}
         />
 
         <DashboardItem
-          title={<p className='bold-heading5'>전체 파트너 시공 이력</p>}
+          title={<p className="bold-heading5">전체 파트너 시공 이력</p>}
           animation={
-            <div className='flex items-center'>
-              <span className='heavy-heading4 md:heavy-heading3'>
+            <div className="flex items-center">
+              <span className="heavy-heading4 md:heavy-heading3">
                 {`${projects.toLocaleString()}`}&nbsp;
               </span>
-              <span className='bold-heading5 md:bold-heading4'>건 이상</span>
+              <span className="bold-heading5 md:bold-heading4">건 이상</span>
             </div>
           }
-          image={'/images/main-dashboard-3.png'}
+          image={"/images/main-dashboard-3.png"}
         />
       </div>
     </div>
@@ -136,19 +136,19 @@ interface DashboardItemProps {
 
 function DashboardItem({ title, animation, image }: DashboardItemProps) {
   return (
-    <div className='text-white w-full h-[200px] relative rounded-xl overflow-hidden'>
+    <div className="text-white w-full h-[200px] relative rounded-xl overflow-hidden">
       {/* 배경 이미지 */}
-      <Image src={image} alt={image} fill className='object-cover' />
+      <Image src={image} alt={image} fill className="object-cover" />
 
       {/* 검정색 오버레이 */}
       <div
-        className='absolute inset-0'
-        style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
+        className="absolute inset-0"
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}
       />
 
       {/* 콘텐츠 */}
-      <div className='absolute top-[12px] left-[25px] z-10'>{title}</div>
-      <div className='absolute bottom-[22px] left-[25px] z-10'>{animation}</div>
+      <div className="absolute top-[12px] left-[25px] z-10">{title}</div>
+      <div className="absolute bottom-[22px] left-[25px] z-10">{animation}</div>
     </div>
   );
 }

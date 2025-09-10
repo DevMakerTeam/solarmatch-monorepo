@@ -1,8 +1,8 @@
-@source '../../../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}';
-@import 'tailwindcss';
+@source "../../../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}";
+@import "tailwindcss";
 
 /* 공통 전역 CSS import */
-@import '@repo/styles/globals.css';
+@import "@repo/styles/globals.css";
 
 @layer utilities {
   @keyframes highlight {
@@ -20,7 +20,7 @@
   }
 
   .highlight-pen::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     bottom: 0;

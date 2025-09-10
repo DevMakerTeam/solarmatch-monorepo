@@ -1,13 +1,49 @@
-node_modules
-.next
-dist
-build
-coverage
+# Dependencies
+node_modules/
+pnpm-lock.yaml
+
+# Production builds
+dist/
+build/
+.next/
+out/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
 *.log
-.git
+logs/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
 .DS_Store
-*.env
-*.env.local
-*.env.development.local
-*.env.test.local
-*.env.production.local
+Thumbs.db
+
+# Git
+.git/
+
+# Turbo
+.turbo/
+
+# Coverage
+coverage/
+
+# Public assets (optional - remove if you want to format these)
+public/
+*.svg
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+
+# Generated files
+*.generated.*
