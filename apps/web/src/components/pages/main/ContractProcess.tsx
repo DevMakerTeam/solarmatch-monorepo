@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 export default function ContractProcess() {
   return (
-    <MotionSection className="w-full mt-[88px] md:mt-[102px] px-[30px] xl:px-0 w-full">
+    <MotionSection className="w-full mt-[88px] md:mt-[102px] px-[30px] xl:px-0">
       {isAnimationComplete => (
         <ContractProcessContents isAnimationComplete={isAnimationComplete} />
       )}
