@@ -7,7 +7,7 @@ export default function LayoutHeader() {
   return (
     <header className="fixed top-0 left-0 right-0 flex justify-between items-center h-[64px] lg:h-[80px] px-[30px] lg:px-[32px] bg-white z-50">
       <Link href="/" role="link" aria-label="홈페이지">
-        <Icon iconName="webLogo" className="h-[20px] lg:h-[30px]" />
+        <Icon iconName="webLogo" className="h-[20px] w-[174px] text-primary" />
       </Link>
 
       {/* nav bar(center) */}
@@ -37,7 +37,7 @@ export default function LayoutHeader() {
       </div>
 
       <button className="lg:hidden">
-        <Icon iconName="hamburger" />
+        <Icon iconName="hamburger" className="text-black" />
       </button>
     </header>
   );

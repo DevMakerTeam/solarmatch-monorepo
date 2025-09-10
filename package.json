@@ -10,7 +10,7 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
-    "typecheck": "trubo run typecheck",
+    "typecheck": "turbo run typecheck",
     "commit": "pnpm --filter @repo/scripts commit",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

@@ -143,13 +143,19 @@ function PortfolioContents({ isAnimationComplete }: PortfolioContentsProps) {
 
             <div className="flex flex-col gap-[13px]">
               <div className="flex gap-[4px] items-center medium-caption">
-                <Icon iconName="circleLocation" className="text-[15.6px]" />
+                <Icon
+                  iconName="circleLocation"
+                  className="w-[15.6px] h-[15.6px] text-middle-gray"
+                />
 
                 <span className="bold-caption">위치</span>
                 <span>{currentItem.location}</span>
               </div>
               <div className="flex gap-[4px] items-center medium-caption">
-                <Icon iconName="power" className="text-[15.6px]" />
+                <Icon
+                  iconName="bolt"
+                  className="w-[15.6px] h-[15.6px] text-middle-gray"
+                />
 
                 <span className="bold-caption">용량</span>
                 <span>{`${currentItem.capacity}kw`}</span>

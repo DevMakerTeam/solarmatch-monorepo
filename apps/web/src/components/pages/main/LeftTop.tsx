@@ -5,7 +5,7 @@ export default function LeftTop() {
   return (
     <MotionSection className="w-full flex flex-col items-center">
       <div className="p-[13px_37px] md:p-[20px_60px] bg-light-primary flex justify-center items-center rounded-[30px]">
-        <Icon iconName="webLogo" />
+        <Icon iconName="webLogo" className="w-full h-[20px] text-primary" />
       </div>
 
       <p className="bold-heading6 md:bold-heading5 text-deep-gray mt-[33px]">
