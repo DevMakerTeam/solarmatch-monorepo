@@ -1,6 +1,6 @@
-import { cn } from '@repo/utils';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { ButtonHTMLAttributes, forwardRef, ReactNode } from 'react';
+import { cn } from "@repo/utils";
+import { cva, type VariantProps } from "class-variance-authority";
+import { ButtonHTMLAttributes, forwardRef, ReactNode } from "react";
 
 interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
@@ -14,20 +14,20 @@ const ButtonVariants = cva(
     variants: {
       variant: {
         solid:
-          'bg-primary text-white hover:bg-primary-hover active:bg-primary-active',
+          "bg-primary text-white hover:bg-primary-hover active:bg-primary-active",
         outline:
-          'border border-primary bg-white text-primary hover:bg-primary-hover active:bg-primary-active hover:text-white active:text-white disabled:border-none',
+          "border border-primary bg-white text-primary hover:bg-primary-hover active:bg-primary-active hover:text-white active:text-white disabled:border-none",
       },
       size: {
-        sm: 'h-[30px]',
-        md: 'h-[40px]',
-        lg: 'h-[50px]',
-        xl: 'h-[60px]',
+        sm: "h-[30px]",
+        md: "h-[40px]",
+        lg: "h-[50px]",
+        xl: "h-[60px]",
       },
     },
     defaultVariants: {
-      variant: 'solid',
-      size: 'md',
+      variant: "solid",
+      size: "md",
     },
   }
 );
@@ -37,7 +37,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     { icon, variant, size, className, children, type, ...props },
     ref
   ) {
-    const resolvedType = type ?? 'button';
+    const resolvedType = type ?? "button";
 
     return (
       <button
