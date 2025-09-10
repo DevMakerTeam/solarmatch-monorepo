@@ -72,7 +72,6 @@ function PortfolioContents({ isAnimationComplete }: PortfolioContentsProps) {
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    let startTimeout: NodeJS.Timeout;
 
     const startInterval = () => {
       interval = setInterval(() => {
@@ -85,10 +84,8 @@ function PortfolioContents({ isAnimationComplete }: PortfolioContentsProps) {
     const handleVisibilityChange = () => {
       if (document.hidden) {
         clearInterval(interval);
-        clearTimeout(startTimeout);
       } else {
         clearInterval(interval);
-        clearTimeout(startTimeout);
         if (isAnimationComplete) {
           startInterval();
         }
@@ -105,7 +102,6 @@ function PortfolioContents({ isAnimationComplete }: PortfolioContentsProps) {
 
     return () => {
       clearInterval(interval);
-      clearTimeout(startTimeout);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [isAnimationComplete]);
