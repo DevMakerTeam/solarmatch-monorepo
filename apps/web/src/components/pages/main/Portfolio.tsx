@@ -4,8 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const SLIDE_INTERVAL_MS = 3000; // 슬라이드 전환 간격 (밀리초)
-const INITIAL_DELAY_MS = 1000; // 애니메이션 완료 후 첫 슬라이드 시작 지연 시간 (밀리초)
+const SLIDE_INTERVAL_MS = 2000; // 슬라이드 전환 간격 (밀리초)
 
 const dummyData = [
   {
@@ -73,7 +72,6 @@ function PortfolioContents({ isAnimationComplete }: PortfolioContentsProps) {
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    let startTimeout: NodeJS.Timeout;
 
     const startInterval = () => {
       interval = setInterval(() => {
@@ -86,23 +84,17 @@ function PortfolioContents({ isAnimationComplete }: PortfolioContentsProps) {
     const handleVisibilityChange = () => {
       if (document.hidden) {
         clearInterval(interval);
-        clearTimeout(startTimeout);
       } else {
         clearInterval(interval);
-        clearTimeout(startTimeout);
         if (isAnimationComplete) {
-          startTimeout = setTimeout(() => {
-            startInterval();
-          }, INITIAL_DELAY_MS);
+          startInterval();
         }
       }
     };
 
-    // isAnimationComplete가 true가 되면 지정된 시간 후에 시작
+    // isAnimationComplete가 true가 되면 바로 시작
     if (isAnimationComplete) {
-      startTimeout = setTimeout(() => {
-        startInterval();
-      }, INITIAL_DELAY_MS);
+      startInterval();
     }
 
     // 탭 활성화/비활성화 감지
@@ -110,7 +102,6 @@ function PortfolioContents({ isAnimationComplete }: PortfolioContentsProps) {
 
     return () => {
       clearInterval(interval);
-      clearTimeout(startTimeout);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [isAnimationComplete]);
