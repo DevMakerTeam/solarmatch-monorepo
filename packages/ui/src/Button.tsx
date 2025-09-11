@@ -47,7 +47,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     // unstyled variant의 경우 기본 스타일 적용 안함
     const buttonClassName =
       variant === "ghost"
-        ? cn("cursor-pointer", className)
+        ? cn("cursor-pointer focus:outline-none focus:ring-0", className)
         : cn(ButtonVariants({ variant, size }), className);
 
     return (
