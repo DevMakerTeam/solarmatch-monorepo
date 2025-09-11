@@ -10,45 +10,34 @@ const COMPANY_CONTACT = {
 
 export default function Footer() {
   return (
-    <div
-      className={cn(
-        // "pl-[44px] lg:pl-[380px]",
-        // "pt-[28px] lg:pt-[38px]",
-        // "pb-[60px]",
-        "w-full bg-light-gray"
-      )}
-    >
+    <div className={cn("w-full bg-light-gray")}>
       {/* mobile */}
-      <div className="flex flex-col xl:hidden p-[42px]">
+      <div className="flex flex-col xl:hidden p-[30px]">
         <Icon iconName="webLogo" className="w-[174px] h-[20px] text-primary" />
 
         <div className="flex flex-col mt-[42px]">
           <p className="bold-body">대표전화</p>
-          <p className="bold-heading3">{COMPANY_CONTACT.MAIN_PHONE}</p>
+          <p className="bold-heading4">{COMPANY_CONTACT.MAIN_PHONE}</p>
         </div>
 
-        <div className="flex flex-col gap-[12px] mt-[27px]">
-          <div className="flex items-center gap-[20px]">
-            <p className="bold-body w-[100px]">대표이사</p>
-            <p className="medium-body">{COMPANY_CONTACT.CEO_NAME}</p>
-          </div>
-          <div className="flex items-center gap-[20px]">
-            <p className="bold-body w-[100px]">E-mail</p>
-            <p className="medium-body">{COMPANY_CONTACT.CONTACT_EMAIL}</p>
-          </div>
-          <div className="flex items-center gap-[20px]">
-            <p className="bold-body w-[100px]">사업자등록번호</p>
-            <p className="medium-body">
-              {COMPANY_CONTACT.BUSINESS_REGISTRATION_NUMBER}
-            </p>
-          </div>
+        <div className="grid grid-cols-[auto_1fr] gap-x-[20px] gap-y-[12px] mt-[27px]">
+          <p className="bold-body">대표이사</p>
+          <p className="medium-body">{COMPANY_CONTACT.CEO_NAME}</p>
+
+          <p className="bold-body">E-mail</p>
+          <p className="medium-body">{COMPANY_CONTACT.CONTACT_EMAIL}</p>
+
+          <p className="bold-body">사업자등록번호</p>
+          <p className="medium-body">
+            {COMPANY_CONTACT.BUSINESS_REGISTRATION_NUMBER}
+          </p>
         </div>
 
         <Button variant="outline" size="sm" className="w-fit mt-[8px]">
           사업자정보확인
         </Button>
 
-        <div className="flex items-center gap-[20px] mt-[15px] text-deep-gray bold-body">
+        <div className="flex items-center gap-[20px] mt-[15px] text-deep-gray bold-caption">
           <p>이용약관</p>
 
           <div className="w-[1px] h-[17px] border-1 border-border-color"></div>
@@ -105,7 +94,7 @@ export default function Footer() {
 
           <div className="flex flex-col gap-[10px]">
             <p className="bold-body">대표전화</p>
-            <p className="bold-heading3">{COMPANY_CONTACT.MAIN_PHONE}</p>
+            <p className="bold-heading4">{COMPANY_CONTACT.MAIN_PHONE}</p>
           </div>
         </div>
       </div>
