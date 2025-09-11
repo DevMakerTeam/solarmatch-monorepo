@@ -159,7 +159,7 @@ body {
   --text-tiny--line-height: 25px;
   --text-tiny--letter-spacing: 0px;
 
-  --breakpoint-xs: 320px;
+  --breakpoint-xs: 375px;
   --breakpoint-sm: 480px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;

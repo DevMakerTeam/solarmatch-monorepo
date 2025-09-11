@@ -37,7 +37,7 @@ export default function Footer() {
           사업자정보확인
         </Button>
 
-        <div className="flex items-center gap-[20px] mt-[15px] text-deep-gray bold-caption">
+        <div className="flex items-center gap-[20px] mt-[15px] text-deep-gray bold-small xs:bold-caption">
           <p>이용약관</p>
 
           <div className="w-[1px] h-[17px] border-1 border-border-color"></div>
