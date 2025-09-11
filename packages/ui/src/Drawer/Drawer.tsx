@@ -174,23 +174,54 @@ export function Drawer({
   // 스크롤 방지 및 레이아웃 shift 방지
   useEffect(() => {
     if (isOpen) {
+      // 현재 스크롤 위치 저장
+      const scrollY = window.scrollY;
+
       // 현재 스크롤바 너비 계산
       const scrollbarWidth =
         window.innerWidth - document.documentElement.clientWidth;
 
       // body에 overflow hidden 적용하고 스크롤바 너비만큼 padding 추가
       document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+
       if (scrollbarWidth > 0) {
         document.body.style.paddingRight = `${scrollbarWidth}px`;
       }
+
+      // 스크롤 위치를 data attribute에 저장
+      document.body.setAttribute("data-scroll-y", scrollY.toString());
     } else {
+      // 스크롤 위치 복원
+      const scrollY = document.body.getAttribute("data-scroll-y");
+
       document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
       document.body.style.paddingRight = "";
+      document.body.removeAttribute("data-scroll-y");
+
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY));
+      }
     }
 
     return () => {
+      const scrollY = document.body.getAttribute("data-scroll-y");
+
       document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
       document.body.style.paddingRight = "";
+      document.body.removeAttribute("data-scroll-y");
+
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY));
+      }
     };
   }, [isOpen]);
 
@@ -318,7 +349,7 @@ export function Drawer({
         return {
           top: 0,
           left: 0,
-          height: "100vh",
+          height: "100dvh", // Dynamic viewport height for mobile
           width: calculateSize(size, widthRatio, true),
           transform: isVisible ? "translateX(0)" : "translateX(-100%)",
         };
@@ -326,7 +357,7 @@ export function Drawer({
         return {
           top: 0,
           right: 0,
-          height: "100vh",
+          height: "100dvh", // Dynamic viewport height for mobile
           width: calculateSize(size, widthRatio, true),
           transform: isVisible ? "translateX(0)" : "translateX(100%)",
         };
@@ -334,7 +365,7 @@ export function Drawer({
         return {
           top: 0,
           left: 0,
-          width: "100vw",
+          width: "100dvw", // Dynamic viewport width for mobile
           height: calculateSize(size, heightRatio, false),
           transform: isVisible ? "translateY(0)" : "translateY(-100%)",
         };
@@ -342,7 +373,7 @@ export function Drawer({
         return {
           bottom: 0,
           left: 0,
-          width: "100vw",
+          width: "100dvw", // Dynamic viewport width for mobile
           height: calculateSize(size, heightRatio, false),
           transform: isVisible ? "translateY(0)" : "translateY(100%)",
         };
@@ -359,6 +390,7 @@ export function Drawer({
       style={{
         backgroundColor: `rgba(0, 0, 0, ${isVisible ? overlayOpacity : 0})`,
         transition: `background-color ${animationDuration}ms cubic-bezier(0.4, 0.0, 0.2, 1)`,
+        height: "100dvh", // Dynamic viewport height for mobile
       }}
       onClick={handleOverlayClick}
     >
