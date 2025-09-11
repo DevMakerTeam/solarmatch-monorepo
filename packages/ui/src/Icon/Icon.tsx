@@ -10,5 +10,5 @@ interface IconProps extends SVGProps<SVGSVGElement> {
 export default function Icon({ iconName, className, ...props }: IconProps) {
   const Component = Icons[iconName];
 
-  return <Component className={cn("fill-current", className)} {...props} />;
+  return <Component className={cn(className)} {...props} />;
 }
