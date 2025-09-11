@@ -63,6 +63,43 @@ body {
     var(--color-white) 38%
   );
 
+  --color-kakao: #fae100;
+  --color-kakao-hover: color-mix(
+    in srgb,
+    var(--color-kakao) 92%,
+    var(--color-white) 8%
+  );
+  --color-kakao-active: color-mix(
+    in srgb,
+    var(--color-kakao) 84%,
+    var(--color-white) 16%
+  );
+  --color-kakao-disabled: color-mix(
+    in srgb,
+    var(--color-kakao) 62%,
+    var(--color-white) 38%
+  );
+  --color-kakao-icon: #391b1b;
+
+  --color-cancel: #ff0000;
+  --color-cancel-hover: color-mix(
+    in srgb,
+    var(--color-cancel) 92%,
+    var(--color-white) 8%
+  );
+  --color-cancel-active: color-mix(
+    in srgb,
+    var(--color-cancel) 84%,
+    var(--color-white) 16%
+  );
+  --color-cancel-disabled: color-mix(
+    in srgb,
+    var(--color-cancel) 62%,
+    var(--color-white) 38%
+  );
+
+  --color-green: #47d861;
+
   --color-gray-50: #f5f5f7;
   --color-gray-100: #e5e5e8;
   --color-gray-200: #c2c2c6;
