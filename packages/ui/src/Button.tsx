@@ -9,14 +9,18 @@ interface ButtonProps
 }
 
 const ButtonVariants = cva(
-  `w-full flex items-center justify-center bold-body rounded-[8px] cursor-pointer disabled:cursor-not-allowed disabled:bg-light-gray disabled:text-deep-gray`,
+  `w-full flex gap-[12px] items-center justify-center bold-body rounded-[8px] cursor-pointer disabled:cursor-not-allowed`,
   {
     variants: {
       variant: {
         solid:
-          "bg-primary text-white hover:bg-primary-hover active:bg-primary-active",
+          "bg-primary text-white hover:bg-primary-hover active:bg-primary-active disabled:bg-light-gray disabled:text-deep-gray",
         outline:
-          "border border-primary bg-white text-primary hover:bg-primary-hover active:bg-primary-active hover:text-white active:text-white disabled:border-none",
+          "border border-primary bg-white text-primary hover:bg-primary-hover active:bg-primary-active hover:text-white active:text-white disabled:border-none disabled:bg-light-gray disabled:text-deep-gray",
+        kakao:
+          "bg-kakao text-black hover:bg-kakao-hover active:bg-kakao-active disabled:bg-kakao-disabled",
+        cancel:
+          "bg-cancel text-white hover:bg-cancel-hover active:bg-cancel-active disabled:bg-cancel-disabled",
       },
       size: {
         sm: "h-[30px]",
