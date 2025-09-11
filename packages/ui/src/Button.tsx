@@ -9,7 +9,7 @@ interface ButtonProps
 }
 
 const ButtonVariants = cva(
-  `w-full flex gap-[12px] items-center justify-center bold-body rounded-[8px] cursor-pointer disabled:cursor-not-allowed`,
+  `w-full flex gap-[12px] items-center justify-center bold-body rounded-[8px] cursor-pointer disabled:cursor-not-allowed focus:outline-none focus:ring-0 px-[20px]`,
   {
     variants: {
       variant: {
@@ -21,6 +21,7 @@ const ButtonVariants = cva(
           "bg-kakao text-black hover:bg-kakao-hover active:bg-kakao-active disabled:bg-kakao-disabled",
         cancel:
           "bg-cancel text-white hover:bg-cancel-hover active:bg-cancel-active disabled:bg-cancel-disabled",
+        ghost: "",
       },
       size: {
         sm: "h-[30px]",
@@ -43,12 +44,18 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) {
     const resolvedType = type ?? "button";
 
+    // unstyled variant의 경우 기본 스타일 적용 안함
+    const buttonClassName =
+      variant === "ghost"
+        ? cn("cursor-pointer", className)
+        : cn(ButtonVariants({ variant, size }), className);
+
     return (
       <button
         ref={ref}
         type={resolvedType}
         aria-disabled={props.disabled || undefined}
-        className={cn(ButtonVariants({ variant, size }), className)}
+        className={buttonClassName}
         {...props}
       >
         {icon}

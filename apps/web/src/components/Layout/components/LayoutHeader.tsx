@@ -1,14 +1,23 @@
-import { Icon } from "@repo/ui";
+import { Button, Icon } from "@repo/ui";
 import { cn } from "@repo/utils";
 import Link, { LinkProps } from "next/link";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
+import HeaderDrawer from "./HeaderDrawer";
 
 export default function LayoutHeader() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <header className="fixed top-0 left-0 right-0 flex justify-between items-center h-[64px] lg:h-[80px] px-[30px] lg:px-[32px] bg-white z-50">
-      <Link href="/" role="link" aria-label="홈페이지">
+      <Button
+        onClick={() => (window.location.href = "/")}
+        className="w-fit"
+        role="link"
+        aria-label="홈페이지"
+        variant="ghost"
+      >
         <Icon iconName="webLogo" className="h-[20px] w-[174px] text-primary" />
-      </Link>
+      </Button>
 
       {/* nav bar(center) */}
       <nav className="hidden lg:flex items-center gap-[34px]">
@@ -36,9 +45,15 @@ export default function LayoutHeader() {
         </LinkItem>
       </div>
 
-      <button className="lg:hidden">
+      <Button
+        className="lg:hidden w-fit"
+        onClick={() => setIsOpen(true)}
+        variant="ghost"
+      >
         <Icon iconName="hamburger" className="text-black" />
-      </button>
+      </Button>
+
+      <HeaderDrawer isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </header>
   );
 }
@@ -59,8 +74,8 @@ function LinkItem({
       role="link"
       {...props}
       className={cn(
-        isNav ? "text-black" : "text-[#666666]", // text color
-        "bold-body hover:text-secondary" // font style
+        isNav ? "text-black" : "text-deep-gray",
+        "bold-body hover:text-secondary"
       )}
     >
       {children}

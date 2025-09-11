@@ -1,4 +1,5 @@
 import { Button } from "./Button";
+import Drawer from "./Drawer/Drawer";
 import Icon from "./Icon";
 
-export { Button, Icon };
+export { Button, Drawer, Icon };

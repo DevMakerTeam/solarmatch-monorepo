@@ -15,8 +15,8 @@
     "@repo/utils": "workspace:*",
     "framer-motion": "^12.23.12",
     "next": "latest",
-    "react": "^18",
-    "react-dom": "^18"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
