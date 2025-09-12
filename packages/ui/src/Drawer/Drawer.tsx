@@ -99,8 +99,11 @@ export function Drawer({
     }
   }, [isOpen, animationDuration]);
 
-  // window 크기 추적
-  useLayoutEffect(() => {
+  // window 크기 추적 - SSR 호환
+  const useIsomorphicLayoutEffect =
+    typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
+  useIsomorphicLayoutEffect(() => {
     const setSize = () =>
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     setSize();
