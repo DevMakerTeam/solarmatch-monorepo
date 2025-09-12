@@ -2,7 +2,7 @@ import { Icon } from "../..";
 import { BasicOption, RichOption, SelectProps } from "../types";
 import { getPaddingClasses } from "../utils";
 
-interface Props {
+interface SelectOptionProps {
   option: BasicOption | RichOption;
   selectedValue: string;
   onSelect: (value: string) => void;
@@ -18,7 +18,7 @@ function SelectOption({
   type,
   maxTitleWidth,
   size = "lg",
-}: Props) {
+}: SelectOptionProps) {
   const isSelected = option.value === selectedValue;
   const isDisabled = option.disabled;
   const padding = getPaddingClasses(size);

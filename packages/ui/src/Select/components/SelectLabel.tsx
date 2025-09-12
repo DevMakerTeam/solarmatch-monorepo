@@ -1,13 +1,18 @@
 import { BasicOption, RichOption, SelectProps } from "../types";
 
-interface Props {
+interface SelectLabelProps {
   selectedValue: string;
   options: (BasicOption | RichOption)[];
   type: SelectProps["type"];
   placeholder?: string;
 }
 
-function SelectLabel({ selectedValue, options, type, placeholder }: Props) {
+function SelectLabel({
+  selectedValue,
+  options,
+  type,
+  placeholder,
+}: SelectLabelProps) {
   if (!selectedValue) return placeholder || "Select an option";
 
   const selectedOption = options.find(option => option.value === selectedValue);
