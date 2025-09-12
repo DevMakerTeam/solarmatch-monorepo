@@ -1,6 +1,11 @@
 import { cn } from "@repo/utils";
 import { VariantProps, cva } from "class-variance-authority";
-import { ForwardedRef, InputHTMLAttributes, forwardRef } from "react";
+import {
+  AriaAttributes,
+  ForwardedRef,
+  InputHTMLAttributes,
+  forwardRef,
+} from "react";
 
 const InputVariants = cva(
   "w-full px-[22px] rounded-[8px] border-1 medium-body placeholder:text-middle-gray text-black transition-colors duration-200 focus:outline-none disabled:border-none disabled:bg-light-gray disabled:text-deep-gray disabled:cursor-not-allowed read-only:bg-light-gray read-only:cursor-default read-only:text-deep-gray &[[read-only]:focus]:border-primary border-border-color hover:border-gray-400 focus:border-primary data-[error=true]:border-cancel &[data-[error=true]:hover]:border-cancel &[data-[error=true]:focus]:border-primary",
@@ -45,16 +50,16 @@ function Input(
   const inputPlaceholder = placeholder || "입력해 주세요";
 
   // a11y settigns
-  const ariaInvalid: React.AriaAttributes["aria-invalid"] =
+  const ariaInvalid: AriaAttributes["aria-invalid"] =
     ariaInvalidProp ?? (isError ? true : undefined);
 
-  const ariaRequired: React.AriaAttributes["aria-required"] =
+  const ariaRequired: AriaAttributes["aria-required"] =
     ariaRequiredProp ?? (required ? true : undefined);
 
-  const ariaDisabled: React.AriaAttributes["aria-disabled"] =
+  const ariaDisabled: AriaAttributes["aria-disabled"] =
     ariaDisabledProp ?? (disabled ? true : undefined);
 
-  const ariaReadonly: React.AriaAttributes["aria-readonly"] =
+  const ariaReadonly: AriaAttributes["aria-readonly"] =
     ariaReadonlyProp ?? (readOnly ? true : undefined);
 
   return (
