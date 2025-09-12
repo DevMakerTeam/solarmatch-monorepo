@@ -1,85 +1,34 @@
-"use client";
-
 import { cn, getCurrentBreakpoint } from "@repo/utils";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  CSSProperties,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 export interface DrawerProps {
-  /**
-   * Drawer가 열려있는지 여부
-   */
   isOpen: boolean;
-  /**
-   * Drawer를 닫을 때 호출되는 콜백
-   */
   onClose: () => void;
-  /**
-   * Drawer의 위치 (left, right, top, bottom)
-   */
   position?: "left" | "right" | "top" | "bottom";
-  /**
-   * Drawer의 크기 (px 또는 %)
-   * widthRatio/heightRatio가 설정된 경우 무시됨
-   */
   size?: string | number;
-  /**
-   * Drawer의 너비 비율 (0-1, 예: 0.8 = 화면의 80%)
-   * left/right position일 때만 적용
-   */
   widthRatio?: number;
-  /**
-   * Drawer의 높이 비율 (0-1, 예: 0.6 = 화면의 60%)
-   * top/bottom position일 때만 적용
-   */
   heightRatio?: number;
-  /**
-   * 반응형 너비 비율 설정
-   * { mobile: 0.9, tablet: 0.7, desktop: 0.5 }
-   */
-  responsiveWidthRatio?: {
-    mobile?: number;
-    tablet?: number;
-    desktop?: number;
-  };
-  /**
-   * 반응형 높이 비율 설정
-   * { mobile: 0.8, tablet: 0.6, desktop: 0.4 }
-   */
+  responsiveWidthRatio?: { mobile?: number; tablet?: number; desktop?: number };
   responsiveHeightRatio?: {
     mobile?: number;
     tablet?: number;
     desktop?: number;
   };
-  /**
-   * 최소 크기 (px)
-   */
   minSize?: number;
-  /**
-   * 최대 크기 (px)
-   */
   maxSize?: number;
-  /**
-   * 오버레이 클릭 시 닫기 여부
-   */
   closeOnOverlayClick?: boolean;
-  /**
-   * ESC 키로 닫기 여부
-   */
   closeOnEscape?: boolean;
-  /**
-   * Drawer 내용
-   */
   children: React.ReactNode;
-  /**
-   * 추가 CSS 클래스
-   */
   className?: string;
-  /**
-   * 오버레이의 투명도 (0-1)
-   */
   overlayOpacity?: number;
-  /**
-   * 애니메이션 지속시간 (ms)
-   */
   animationDuration?: number;
 }
 
@@ -102,54 +51,65 @@ export function Drawer({
   animationDuration = 300,
 }: DrawerProps) {
   const drawerRef = useRef<HTMLDivElement>(null);
-  const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(isOpen);
   const [isVisible, setIsVisible] = useState(false);
-  const [windowSize, setWindowSize] = useState(() => ({
-    width: typeof window !== "undefined" ? window.innerWidth : 0,
-    height: typeof window !== "undefined" ? window.innerHeight : 0,
-  }));
+  const [hasOpened, setHasOpened] = useState(false); // ✅ overlay 초기 깜빡임 방지용
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+  const [usePixelFallback, setUsePixelFallback] = useState(false);
 
-  // 마운트/언마운트 애니메이션 처리
+  // viewport 단위 지원 체크
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const checkViewportSupport = () => {
+      try {
+        const testEl = document.createElement("div");
+        Object.assign(testEl.style, {
+          position: "fixed",
+          top: "0",
+          left: "-9999px",
+          height: "100vh",
+          width: "1px",
+          visibility: "hidden",
+        });
+        document.body.appendChild(testEl);
+        const diff = Math.abs(testEl.offsetHeight - window.innerHeight);
+        document.body.removeChild(testEl);
+        setUsePixelFallback(diff > 10);
+      } catch {
+        setUsePixelFallback(true);
+      }
+    };
+    const timer = setTimeout(checkViewportSupport, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // 마운트/언마운트 애니메이션
   useEffect(() => {
     if (isOpen) {
       setIsMounted(true);
-      // RAF를 사용하여 더 부드러운 애니메이션
-      const raf = requestAnimationFrame(() => {
-        requestAnimationFrame(() => setIsVisible(true));
-      });
-      return () => cancelAnimationFrame(raf);
+      // ✅ Drawer 본체는 살짝 늦게 → 스르륵 유지
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+        setHasOpened(true);
+      }, 10);
+      return () => clearTimeout(timer);
     } else {
       setIsVisible(false);
-      // 애니메이션이 끝난 후 언마운트
       const timer = setTimeout(() => setIsMounted(false), animationDuration);
       return () => clearTimeout(timer);
     }
   }, [isOpen, animationDuration]);
 
-  // window resize 이벤트 핸들러 (반응형 크기 업데이트)
-  useEffect(() => {
-    let resizeTimer: NodeJS.Timeout;
-
+  // window 크기 추적
+  useLayoutEffect(() => {
+    const setSize = () =>
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    setSize();
+    let resizeTimer: ReturnType<typeof setTimeout>;
     const handleResize = () => {
-      // debounce resize 이벤트
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        setWindowSize({
-          width: window.innerWidth,
-          height: window.innerHeight,
-        });
-      }, 100);
+      resizeTimer = setTimeout(setSize, 100);
     };
-
-    // 초기 크기 설정 (SSR 대응)
-    if (typeof window !== "undefined") {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    }
-
-    // resize 이벤트 리스너 등록
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -157,230 +117,153 @@ export function Drawer({
     };
   }, []);
 
-  // ESC 키 이벤트 핸들러
+  // ESC 키 닫기
   useEffect(() => {
     if (!closeOnEscape) return;
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && isOpen) {
-        onClose();
-      }
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) onClose();
     };
-
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen, onClose, closeOnEscape]);
 
-  // 스크롤 방지 및 레이아웃 shift 방지
+  // 스크롤 잠금 및 복원
   useEffect(() => {
-    if (isOpen) {
-      // 현재 스크롤 위치 저장
-      const scrollY = window.scrollY;
-
-      // 현재 스크롤바 너비 계산
-      const scrollbarWidth =
-        window.innerWidth - document.documentElement.clientWidth;
-
-      // body에 overflow hidden 적용하고 스크롤바 너비만큼 padding 추가
-      document.body.style.overflow = "hidden";
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = "100%";
-
-      if (scrollbarWidth > 0) {
-        document.body.style.paddingRight = `${scrollbarWidth}px`;
-      }
-
-      // 스크롤 위치를 data attribute에 저장
-      document.body.setAttribute("data-scroll-y", scrollY.toString());
-    } else {
-      // 스크롤 위치 복원
-      const scrollY = document.body.getAttribute("data-scroll-y");
-
-      document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.width = "";
-      document.body.style.paddingRight = "";
-      document.body.removeAttribute("data-scroll-y");
-
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY));
-      }
-    }
+    if (!isOpen) return;
+    const scrollY = window.scrollY;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+    Object.assign(document.body.style, {
+      overflow: "hidden",
+      position: "fixed",
+      top: `-${scrollY}px`,
+      width: "100%",
+      paddingRight: scrollbarWidth > 0 ? `${scrollbarWidth}px` : "",
+    });
+    document.body.dataset.scrollY = scrollY.toString();
 
     return () => {
-      const scrollY = document.body.getAttribute("data-scroll-y");
-
-      document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.width = "";
-      document.body.style.paddingRight = "";
-      document.body.removeAttribute("data-scroll-y");
-
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY));
-      }
+      const y = document.body.dataset.scrollY;
+      Object.assign(document.body.style, {
+        overflow: "",
+        position: "",
+        top: "",
+        width: "",
+        paddingRight: "",
+      });
+      delete document.body.dataset.scrollY;
+      if (y) window.scrollTo(0, parseInt(y));
     };
   }, [isOpen]);
 
-  // 오버레이 클릭 핸들러
-  const handleOverlayClick = (event: React.MouseEvent) => {
-    if (closeOnOverlayClick && event.target === event.currentTarget) {
-      onClose();
-    }
-  };
+  const handleOverlayClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (closeOnOverlayClick && e.target === e.currentTarget) onClose();
+    },
+    [closeOnOverlayClick, onClose]
+  );
 
-  // 반응형 비율 계산
-  const getResponsiveRatio = (isWidth: boolean): number | undefined => {
-    const responsiveRatio = isWidth
-      ? responsiveWidthRatio
-      : responsiveHeightRatio;
-    const fallbackRatio = isWidth ? widthRatio : heightRatio;
-
-    if (!responsiveRatio) return fallbackRatio;
-
-    // 현재 브레이크포인트에 맞는 비율 반환
-    const currentBreakpoint = getCurrentBreakpoint();
-
-    switch (currentBreakpoint) {
-      case "desktop":
-        return (
-          responsiveRatio.desktop ??
-          responsiveRatio.tablet ??
-          responsiveRatio.mobile ??
-          fallbackRatio
-        );
-      case "tablet":
-        return (
-          responsiveRatio.tablet ?? responsiveRatio.mobile ?? fallbackRatio
-        );
-      case "mobile":
-      default:
-        return responsiveRatio.mobile ?? fallbackRatio;
-    }
-  };
-
-  // 크기 계산 로직
-  const calculateSize = (
-    baseSize: string | number,
-    ratio?: number,
-    isWidth: boolean = true
-  ): string => {
-    const effectiveRatio = ratio ?? getResponsiveRatio(isWidth);
-
-    // 반응형 비율이 설정된 경우 현재 브레이크포인트에 맞는 크기 계산
-    if (
-      (responsiveWidthRatio && isWidth) ||
-      (responsiveHeightRatio && !isWidth)
-    ) {
-      const currentRatio = getResponsiveRatio(isWidth);
-
-      if (currentRatio !== undefined) {
-        const viewportSize = isWidth ? "100vw" : "100vh";
-        const calculatedSize = `calc(${viewportSize} * ${currentRatio})`;
-
-        // 제약 조건 적용
-        const constraints = [];
-        if (minSize) constraints.push(`${minSize}px`);
-        if (maxSize) constraints.push(`${maxSize}px`);
-
-        if (constraints.length === 2) {
-          return `clamp(${constraints[0]}, ${calculatedSize}, ${constraints[1]})`;
-        } else if (minSize) {
-          return `max(${minSize}px, ${calculatedSize})`;
-        } else if (maxSize) {
-          return `min(${calculatedSize}, ${maxSize}px)`;
-        }
-
-        return calculatedSize;
-      }
-    }
-
-    // 단일 비율이 설정된 경우
-    if (effectiveRatio !== undefined) {
-      const viewportSize = isWidth ? "100vw" : "100vh";
-      const calculatedSize = `calc(${viewportSize} * ${effectiveRatio})`;
-
-      // 최소/최대 크기 제한 적용
-      if (minSize || maxSize) {
-        const constraints = [];
-        if (minSize) constraints.push(`${minSize}px`);
-        if (maxSize) constraints.push(`${maxSize}px`);
-
-        if (constraints.length === 2) {
-          return `clamp(${constraints[0]}, ${calculatedSize}, ${constraints[1]})`;
-        } else if (minSize) {
-          return `max(${minSize}px, ${calculatedSize})`;
-        } else if (maxSize) {
-          return `min(${calculatedSize}, ${maxSize}px)`;
-        }
-      }
-
-      return calculatedSize;
-    }
-
-    // 기본 size 사용
-    const sizeValue = typeof baseSize === "number" ? `${baseSize}px` : baseSize;
-
-    // 최소/최대 크기 제한 적용
-    if (minSize || maxSize) {
-      const constraints = [];
+  const withConstraints = useCallback(
+    (expr: string) => {
+      const constraints: string[] = [];
       if (minSize) constraints.push(`${minSize}px`);
       if (maxSize) constraints.push(`${maxSize}px`);
+      if (constraints.length === 2)
+        return `clamp(${constraints[0]}, ${expr}, ${constraints[1]})`;
+      if (minSize) return `max(${constraints[0]}, ${expr})`;
+      if (maxSize) return `min(${expr}, ${constraints[0]})`;
+      return expr;
+    },
+    [minSize, maxSize]
+  );
 
-      if (constraints.length === 2) {
-        return `clamp(${constraints[0]}, ${sizeValue}, ${constraints[1]})`;
-      } else if (minSize) {
-        return `max(${minSize}px, ${sizeValue})`;
-      } else if (maxSize) {
-        return `min(${sizeValue}, ${maxSize}px)`;
+  const getResponsiveRatio = useCallback(
+    (isWidth: boolean): number | undefined => {
+      const responsive = isWidth ? responsiveWidthRatio : responsiveHeightRatio;
+      const fallback = isWidth ? widthRatio : heightRatio;
+      if (!responsive) return fallback;
+      switch (getCurrentBreakpoint()) {
+        case "desktop":
+          return (
+            responsive.desktop ??
+            responsive.tablet ??
+            responsive.mobile ??
+            fallback
+          );
+        case "tablet":
+          return responsive.tablet ?? responsive.mobile ?? fallback;
+        default:
+          return responsive.mobile ?? fallback;
       }
-    }
+    },
+    [responsiveWidthRatio, responsiveHeightRatio, widthRatio, heightRatio]
+  );
 
-    return sizeValue;
-  };
+  const calculateSize = useCallback(
+    (baseSize: string | number, isWidth = true) => {
+      const ratio = getResponsiveRatio(isWidth);
+      if (ratio !== undefined) {
+        return withConstraints(
+          `calc(${isWidth ? "100vw" : "100vh"} * ${ratio})`
+        );
+      }
+      const val = typeof baseSize === "number" ? `${baseSize}px` : baseSize;
+      return withConstraints(val);
+    },
+    [getResponsiveRatio, withConstraints]
+  );
 
-  // 위치별 스타일 설정
-  const getPositionStyles = () => {
+  const positionStyles = useMemo<CSSProperties>(() => {
+    const vh = usePixelFallback ? `${windowSize.height}px` : "100vh";
+    const vw = usePixelFallback ? `${windowSize.width}px` : "100vw";
+    const addGpu = usePixelFallback ? " translateZ(0)" : "";
+    const common: CSSProperties = { willChange: "transform" };
+
     switch (position) {
       case "left":
         return {
+          ...common,
           top: 0,
           left: 0,
-          height: "100dvh", // Dynamic viewport height for mobile
-          width: calculateSize(size, widthRatio, true),
-          transform: isVisible ? "translateX(0)" : "translateX(-100%)",
+          height: vh,
+          width: calculateSize(size, true),
+          transform:
+            (isVisible ? "translateX(0)" : "translateX(-100%)") + addGpu,
         };
       case "right":
         return {
+          ...common,
           top: 0,
           right: 0,
-          height: "100dvh", // Dynamic viewport height for mobile
-          width: calculateSize(size, widthRatio, true),
-          transform: isVisible ? "translateX(0)" : "translateX(100%)",
+          height: vh,
+          width: calculateSize(size, true),
+          transform:
+            (isVisible ? "translateX(0)" : "translateX(100%)") + addGpu,
         };
       case "top":
         return {
+          ...common,
           top: 0,
           left: 0,
-          width: "100dvw", // Dynamic viewport width for mobile
-          height: calculateSize(size, heightRatio, false),
-          transform: isVisible ? "translateY(0)" : "translateY(-100%)",
+          width: vw,
+          height: calculateSize(size, false),
+          transform:
+            (isVisible ? "translateY(0)" : "translateY(-100%)") + addGpu,
         };
       case "bottom":
         return {
+          ...common,
           bottom: 0,
           left: 0,
-          width: "100dvw", // Dynamic viewport width for mobile
-          height: calculateSize(size, heightRatio, false),
-          transform: isVisible ? "translateY(0)" : "translateY(100%)",
+          width: vw,
+          height: calculateSize(size, false),
+          transform:
+            (isVisible ? "translateY(0)" : "translateY(100%)") + addGpu,
         };
       default:
-        return {};
+        return common;
     }
-  };
+  }, [position, size, isVisible, windowSize, usePixelFallback, calculateSize]);
 
   if (!isMounted) return null;
 
@@ -388,23 +271,24 @@ export function Drawer({
     <div
       className="fixed inset-0 z-50"
       style={{
-        backgroundColor: `rgba(0, 0, 0, ${isVisible ? overlayOpacity : 0})`,
-        transition: `background-color ${animationDuration}ms cubic-bezier(0.4, 0.0, 0.2, 1)`,
-        height: "100dvh", // Dynamic viewport height for mobile
+        backgroundColor: `rgba(0,0,0,${isOpen ? overlayOpacity : 0})`,
+        // ✅ 초기 오픈은 transition 없이, 이후엔 스무스하게
+        transition: hasOpened
+          ? `background-color ${animationDuration}ms cubic-bezier(0.4,0,0.2,1)`
+          : "none",
       }}
       onClick={handleOverlayClick}
     >
       <div
         ref={drawerRef}
         className={cn(
-          "fixed bg-white shadow-lg",
-          "transition-transform",
+          "fixed bg-white shadow-lg transition-transform",
           className
         )}
         style={{
-          ...getPositionStyles(),
+          ...positionStyles,
           transitionDuration: `${animationDuration}ms`,
-          transitionTimingFunction: "cubic-bezier(0.4, 0.0, 0.2, 1)",
+          transitionTimingFunction: "cubic-bezier(0.4,0,0.2,1)",
         }}
         onClick={e => e.stopPropagation()}
       >
