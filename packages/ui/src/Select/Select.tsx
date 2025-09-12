@@ -1,5 +1,6 @@
 import { cn } from "@repo/utils";
 import {
+  ForwardedRef,
   forwardRef,
   useEffect,
   useImperativeHandle,
@@ -12,7 +13,7 @@ import SelectOption from "./components/SelectOption";
 import { RichOption, SelectProps } from "./types";
 import { getPaddingClasses, getSizeClasses } from "./utils";
 
-const Select = forwardRef<HTMLDivElement, SelectProps>((props, ref) => {
+function Select(props: SelectProps, ref: ForwardedRef<HTMLDivElement>) {
   const {
     options,
     value,
@@ -148,8 +149,6 @@ const Select = forwardRef<HTMLDivElement, SelectProps>((props, ref) => {
       )}
     </div>
   );
-});
+}
 
-Select.displayName = "Select";
-
-export default Select;
+export default forwardRef<HTMLDivElement, SelectProps>(Select);

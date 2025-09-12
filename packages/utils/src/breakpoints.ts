@@ -20,7 +20,7 @@ export const MEDIA_QUERIES = {
 /**
  * 현재 화면 크기에 따른 브레이크포인트 반환
  */
-export function getCurrentBreakpoint(): keyof typeof BREAKPOINTS {
+export const getCurrentBreakpoint = (): keyof typeof BREAKPOINTS => {
   if (typeof window === "undefined") return "mobile";
 
   const width = window.innerWidth;
@@ -28,19 +28,19 @@ export function getCurrentBreakpoint(): keyof typeof BREAKPOINTS {
   if (width >= BREAKPOINTS.desktop) return "desktop";
   if (width >= BREAKPOINTS.tablet) return "tablet";
   return "mobile";
-}
+};
 
 /**
  * 특정 브레이크포인트인지 확인
  */
-export function isBreakpoint(breakpoint: keyof typeof BREAKPOINTS): boolean {
+export const isBreakpoint = (breakpoint: keyof typeof BREAKPOINTS): boolean => {
   return getCurrentBreakpoint() === breakpoint;
-}
+};
 
 /**
  * 미디어쿼리 매칭 확인
  */
-export function matchesMediaQuery(query: string): boolean {
+export const matchesMediaQuery = (query: string): boolean => {
   if (typeof window === "undefined") return false;
   return window.matchMedia(query).matches;
-}
+};

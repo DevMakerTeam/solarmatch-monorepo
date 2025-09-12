@@ -69,14 +69,15 @@ export default function HeaderDrawer({ isOpen, onClose }: HeaderDrawerProps) {
     >
       <div className="w-full flex flex-col px-[30px]">
         <div className="w-full h-[64px] flex items-center justify-between text-primary">
-          <button
+          <Button
             onClick={() => (window.location.href = "/")}
             className="cursor-pointer"
             role="link"
             aria-label="홈페이지"
+            variant="ghost"
           >
             <Icon iconName="webLogo" className="w-[174px] h-[20px]" />
-          </button>
+          </Button>
 
           <Button variant="ghost" className="w-fit" onClick={onClose}>
             <Icon iconName="x" className="text-black w-[16px] h-[16px]" />

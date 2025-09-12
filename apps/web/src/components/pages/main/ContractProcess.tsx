@@ -43,7 +43,7 @@ const PROCESS_LIST = [
   "시공일정 협의",
 ];
 
-const Process = ({ isAnimationComplete }: AnimationProps) => {
+function Process({ isAnimationComplete }: AnimationProps) {
   const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
@@ -125,9 +125,9 @@ const Process = ({ isAnimationComplete }: AnimationProps) => {
       </div>
     </div>
   );
-};
+}
 
-const DotAnimation = ({ isAnimationComplete }: AnimationProps) => {
+function DotAnimation({ isAnimationComplete }: AnimationProps) {
   const dotVariants: Variants = {
     hidden: {
       scale: 0,
@@ -180,4 +180,4 @@ const DotAnimation = ({ isAnimationComplete }: AnimationProps) => {
       />
     </motion.div>
   );
-};
+}

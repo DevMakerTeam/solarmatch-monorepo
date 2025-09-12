@@ -7,7 +7,7 @@ interface Props {
   placeholder?: string;
 }
 
-const SelectLabel = ({ selectedValue, options, type, placeholder }: Props) => {
+function SelectLabel({ selectedValue, options, type, placeholder }: Props) {
   if (!selectedValue) return placeholder || "Select an option";
 
   const selectedOption = options.find(option => option.value === selectedValue);
@@ -28,6 +28,6 @@ const SelectLabel = ({ selectedValue, options, type, placeholder }: Props) => {
       </div>
     );
   }
-};
+}
 
 export default SelectLabel;

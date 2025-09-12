@@ -1,4 +1,4 @@
-import { Button } from "./Button";
+import Button from "./Button";
 import Drawer from "./Drawer/Drawer";
 import Icon from "./Icon";
 

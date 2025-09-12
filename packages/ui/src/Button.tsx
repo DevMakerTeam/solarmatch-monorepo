@@ -1,6 +1,11 @@
 import { cn } from "@repo/utils";
 import { cva, type VariantProps } from "class-variance-authority";
-import { ButtonHTMLAttributes, forwardRef, ReactNode } from "react";
+import {
+  ButtonHTMLAttributes,
+  ForwardedRef,
+  forwardRef,
+  ReactNode,
+} from "react";
 
 interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
@@ -37,30 +42,30 @@ const ButtonVariants = cva(
   }
 );
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  function Button(
-    { icon, variant, size, className, children, type, ...props },
-    ref
-  ) {
-    const resolvedType = type ?? "button";
+function Button(
+  { icon, variant, size, className, children, type, ...props }: ButtonProps,
+  ref: ForwardedRef<HTMLButtonElement>
+) {
+  const resolvedType = type ?? "button";
 
-    // unstyled variant의 경우 기본 스타일 적용 안함
-    const buttonClassName =
-      variant === "ghost"
-        ? cn("cursor-pointer focus:outline-none focus:ring-0", className)
-        : cn(ButtonVariants({ variant, size }), className);
+  // unstyled variant의 경우 기본 스타일 적용 안함
+  const buttonClassName =
+    variant === "ghost"
+      ? cn("cursor-pointer focus:outline-none focus:ring-0", className)
+      : cn(ButtonVariants({ variant, size }), className);
 
-    return (
-      <button
-        ref={ref}
-        type={resolvedType}
-        aria-disabled={props.disabled || undefined}
-        className={buttonClassName}
-        {...props}
-      >
-        {icon}
-        {children}
-      </button>
-    );
-  }
-);
+  return (
+    <button
+      ref={ref}
+      type={resolvedType}
+      aria-disabled={props.disabled || undefined}
+      className={buttonClassName}
+      {...props}
+    >
+      {icon}
+      {children}
+    </button>
+  );
+}
+
+export default forwardRef<HTMLButtonElement, ButtonProps>(Button);
