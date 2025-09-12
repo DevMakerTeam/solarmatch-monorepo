@@ -48,7 +48,7 @@ function Button(
 ) {
   const resolvedType = type ?? "button";
 
-  // unstyled variant의 경우 기본 스타일 적용 안함
+  // ghost variant의 경우 기본 스타일 적용 안함
   const buttonClassName =
     variant === "ghost"
       ? cn("cursor-pointer focus:outline-none focus:ring-0", className)
