@@ -53,7 +53,7 @@ export function Drawer({
   const drawerRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(isOpen);
   const [isVisible, setIsVisible] = useState(false);
-  const [hasOpened, setHasOpened] = useState(false); // ✅ overlay 초기 깜빡임 방지용
+  const [hasOpened, setHasOpened] = useState(false);
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const [usePixelFallback, setUsePixelFallback] = useState(false);
 
@@ -87,7 +87,6 @@ export function Drawer({
   useEffect(() => {
     if (isOpen) {
       setIsMounted(true);
-      // ✅ Drawer 본체는 살짝 늦게 → 스르륵 유지
       const timer = setTimeout(() => {
         setIsVisible(true);
         setHasOpened(true);
@@ -272,7 +271,6 @@ export function Drawer({
       className="fixed inset-0 z-50"
       style={{
         backgroundColor: `rgba(0,0,0,${isOpen ? overlayOpacity : 0})`,
-        // ✅ 초기 오픈은 transition 없이, 이후엔 스무스하게
         transition: hasOpened
           ? `background-color ${animationDuration}ms cubic-bezier(0.4,0,0.2,1)`
           : "none",
