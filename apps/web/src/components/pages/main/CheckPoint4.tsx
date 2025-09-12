@@ -20,7 +20,7 @@ export default function CheckPoint4() {
 
               <div className="flex items-center mt-[14px]">
                 <img
-                  src="/images/main-8.png"
+                  src="/images/main/main-8.png"
                   alt="main-8"
                   className="w-[44px] h-[44px] md:w-[68px] md:h-[68px]"
                 />
@@ -35,7 +35,7 @@ export default function CheckPoint4() {
           image={
             <div className="flex flex-col items-center justify-center gap-[12px] mt-[44px] md:mt-0">
               <img
-                src="/images/main-6.png"
+                src="/images/main/main-6.png"
                 alt="main-6"
                 className="w-[52px] h-[52px] md:w-[62px] md:h-[62px]"
               />
@@ -55,7 +55,7 @@ export default function CheckPoint4() {
                   ease: "easeInOut",
                 }}
               >
-                <img src="/images/main-7.png" alt="main-7" />
+                <img src="/images/main/main-7.png" alt="main-7" />
               </motion.div>
             </div>
           }

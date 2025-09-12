@@ -9,7 +9,7 @@ export default function CheckPoint2() {
         index={2}
         image={
           <div className="aspect-square w-full max-w-[228px] md:max-w-[368px] mt-[32px] md:mt-0">
-            <img src="/images/main-3.png" alt="main-3" />
+            <img src="/images/main/main-3.png" alt="main-3" />
           </div>
         }
         contents={
@@ -48,7 +48,7 @@ export default function CheckPoint2() {
                 }}
               >
                 <img
-                  src="/images/main-4.png"
+                  src="/images/main/main-4.png"
                   alt="main-4"
                   className="w-full h-full"
                 />

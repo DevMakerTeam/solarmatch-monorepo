@@ -8,7 +8,7 @@ export default function CheckPoint3() {
         index={3}
         image={
           <div className="aspect-square w-full max-w-[300px] bg-white">
-            <img src="/images/main-5.gif" alt="main-5" />
+            <img src="/images/main/main-5.gif" alt="main-5" />
           </div>
         }
         contents={
