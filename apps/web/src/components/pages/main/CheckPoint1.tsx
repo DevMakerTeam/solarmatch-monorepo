@@ -8,7 +8,7 @@ export default function CheckPoint1() {
         index={1}
         image={
           <div className="aspect-square w-full max-w-[207px] md:max-w-[300px] mt-[18px] md:mt-0">
-            <img src="/images/main-2.png" alt="main-2" />
+            <img src="/images/main/main-2.png" alt="main-2" />
           </div>
         }
         contents={

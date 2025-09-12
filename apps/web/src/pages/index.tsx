@@ -8,13 +8,15 @@ import Dashboard from "@/components/pages/main/Dashboard";
 import LeftTop from "@/components/pages/main/LeftTop";
 import Portfolio from "@/components/pages/main/Portfolio";
 import Review from "@/components/pages/main/Review";
+import StickyAsideForm from "@/components/pages/main/StickyAsideForm";
+import { Button } from "@repo/ui";
 
 export default function Home() {
   return (
     <Layout isPx={false}>
-      <div className="flex justify-between gap-[30px] pb-[102px] md:pb-[82px]">
+      <div className="flex justify-between gap-[30px] pb-[72px] md:pb-[52px] xl:pb-[82px]">
         {/* left side */}
-        <div className="w-full pt-[27px] flex flex-col items-center">
+        <div className="w-full pt-[50px] md:pt-[80px] flex flex-col items-center">
           <LeftTop />
           <div className="flex flex-col gap-[60px] md:gap-[120px] w-full px-[30px] xl:px-0">
             {/* 체크포인트 1~4 */}
@@ -23,6 +25,7 @@ export default function Home() {
             <CheckPoint3 />
             <CheckPoint4 />
           </div>
+
           {/* 시공사례 */}
           <Portfolio />
           {/* 계약 프로세스 */}
@@ -31,12 +34,13 @@ export default function Home() {
           <Dashboard />
           {/* 리뷰 */}
           <Review />
+
+          <div className="mt-[15px] py-[30px] xl:hidden px-[30px] xl:px-0 sticky bottom-0 w-full z-10">
+            <Button size="xl">실시간 비교 견적 받아보기</Button>
+          </div>
         </div>
 
-        {/* right side */}
-        <div className="hidden xl:flex w-full max-w-[396px] border border-border-color rounded-lg sticky top-[80px] self-start">
-          ㅁㄴㅇㄴ
-        </div>
+        <StickyAsideForm />
       </div>
     </Layout>
   );

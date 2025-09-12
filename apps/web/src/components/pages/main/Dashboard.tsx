@@ -92,7 +92,7 @@ function DashboardContents({ isAnimationComplete }: DashboardContentsProps) {
             <span className="bold-heading5 md:bold-heading4">절감</span>
           </div>
         }
-        image={"/images/main-dashboard-1.png"}
+        image={"/images/main/main-dashboard-1.png"}
       />
 
       <div className="flex flex-col md:flex-row gap-[12px]">
@@ -108,7 +108,7 @@ function DashboardContents({ isAnimationComplete }: DashboardContentsProps) {
               </span>
             </div>
           }
-          image={"/images/main-dashboard-2.png"}
+          image={"/images/main/main-dashboard-2.png"}
         />
 
         <DashboardItem
@@ -121,7 +121,7 @@ function DashboardContents({ isAnimationComplete }: DashboardContentsProps) {
               <span className="bold-heading5 md:bold-heading4">건 이상</span>
             </div>
           }
-          image={"/images/main-dashboard-3.png"}
+          image={"/images/main/main-dashboard-3.png"}
         />
       </div>
     </div>
