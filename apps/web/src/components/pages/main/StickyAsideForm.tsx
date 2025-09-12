@@ -53,47 +53,55 @@ const BENEFITS_ITEM_LIST = [
 
 export default function StickyAsideForm() {
   return (
-    <div className="hidden xl:flex flex-col w-full max-w-[396px] border border-border-color rounded-[8px] sticky top-[160px] self-start">
-      <div className="w-full p-[20px_35px] border-b border-border-color">
+    <div className="hidden xl:flex flex-col w-full max-w-[396px] border border-border-color rounded-[8px] sticky top-[160px] self-start max-h-[calc(100vh-180px)] overflow-hidden">
+      {/* 헤더 - 고정 */}
+      <div className="w-full p-[20px_35px] border-b border-border-color flex-shrink-0">
         <p className="bold-heading5">솔라매치 : 투명한 태양광 견적받기</p>
       </div>
-      <div className="p-[25px_20px] flex flex-col">
-        <div className="flex flex-col gap-[24px]">
-          <Group label="태양광 종류 형태 선택">
-            <Select
-              type="basic"
-              options={SOLAR_TYPE_LABEL_OPTIONS}
-              value="solar_type1"
-            />
-          </Group>
 
-          <Group label="설치 예정 용량">
-            <Input size="md" placeholder="설치 예정 용량을 입력해주세요." />
-          </Group>
+      {/* 스크롤 영역 */}
+      <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="p-[25px_20px] flex flex-col">
+          <div className="flex flex-col gap-[24px]">
+            <Group label="태양광 종류 형태 선택">
+              <Select
+                type="basic"
+                options={SOLAR_TYPE_LABEL_OPTIONS}
+                value="solar_type1"
+              />
+            </Group>
 
-          <Group label="설치 방식 선택">
-            <Select
-              type="basic"
-              options={INSTALL_METHOD_LABEL_OPTIONS}
-              value="install_method1"
-            />
-          </Group>
-        </div>
+            <Group label="설치 예정 용량">
+              <Input size="md" placeholder="설치 예정 용량을 입력해주세요." />
+            </Group>
 
-        <div className="mt-[16px] medium-small">
-          <p>*슬레이트/기와/샌드위치패널/옥상 등 지붕 위 설치</p>
-          <p>가장 저렴하고 보편적인 방식</p>
-        </div>
-
-        <Group label="솔라매치 혜택" className="gap-[25px] mt-[30px]">
-          <div className="flex flex-col w-full gap-[8px]">
-            {BENEFITS_ITEM_LIST.map(benefit => (
-              <BenefitsItem key={benefit} benefit={benefit} />
-            ))}
+            <Group label="설치 방식 선택">
+              <Select
+                type="basic"
+                options={INSTALL_METHOD_LABEL_OPTIONS}
+                value="install_method1"
+              />
+            </Group>
           </div>
-        </Group>
 
-        <Button size="xl" className="mt-[30px]">
+          <div className="mt-[16px] medium-small">
+            <p>*슬레이트/기와/샌드위치패널/옥상 등 지붕 위 설치</p>
+            <p>가장 저렴하고 보편적인 방식</p>
+          </div>
+
+          <Group label="솔라매치 혜택" className="gap-[25px] mt-[30px]">
+            <div className="flex flex-col w-full gap-[8px]">
+              {BENEFITS_ITEM_LIST.map(benefit => (
+                <BenefitsItem key={benefit} benefit={benefit} />
+              ))}
+            </div>
+          </Group>
+        </div>
+      </div>
+
+      {/* 버튼 - 고정 */}
+      <div className="p-[25px_20px_30px] flex-shrink-0">
+        <Button size="xl" className="w-full">
           실시간 비교 견적 받아보기
         </Button>
       </div>
