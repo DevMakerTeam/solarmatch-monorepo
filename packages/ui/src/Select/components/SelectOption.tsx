@@ -11,14 +11,14 @@ interface Props {
   size?: SelectProps["size"];
 }
 
-const SelectOption = ({
+function SelectOption({
   option,
   selectedValue,
   onSelect,
   type,
   maxTitleWidth,
   size = "lg",
-}: Props) => {
+}: Props) {
   const isSelected = option.value === selectedValue;
   const isDisabled = option.disabled;
   const padding = getPaddingClasses(size);
@@ -78,6 +78,6 @@ const SelectOption = ({
       )}
     </div>
   );
-};
+}
 
 export default SelectOption;

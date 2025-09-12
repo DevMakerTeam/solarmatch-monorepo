@@ -1,5 +1,5 @@
 import Footer from "@/components/Footer";
-import { LayoutHeader } from "@/components/Layout/components";
+import LayoutHeader from "@/components/Layout/components/LayoutHeader";
 import { cn } from "@repo/utils";
 import {
   DetailedHTMLProps,

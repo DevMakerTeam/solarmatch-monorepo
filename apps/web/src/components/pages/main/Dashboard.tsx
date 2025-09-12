@@ -3,11 +3,11 @@ import Image from "next/image";
 import { ReactNode, useEffect, useState } from "react";
 
 // 숫자 카운트업 애니메이션 훅
-function useCountUp(
+const useCountUp = (
   end: number,
   isTriggered: boolean,
   duration: number = 2000
-) {
+) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ function useCountUp(
   }, [end, isTriggered, duration]);
 
   return count;
-}
+};
 
 export default function Dashboard() {
   return (

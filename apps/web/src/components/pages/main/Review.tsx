@@ -1,5 +1,5 @@
+import MotionSection from "@/components/pages/main/MotionSection";
 import { cn } from "@repo/utils";
-import MotionSection from "./MotionSection";
 
 const REVIEW_DATA = [
   {
