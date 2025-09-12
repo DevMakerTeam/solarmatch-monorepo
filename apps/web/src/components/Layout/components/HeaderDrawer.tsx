@@ -1,14 +1,16 @@
+import HeaderDrawerItem, {
+  HeaderDrawerItemProps,
+} from "@/components/Layout/components/HeaderDrawerItem";
 import { Button, Drawer, Icon } from "@repo/ui";
-import { cn } from "@repo/utils";
-import Link from "next/link";
-import { ComponentProps } from "react";
+import { cn, getCurrentBreakpoint } from "@repo/utils";
+import { useEffect } from "react";
 
 interface HeaderDrawerProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const DrawerItemData: Omit<DrawerItemProps, "onClose">[] = [
+const DrawerItemData: Omit<HeaderDrawerItemProps, "onClose">[] = [
   {
     userOnly: false,
     icon: "home",
@@ -52,9 +54,33 @@ const DrawerItemData: Omit<DrawerItemProps, "onClose">[] = [
   },
 ];
 
-const isLogin = true;
+// TODO: API 연동 시 제거
+const isLogin = false;
+
+// xl 브레이크포인트에서 drawer 자동 닫기 훅
+const useCloseOnDesktop = (isOpen: boolean, onClose: () => void) => {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleResize = () => {
+      if (getCurrentBreakpoint() === "desktop") {
+        onClose();
+      }
+    };
+
+    // 초기 체크
+    handleResize();
+
+    // resize 이벤트 리스너 등록
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isOpen, onClose]);
+};
 
 export default function HeaderDrawer({ isOpen, onClose }: HeaderDrawerProps) {
+  // xl 브레이크포인트에서 자동 닫기
+  useCloseOnDesktop(isOpen, onClose);
+
   return (
     <Drawer
       isOpen={isOpen}
@@ -106,9 +132,11 @@ export default function HeaderDrawer({ isOpen, onClose }: HeaderDrawerProps) {
         ></div>
 
         <div className="flex flex-col">
-          {DrawerItemData.map(item => (
-            <DrawerItem key={item.text} onClose={onClose} {...item} />
-          ))}
+          {DrawerItemData.filter(item => !item.userOnly || isLogin).map(
+            item => (
+              <HeaderDrawerItem key={item.text} onClose={onClose} {...item} />
+            )
+          )}
         </div>
 
         {isLogin && (
@@ -118,64 +146,5 @@ export default function HeaderDrawer({ isOpen, onClose }: HeaderDrawerProps) {
         )}
       </div>
     </Drawer>
-  );
-}
-
-interface DrawerItemProps {
-  userOnly: boolean;
-  icon: ComponentProps<typeof Icon>["iconName"];
-  link?: string;
-  text: string;
-  onClose: () => void;
-}
-
-function DrawerItem({ icon, userOnly, link, text, onClose }: DrawerItemProps) {
-  const commonStyles =
-    "flex items-center justify-start gap-[20px] p-[20px_13px] border-b-1 border-border-color w-full bold-heading6";
-  const iconComponent = (
-    <Icon iconName={icon} className="w-[24px] h-[24px] text-gray-100" />
-  );
-  const isLogoutButton = !link && userOnly;
-
-  const handleLogout = () => {
-    onClose();
-  };
-
-  if (isLogoutButton) {
-    return (
-      <Button
-        variant="ghost"
-        className={cn(commonStyles, "w-full h-fit")}
-        onClick={handleLogout}
-      >
-        {iconComponent}
-        {text}
-      </Button>
-    );
-  }
-
-  if (link === "/") {
-    return (
-      <Button
-        onClick={() => {
-          window.location.href = "/";
-          onClose();
-        }}
-        className={cn(commonStyles, "w-full h-fit")}
-        role="link"
-        aria-label="홈페이지"
-        variant="ghost"
-      >
-        {iconComponent}
-        {text}
-      </Button>
-    );
-  }
-
-  return (
-    <Link href={link!} className={cn(commonStyles)} onClick={onClose}>
-      {iconComponent}
-      {text}
-    </Link>
   );
 }
