@@ -1,10 +1,8 @@
-import { Button } from "@repo/ui";
+import { Button, Input } from "@repo/ui";
 import { BasicOption, Select } from "@repo/ui/select";
 import { cn } from "@repo/utils";
 import Image from "next/image";
 import { PropsWithChildren, useMemo } from "react";
-
-// TODO 설치 예정 용량 Input 추가 해야함 <= 이거하려면 Input 컴포넌트 만들어야함
 
 // 태양광 종류 형태 선택
 const SOLAR_TYPE_LABEL_OPTIONS: BasicOption[] = [
@@ -67,6 +65,10 @@ export default function StickyAsideForm() {
               options={SOLAR_TYPE_LABEL_OPTIONS}
               value="solar_type1"
             />
+          </Group>
+
+          <Group label="설치 예정 용량">
+            <Input size="md" placeholder="설치 예정 용량을 입력해주세요." />
           </Group>
 
           <Group label="설치 방식 선택">
