@@ -55,7 +55,7 @@ const DrawerItemData: Omit<HeaderDrawerItemProps, "onClose">[] = [
 ];
 
 // TODO: API 연동 시 제거
-const isLogin = false;
+const isLogin = true;
 
 // xl 브레이크포인트에서 drawer 자동 닫기 훅
 const useCloseOnDesktop = (isOpen: boolean, onClose: () => void) => {
@@ -93,8 +93,9 @@ export default function HeaderDrawer({ isOpen, onClose }: HeaderDrawerProps) {
       }}
       animationDuration={150}
     >
-      <div className="w-full flex flex-col px-[30px]">
-        <div className="w-full h-[64px] flex items-center justify-between text-primary">
+      <div className="w-full h-full flex flex-col">
+        {/* 고정 헤더 */}
+        <div className="flex-shrink-0 w-full h-[64px] flex items-center justify-between text-primary px-[30px]">
           <Button
             onClick={() => (window.location.href = "/")}
             className="cursor-pointer"
@@ -109,41 +110,45 @@ export default function HeaderDrawer({ isOpen, onClose }: HeaderDrawerProps) {
             <Icon iconName="x" className="text-black w-[16px] h-[16px]" />
           </Button>
         </div>
-        {!isLogin && (
-          <div className="w-full mt-[42px] flex flex-col gap-[20px] mb-[34px]">
-            <p className="bold-heading5">로그인 후 이용해보세요.</p>
 
-            <div className="flex items-center gap-[10px]">
-              <Button variant="outline" size="lg">
-                회원가입
-              </Button>
+        {/* 스크롤 가능한 컨텐츠 영역 */}
+        <div className="flex-1 overflow-y-auto px-[30px]">
+          {!isLogin && (
+            <div className="w-full mt-[42px] flex flex-col gap-[20px] mb-[34px]">
+              <p className="bold-heading5">로그인 후 이용해보세요.</p>
 
-              <Button variant="solid" size="lg">
-                로그인
-              </Button>
+              <div className="flex items-center gap-[10px]">
+                <Button variant="outline" size="lg">
+                  회원가입
+                </Button>
+
+                <Button variant="solid" size="lg">
+                  로그인
+                </Button>
+              </div>
             </div>
-          </div>
-        )}
-        <div
-          className={cn(
-            "border-b-1 border-border-color",
-            isLogin && "mt-[16px]"
           )}
-        ></div>
+          <div
+            className={cn(
+              "border-b-1 border-border-color",
+              isLogin && "mt-[16px]"
+            )}
+          ></div>
 
-        <div className="flex flex-col">
-          {DrawerItemData.filter(item => !item.userOnly || isLogin).map(
-            item => (
-              <HeaderDrawerItem key={item.text} onClose={onClose} {...item} />
-            )
+          <div className="flex flex-col">
+            {DrawerItemData.filter(item => !item.userOnly || isLogin).map(
+              item => (
+                <HeaderDrawerItem key={item.text} onClose={onClose} {...item} />
+              )
+            )}
+          </div>
+
+          {isLogin && (
+            <Button size="lg" className="mt-[42px] mb-[30px]" onClick={onClose}>
+              파트너 지원하기
+            </Button>
           )}
         </div>
-
-        {isLogin && (
-          <Button size="lg" className="mt-[42px]" onClick={onClose}>
-            파트너 지원하기
-          </Button>
-        )}
       </div>
     </Drawer>
   );
