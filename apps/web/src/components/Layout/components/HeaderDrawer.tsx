@@ -21,13 +21,13 @@ const DrawerItemData: Omit<HeaderDrawerItemProps, "onClose">[] = [
     userOnly: false,
     icon: "clock",
     link: "/bidding",
-    text: "실시간 입찰확인",
+    text: "견적확인",
   },
   {
     userOnly: false,
     icon: "article",
     link: "/cases",
-    text: "설치사례",
+    text: "시공사례",
   },
   {
     userOnly: false,
