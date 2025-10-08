@@ -24,11 +24,11 @@ export default function LayoutHeader() {
         <LinkItem href="/" aria-label="홈페이지" isNav>
           홈페이지
         </LinkItem>
-        <LinkItem href="/bidding" aria-label="실시간 입찰확인 페이지" isNav>
-          실시간 입찰확인
+        <LinkItem href="/bidding" aria-label="견적확인 페이지" isNav>
+          견적확인
         </LinkItem>
-        <LinkItem href="/cases" aria-label="설치사례 페이지" isNav>
-          설치사례
+        <LinkItem href="/cases" aria-label="시공사례 페이지" isNav>
+          시공사례
         </LinkItem>
         <LinkItem href="/support" aria-label="고객센터 페이지" isNav>
           고객센터

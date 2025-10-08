@@ -2,6 +2,7 @@ import { Button, Input } from "@repo/ui";
 import { BasicOption, Select } from "@repo/ui/select";
 import { cn } from "@repo/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { PropsWithChildren, useMemo } from "react";
 
 // 태양광 종류 형태 선택
@@ -101,9 +102,11 @@ export default function StickyAsideForm() {
 
       {/* 버튼 - 고정 */}
       <div className="p-[25px_20px_30px] flex-shrink-0">
-        <Button size="xl" className="w-full">
-          실시간 비교 견적 받아보기
-        </Button>
+        <Link href="/compare-quotes">
+          <Button size="xl" className="w-full">
+            실시간 비교 견적 받아보기
+          </Button>
+        </Link>
       </div>
     </div>
   );

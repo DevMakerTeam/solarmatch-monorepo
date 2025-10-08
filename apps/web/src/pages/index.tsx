@@ -10,6 +10,7 @@ import Portfolio from "@/components/pages/main/Portfolio";
 import Review from "@/components/pages/main/Review";
 import StickyAsideForm from "@/components/pages/main/StickyAsideForm";
 import { Button } from "@repo/ui";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -36,7 +37,9 @@ export default function Home() {
           <Review />
 
           <div className="mt-[15px] py-[30px] xl:hidden px-[30px] xl:px-0 sticky bottom-0 w-full z-10">
-            <Button size="xl">실시간 비교 견적 받아보기</Button>
+            <Link href="/compare-quotes">
+              <Button size="xl">실시간 비교 견적 받아보기</Button>
+            </Link>
           </div>
         </div>
 
