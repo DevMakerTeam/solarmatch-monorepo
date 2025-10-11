@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Icon } from "..";
+import { Icon } from "../Icon";
 import SelectLabel from "./components/SelectLabel";
 import SelectOption from "./components/SelectOption";
 import { RichOption, SelectProps } from "./types";
