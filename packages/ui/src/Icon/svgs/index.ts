@@ -1,4 +1,5 @@
 export { default as article } from "./article.svg";
+export { default as boldCheck } from "./boldCheck.svg";
 export { default as bolt } from "./bolt.svg";
 export { default as check } from "./check.svg";
 export { default as checkList } from "./checkList.svg";
