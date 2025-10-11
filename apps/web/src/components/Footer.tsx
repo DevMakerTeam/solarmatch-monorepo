@@ -1,4 +1,5 @@
-import { Button, Icon } from "@repo/ui";
+import { Button } from "@repo/ui/button";
+import { Icon } from "@repo/ui/icon";
 import { cn } from "@repo/utils";
 
 const COMPANY_CONTACT = {
@@ -33,7 +34,7 @@ export default function Footer() {
           </p>
         </div>
 
-        <Button variant="outline" size="sm" className="w-fit mt-[8px]">
+        <Button variant="outline" className="w-fit mt-[8px] button-size-sm">
           사업자정보확인
         </Button>
 
@@ -73,7 +74,10 @@ export default function Footer() {
                 <p className="medium-body">
                   {COMPANY_CONTACT.BUSINESS_REGISTRATION_NUMBER}
                 </p>
-                <Button variant="outline" size="sm" className="w-fit mt-[8px]">
+                <Button
+                  variant="outline"
+                  className="w-fit mt-[8px] button-size-sm"
+                >
                   사업자정보확인
                 </Button>
               </div>

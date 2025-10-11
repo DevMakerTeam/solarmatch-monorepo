@@ -1,5 +1,6 @@
 import HeaderDrawer from "@/components/Layout/components/HeaderDrawer";
-import { Button, Icon } from "@repo/ui";
+import { Button } from "@repo/ui/button";
+import { Icon } from "@repo/ui/icon";
 import { cn } from "@repo/utils";
 import Link, { LinkProps } from "next/link";
 import { PropsWithChildren, useState } from "react";

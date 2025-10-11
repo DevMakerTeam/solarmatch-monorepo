@@ -1,4 +1,5 @@
-import { Button, Icon } from "@repo/ui";
+import { Button } from "@repo/ui/button";
+import { Icon } from "@repo/ui/icon";
 import { cn } from "@repo/utils";
 import Link from "next/link";
 import { ComponentProps } from "react";

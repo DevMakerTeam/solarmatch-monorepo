@@ -1,7 +1,9 @@
 import HeaderDrawerItem, {
   HeaderDrawerItemProps,
 } from "@/components/Layout/components/HeaderDrawerItem";
-import { Button, Drawer, Icon } from "@repo/ui";
+import { Drawer } from "@repo/ui";
+import { Button } from "@repo/ui/button";
+import { Icon } from "@repo/ui/icon";
 import { cn, getCurrentBreakpoint } from "@repo/utils";
 import { useEffect } from "react";
 
@@ -118,11 +120,11 @@ export default function HeaderDrawer({ isOpen, onClose }: HeaderDrawerProps) {
               <p className="bold-heading5">로그인 후 이용해보세요.</p>
 
               <div className="flex items-center gap-[10px]">
-                <Button variant="outline" size="lg">
+                <Button variant="outline" className="button-size-lg">
                   회원가입
                 </Button>
 
-                <Button variant="solid" size="lg">
+                <Button variant="solid" className="button-size-lg">
                   로그인
                 </Button>
               </div>
@@ -144,7 +146,10 @@ export default function HeaderDrawer({ isOpen, onClose }: HeaderDrawerProps) {
           </div>
 
           {isLogin && (
-            <Button size="lg" className="mt-[42px] mb-[30px]" onClick={onClose}>
+            <Button
+              className="mt-[42px] mb-[30px] button-size-lg"
+              onClick={onClose}
+            >
               파트너 지원하기
             </Button>
           )}

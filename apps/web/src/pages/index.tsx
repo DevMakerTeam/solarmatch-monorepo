@@ -9,7 +9,8 @@ import LeftTop from "@/components/pages/main/LeftTop";
 import Portfolio from "@/components/pages/main/Portfolio";
 import Review from "@/components/pages/main/Review";
 import StickyAsideForm from "@/components/pages/main/StickyAsideForm";
-import { Button } from "@repo/ui";
+import { Button } from "@repo/ui/button";
+
 import Link from "next/link";
 
 export default function Home() {
@@ -38,7 +39,9 @@ export default function Home() {
 
           <div className="mt-[15px] py-[30px] xl:hidden px-[30px] xl:px-0 sticky bottom-0 w-full z-10">
             <Link href="/compare-quotes">
-              <Button size="xl">실시간 비교 견적 받아보기</Button>
+              <Button className="button-size-xl">
+                실시간 비교 견적 받아보기
+              </Button>
             </Link>
           </div>
         </div>
