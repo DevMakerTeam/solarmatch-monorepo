@@ -1,1 +1,1 @@
-export { default } from "./ApplyPartner";
+export { default } from "@/components/pages/apply-partner";
