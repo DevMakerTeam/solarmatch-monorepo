@@ -1,4 +1,4 @@
-import { Icon } from "../..";
+import { Icon } from "../../Icon";
 import { BasicOption, RichOption, SelectProps } from "../types";
 import { getPaddingClasses } from "../utils";
 

@@ -1,4 +1,5 @@
-import { Button, Input } from "@repo/ui";
+import { Button } from "@repo/ui/button";
+import { Input } from "@repo/ui/input";
 import { BasicOption, Select } from "@repo/ui/select";
 import { cn } from "@repo/utils";
 import Image from "next/image";
@@ -103,7 +104,7 @@ export default function StickyAsideForm() {
       {/* 버튼 - 고정 */}
       <div className="p-[25px_20px_30px] flex-shrink-0">
         <Link href="/compare-quotes">
-          <Button size="xl" className="w-full">
+          <Button className="w-full button-size-xl">
             실시간 비교 견적 받아보기
           </Button>
         </Link>

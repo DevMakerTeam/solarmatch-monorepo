@@ -1,4 +1,4 @@
-import { Button } from "@repo/ui";
+import { Button } from "@repo/ui/button";
 
 export default function AdminHome() {
   return (

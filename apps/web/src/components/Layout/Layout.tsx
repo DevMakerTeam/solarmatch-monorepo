@@ -31,11 +31,14 @@ export default function Layout({
   const { className: mainStyles, ...restMainProps } = mainProps;
 
   return (
-    <div className={cn("relative", wrapperStyles)} {...restWrapperProps}>
+    <div
+      className={cn("relative min-h-screen flex flex-col", wrapperStyles)}
+      {...restWrapperProps}
+    >
       <LayoutHeader />
       <main
         className={cn(
-          "pt-[64px] lg:pt-[80px] max-w-[1150px] mx-auto",
+          "flex-1 pt-[64px] lg:pt-[80px] max-w-[1150px] w-full mx-auto",
           isPx && "px-[30px] xl:px-0",
           mainStyles
         )}

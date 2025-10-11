@@ -1,1 +1,3 @@
-export { default } from "./Icon";
+export { default as Icon } from "./Icon";
+export * as Icons from "./svgs";
+export * from "./types";

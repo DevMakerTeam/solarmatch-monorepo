@@ -1,11 +1,7 @@
 import { cn } from "@repo/utils";
 import * as Icons from "./svgs";
 
-import type { SVGProps } from "react";
-
-interface IconProps extends SVGProps<SVGSVGElement> {
-  iconName: keyof typeof Icons;
-}
+import { IconProps } from "./types";
 
 export default function Icon({ iconName, className, ...props }: IconProps) {
   const Component = Icons[iconName];

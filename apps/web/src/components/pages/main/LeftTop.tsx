@@ -1,5 +1,5 @@
 import MotionSection from "@/components/pages/main/MotionSection";
-import { Icon } from "@repo/ui";
+import { Icon } from "@repo/ui/icon";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
