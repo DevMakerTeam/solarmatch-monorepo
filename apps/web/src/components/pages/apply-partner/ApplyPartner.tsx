@@ -56,6 +56,7 @@ const ApplyPartnerPage = () => {
                   <Input
                     type="number"
                     placeholder="(년 단위) 경력 기간을 입력해 주세요."
+                    className="input-size-md"
                     {...register("experience")}
                   />
                   <p className="bold-body">년</p>

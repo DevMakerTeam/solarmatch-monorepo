@@ -69,8 +69,8 @@ function ButtonComponent(
       className={buttonClassName}
       {...props}
     >
-      {icon}
       {children}
+      {icon}
     </button>
   );
 }
