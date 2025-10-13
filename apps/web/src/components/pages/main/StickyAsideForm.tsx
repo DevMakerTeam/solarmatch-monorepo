@@ -74,7 +74,10 @@ export default function StickyAsideForm() {
             </Group>
 
             <Group label="설치 예정 용량">
-              <Input size="md" placeholder="설치 예정 용량을 입력해주세요." />
+              <Input
+                placeholder="설치 예정 용량을 입력해주세요."
+                className="input-size-md"
+              />
             </Group>
 
             <Group label="설치 방식 선택">
