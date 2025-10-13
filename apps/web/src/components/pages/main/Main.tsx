@@ -14,7 +14,7 @@ import StickyAsideForm from "./StickyAsideForm";
 
 import Link from "next/link";
 
-export default function Home() {
+export default function MainPage() {
   return (
     <Layout isPx={false}>
       <div className="flex justify-between gap-[30px] pb-[72px] md:pb-[52px] xl:pb-[82px]">
