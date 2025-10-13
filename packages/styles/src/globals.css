@@ -162,6 +162,10 @@ body {
   --button-size-md: 40px;
   --button-size-lg: 50px;
   --button-size-xl: 60px;
+
+  --input-size-sm: 40px;
+  --input-size-md: 50px;
+  --input-size-lg: 60px;
 }
 
 @utility button-size-sm {
@@ -183,6 +187,24 @@ body {
   line-height: var(--text-heading6--line-height);
   letter-spacing: var(--text-heading6--letter-spacing);
   font-weight: 600;
+}
+
+@utility input-size-sm {
+  height: var(--input-size-sm);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+@utility input-size-md {
+  height: var(--input-size-md);
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+@utility input-size-lg {
+  height: var(--input-size-lg);
+  padding-top: 18px;
+  padding-bottom: 18px;
 }
 
 /* Heavy 시리즈 (font-weight: 800) */
