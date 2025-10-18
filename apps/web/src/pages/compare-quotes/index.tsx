@@ -1,1 +1,1 @@
-export { default } from "./CompareQuotes";
+export { default } from "@/components/pages/compare-quotes";
