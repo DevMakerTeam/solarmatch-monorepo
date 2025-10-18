@@ -113,7 +113,7 @@ const CompareQuotesPage = () => {
 
           <FormField label="사진 첨부" className="mb-[30px] lg:mb-[60px]">
             <div className="flex flex-col gap-[12px] lg:gap-[20px]">
-              <div className="flex max-w-[400px]">
+              <div className="flex max-w-[380px]">
                 <span className="shrink-0 medium-small">＊&nbsp;</span>
                 <span className="medium-small">
                   본인 건물 사진/전기요금고지서/원하는 형식의 샘플 디자인 등을
