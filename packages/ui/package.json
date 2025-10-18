@@ -11,7 +11,8 @@
     "./button": "./src/Button/index.tsx",
     "./icon": "./src/Icon/index.tsx",
     "./checkbox": "./src/Checkbox/index.tsx",
-    "./input": "./src/Input/index.tsx"
+    "./input": "./src/Input/index.tsx",
+    "./textarea": "./src/Textarea/index.tsx"
   },
   "dependencies": {
     "@repo/utils": "workspace:*"
