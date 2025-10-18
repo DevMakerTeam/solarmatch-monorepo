@@ -1,1 +1,1 @@
-export { default } from "./FindAccount";
+export { default } from "@/components/pages/find-account";
