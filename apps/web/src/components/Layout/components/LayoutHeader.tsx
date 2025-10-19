@@ -13,7 +13,7 @@ export default function LayoutHeader() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  const { isLoggedIn, userType, logout } = useTestLoginStore();
+  const { isLoggedIn, logout } = useTestLoginStore();
 
   // 외부 클릭 시 드롭다운 닫기
   useEffect(() => {
@@ -36,7 +36,10 @@ export default function LayoutHeader() {
   }, [isDropdownOpen]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 flex justify-between items-center h-[64px] lg:h-[80px] px-[30px] lg:px-[32px] bg-white z-50">
+    <header
+      className="fixed top-0 left-0 right-0 flex justify-between items-center h-[64px] lg:h-[80px] px-[30px] lg:px-[32px] bg-white z-50"
+      id="layout-header"
+    >
       <Button
         onClick={() => (window.location.href = "/")}
         className="w-fit"
@@ -129,7 +132,7 @@ export default function LayoutHeader() {
           </LinkItem>
         )}
 
-        {isLoggedIn && userType === "user" && (
+        {isLoggedIn && (
           <LinkItem
             href="/apply-partner"
             aria-label="파트너 지원 페이지"
