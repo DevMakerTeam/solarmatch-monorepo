@@ -1,6 +1,7 @@
 import { cn } from "@repo/utils";
 import { Button } from "../Button";
 import { Icon } from "../Icon";
+import useHiddenScrollbar from "./hooks/useHiddenScrollbar";
 import { ModalProps } from "./types";
 
 const Modal = ({
@@ -9,6 +10,8 @@ const Modal = ({
   modalContainerClassName,
   modalContentClassName,
 }: ModalProps) => {
+  useHiddenScrollbar();
+
   return (
     <>
       {/* 오버레이 */}
