@@ -12,12 +12,12 @@ const Modal = ({
   return (
     <>
       {/* 오버레이 */}
-      <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/50 z-60" onClick={onClose} />
 
       {/* 모달 컨텐츠 */}
       <div
         className={cn(
-          "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-[20px] z-50 min-w-[85%] lg:min-w-[450px]",
+          "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-[20px] z-70 min-w-[85%] lg:min-w-[450px]",
           modalContainerClassName
         )}
       >

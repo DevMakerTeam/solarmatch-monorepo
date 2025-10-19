@@ -1,1 +1,1 @@
-export { default } from "./ChangePassword";
+export { default } from "@/components/pages/change-password";
