@@ -5,6 +5,7 @@ import { useTestLoginStore } from "@/stores/testLoginStore";
 import { useModals } from "@repo/hooks";
 import { Button } from "@repo/ui/button";
 import { Icon } from "@repo/ui/icon";
+import Link from "next/link";
 import ChangePasswordModal from "./components/ChangePasswordModal";
 import ChangePhoneNumModal from "./components/ChangePhoneNumModal";
 import PartnerInfo from "./components/PartnerInfo";
@@ -80,9 +81,11 @@ const ProfilePage = () => {
           </div>
 
           <div className="flex justify-end w-full">
-            <Button variant="ghost" className="w-fit medium-small">
-              회원탈퇴
-            </Button>
+            <Link href="/withdraw">
+              <Button variant="ghost" className="w-fit medium-small">
+                회원탈퇴
+              </Button>
+            </Link>
           </div>
 
           {userType === "partner" && <PartnerInfo />}
