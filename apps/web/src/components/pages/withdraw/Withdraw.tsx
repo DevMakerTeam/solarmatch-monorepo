@@ -1,9 +1,24 @@
 // 회원탈퇴 페이지
 import Layout from "@/components/Layout";
+import { useModals } from "@repo/hooks";
 import { Button } from "@repo/ui/button";
 import { Checkbox } from "@repo/ui/checkbox";
+import { ConfirmModal } from "@repo/ui/modal";
 
 const WithdrawPage = () => {
+  const { open: openWithdrawModal, close: closeWithdrawModal } = useModals();
+
+  const handleWithdrawConfirm = () => {
+    openWithdrawModal(ConfirmModal, {
+      onConfirm: () => {
+        console.log("탈퇴하기");
+        closeWithdrawModal();
+      },
+      onClose: closeWithdrawModal,
+      text: "정말 탈퇴하시겠습니까?",
+    });
+  };
+
   return (
     <Layout footer={null}>
       <div className="pt-[85px] lg:pt-[125px] max-w-[408px] w-full mx-auto">
@@ -33,7 +48,9 @@ const WithdrawPage = () => {
           </label>
         </div>
 
-        <Button className="button-size-xl">탈퇴하기</Button>
+        <Button className="button-size-xl" onClick={handleWithdrawConfirm}>
+          탈퇴하기
+        </Button>
       </div>
     </Layout>
   );
