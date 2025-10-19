@@ -4,7 +4,7 @@ import { AriaAttributes, ForwardedRef, forwardRef } from "react";
 import { TextareaProps } from "./types";
 
 export const TextareaVariants = cva(
-  "w-full px-[22px] py-[18px] rounded-[12px] border border-border-color resize-none outline-none transition-all duration-200 placeholder:text-middle-gray hover:border-gray-400 focus:border-primary disabled:hover:border-border-color read-only:hover:border-border-color"
+  "w-full px-[22px] py-[18px] rounded-[12px] border border-border-color resize-none outline-none transition-all duration-200 placeholder:text-middle-gray hover:border-gray-400 focus:border-primary disabled:hover:border-border-color read-only:hover:border-border-color read-only:focus:border-border-color read-only:bg-light-gray read-only:text-deep-gray placeholder:text-middle-gray"
 );
 
 function Textarea(

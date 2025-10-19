@@ -4,7 +4,7 @@ import { AriaAttributes, ForwardedRef, forwardRef } from "react";
 import { InputProps } from "./types";
 
 export const InputVariants = cva(
-  "w-full px-[22px] rounded-[8px] border-1 medium-body placeholder:text-middle-gray text-black transition-colors duration-200 focus:outline-none disabled:border-none disabled:bg-light-gray disabled:text-deep-gray disabled:cursor-not-allowed read-only:bg-light-gray read-only:cursor-default read-only:text-deep-gray &[[read-only]:focus]:border-primary border-border-color hover:border-gray-400 focus:border-primary data-[error=true]:border-cancel &[data-[error=true]:hover]:border-cancel &[data-[error=true]:focus]:border-primary",
+  "w-full px-[22px] rounded-[8px] border-1 medium-body placeholder:text-middle-gray text-black transition-colors duration-200 focus:outline-none disabled:border-none disabled:bg-light-gray disabled:text-deep-gray disabled:cursor-not-allowed read-only:bg-light-gray read-only:cursor-default read-only:text-deep-gray read-only:focus:border-border-color read-only:hover:border-border-color border-border-color hover:border-gray-400 focus:border-primary data-[error=true]:border-cancel &[data-[error=true]:hover]:border-cancel &[data-[error=true]:focus]:border-primary",
   {
     variants: {},
   }
