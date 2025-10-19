@@ -1,4 +1,5 @@
 import TestModal from "@/components/TestModal";
+import { ModalContainer } from "@repo/ui/modal";
 import type { AppProps } from "next/app";
 import localFont from "next/font/local";
 import { useState } from "react";
@@ -37,6 +38,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         isOpen={isTestModalOpen}
         onClose={() => setIsTestModalOpen(false)}
       />
+      {/* 왼쪽 하단 테스트 모달 버튼 */}
+
+      <ModalContainer />
     </div>
   );
 }
