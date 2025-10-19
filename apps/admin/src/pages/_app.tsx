@@ -1,3 +1,4 @@
+import { ModalContainer } from "@repo/ui/modal";
 import type { AppProps } from "next/app";
 import localFont from "next/font/local";
 import "../styles/globals.css";
@@ -19,6 +20,8 @@ export default function AdminApp({ Component, pageProps }: AppProps) {
   return (
     <div className={pretendard.variable}>
       <Component {...pageProps} />
+
+      <ModalContainer />
     </div>
   );
 }

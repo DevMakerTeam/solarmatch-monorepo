@@ -12,9 +12,11 @@
     "./icon": "./src/Icon/index.tsx",
     "./checkbox": "./src/Checkbox/index.tsx",
     "./input": "./src/Input/index.tsx",
-    "./textarea": "./src/Textarea/index.tsx"
+    "./textarea": "./src/Textarea/index.tsx",
+    "./modal": "./src/Modal/index.tsx"
   },
   "dependencies": {
+    "@repo/hooks": "workspace:*",
     "@repo/utils": "workspace:*"
   },
   "peerDependencies": {
