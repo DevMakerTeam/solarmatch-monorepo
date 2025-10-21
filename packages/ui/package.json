@@ -13,7 +13,8 @@
     "./checkbox": "./src/Checkbox/index.tsx",
     "./input": "./src/Input/index.tsx",
     "./textarea": "./src/Textarea/index.tsx",
-    "./modal": "./src/Modal/index.tsx"
+    "./modal": "./src/Modal/index.tsx",
+    "./pagination": "./src/Pagination/index.tsx"
   },
   "dependencies": {
     "@repo/hooks": "workspace:*",
