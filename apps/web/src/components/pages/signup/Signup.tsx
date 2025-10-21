@@ -11,7 +11,7 @@ const SignupPage = () => {
   return (
     <Layout footer={null}>
       <form>
-        <div className="w-full flex flex-col lg:flex-row lg:justify-between pt-[50px] lg:pt=[170px] pb-[55px] lg:pb-[210px]">
+        <div className="w-full flex flex-col lg:flex-row lg:justify-between layout-padding-y">
           <div className="bold-heading4 lg:bold-heading3 text-center lg:text-left lg:max-w-[140px] mb-[65px] lg:mb-0">
             이메일 회원가입
           </div>

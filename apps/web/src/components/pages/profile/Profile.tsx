@@ -30,7 +30,7 @@ const ProfilePage = () => {
 
   return (
     <Layout footer={null}>
-      <div className="flex flex-col lg:flex-row lg:justify-between pt-[85px] lg:pt=[172px] pb-[100px]">
+      <div className="flex flex-col lg:flex-row lg:justify-between layout-padding-y">
         <span className="bold-heading4 lg:bold-heading3 mb-[65px] lg:mb-0">
           회원정보
         </span>

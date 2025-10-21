@@ -11,7 +11,7 @@ import { SOLAR_INSTALLATION_TYPES } from "./constants";
 const CompareQuotesPage = () => {
   return (
     <Layout footer={null}>
-      <div className="w-full flex flex-col lg:flex-row lg:justify-between pt-[50px] lg:pt-[170px] pb-[70px] lg:pb-[80px]">
+      <div className="w-full flex flex-col lg:flex-row lg:justify-between layout-padding-y">
         <div className="flex flex-col text-center lg:text-left bold-heading4 lg:bold-heading3 mb-[65px] lg:mb-0">
           <p>솔라매치</p>
           <p>맞춤 견적받기</p>

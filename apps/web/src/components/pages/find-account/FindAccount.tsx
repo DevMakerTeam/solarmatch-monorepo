@@ -34,7 +34,7 @@ const FindAccountPage = () => {
 
   return (
     <Layout footer={null}>
-      <div className="flex flex-col pt-[85px] lg:pt-[148px] text-center max-w-[408px] w-full mx-auto">
+      <div className="flex flex-col layout-padding-y text-center max-w-[408px] w-full mx-auto">
         <h1 className="bold-heading4 lg:bold-heading3 mb-[13px] lg:mb-[26px]">
           계정 찾기
         </h1>
