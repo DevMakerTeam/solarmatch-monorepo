@@ -41,7 +41,7 @@ const ApplyPartnerPage = () => {
   return (
     <Layout footer={null}>
       <form onSubmit={handleSubmit}>
-        <div className="w-full flex flex-col lg:flex-row lg:justify-between mt-[60px] lg:mt-[120px] pb-[130px] lg:pb-[150px]">
+        <div className="w-full flex flex-col lg:flex-row lg:justify-between layout-padding-y">
           <div className="lg:hidden bold-heading4 text-center mb-[74px]">
             파트너 지원하기
           </div>

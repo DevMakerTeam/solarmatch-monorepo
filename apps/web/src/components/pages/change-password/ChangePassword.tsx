@@ -19,7 +19,7 @@ const ChangePasswordPage = () => {
   return (
     <Layout footer={null}>
       <form>
-        <div className="pt-[85px] lg:pt-[148px] max-w-[408px] w-full mx-auto">
+        <div className="layout-padding-y max-w-[408px] w-full mx-auto">
           <h1 className="bold-heading4 lg:bold-heading3 text-center mb-[26px] lg:mb-[13px]">
             비밀번호 변경하기
           </h1>

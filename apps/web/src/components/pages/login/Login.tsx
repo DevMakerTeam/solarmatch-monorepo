@@ -9,7 +9,7 @@ import Link from "next/link";
 const LoginPage = () => {
   return (
     <Layout footer={null}>
-      <div className="lg:mt-[148px] mt-[60px]">
+      <div className="layout-padding-y">
         <h1 className="bold-heading4 lg:bold-heading3 text-center mb-[55px]">
           로그인
         </h1>
