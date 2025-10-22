@@ -14,7 +14,8 @@
     "./input": "./src/Input/index.tsx",
     "./textarea": "./src/Textarea/index.tsx",
     "./modal": "./src/Modal/index.tsx",
-    "./pagination": "./src/Pagination/index.tsx"
+    "./pagination": "./src/Pagination/index.tsx",
+    "./accordion": "./src/Accordion/index.tsx"
   },
   "dependencies": {
     "@repo/hooks": "workspace:*",
