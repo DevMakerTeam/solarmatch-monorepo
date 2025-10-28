@@ -1,12 +1,12 @@
 // 솔라매치 맞춤 견적받기 페이지
 
 import RootLayout from "@/components/Layout/root";
+import { SOLAR_INSTALLATION_TYPES } from "@/constants";
 import { Button } from "@repo/ui/button";
 import { FormField } from "@repo/ui/form-field";
 import { Input } from "@repo/ui/input";
 import { Select } from "@repo/ui/select";
 import { Textarea } from "@repo/ui/textarea";
-import { SOLAR_INSTALLATION_TYPES } from "./constants";
 
 const CompareQuotesPage = () => {
   return (
