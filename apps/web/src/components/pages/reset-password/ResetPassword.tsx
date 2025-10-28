@@ -1,7 +1,7 @@
 // 비밀번호 초기화 페이지
 // 이메일 인증 후 새 비밀번호를 설정하는 페이지 (비밀번호 찾기 플로우)
 
-import Layout from "@/components/Layout";
+import RootLayout from "@/components/Layout/root";
 import { Button } from "@repo/ui/button";
 import { FormField } from "@repo/ui/form-field";
 import { Icon } from "@repo/ui/icon";
@@ -9,7 +9,7 @@ import { Input } from "@repo/ui/input";
 
 const ResetPasswordPage = () => {
   return (
-    <Layout footer={null}>
+    <RootLayout footer={null}>
       <form>
         <div className="layout-padding-y max-w-[408px] w-full mx-auto">
           <h1 className="bold-heading4 lg:bold-heading3 text-center mb-[26px] lg:mb-[13px]">
@@ -51,7 +51,7 @@ const ResetPasswordPage = () => {
           <Button className="button-size-xl">비밀번호 변경하기</Button>
         </div>
       </form>
-    </Layout>
+    </RootLayout>
   );
 };
 

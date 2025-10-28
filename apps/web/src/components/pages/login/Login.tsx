@@ -1,6 +1,6 @@
 // 로그인 페이지
 
-import Layout from "@/components/Layout";
+import RootLayout from "@/components/Layout/root";
 import { Button } from "@repo/ui/button";
 import { Icon } from "@repo/ui/icon";
 import { Input } from "@repo/ui/input";
@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const LoginPage = () => {
   return (
-    <Layout footer={null}>
+    <RootLayout footer={null}>
       <div className="layout-padding-y">
         <h1 className="bold-heading4 lg:bold-heading3 text-center mb-[55px]">
           로그인
@@ -55,7 +55,7 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </RootLayout>
   );
 };
 

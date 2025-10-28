@@ -1,4 +1,4 @@
-import Layout from "@/components/Layout";
+import RootLayout from "@/components/Layout/root";
 
 import { Button } from "@repo/ui/button";
 import CheckPoint1 from "./CheckPoint1";
@@ -16,7 +16,7 @@ import Link from "next/link";
 
 export default function MainPage() {
   return (
-    <Layout isPx={false}>
+    <RootLayout isPx={false}>
       <div className="flex justify-between gap-[30px] pb-[72px] md:pb-[52px] xl:pb-[82px]">
         {/* left side */}
         <div className="w-full pt-[50px] md:pt-[80px] flex flex-col items-center">
@@ -49,6 +49,6 @@ export default function MainPage() {
 
         <StickyAsideForm />
       </div>
-    </Layout>
+    </RootLayout>
   );
 }

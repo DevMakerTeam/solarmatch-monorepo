@@ -1,6 +1,6 @@
 // 파트너 지원하기 페이지
 
-import Layout from "@/components/Layout";
+import RootLayout from "@/components/Layout/root";
 import { Button } from "@repo/ui/button";
 import { Checkbox } from "@repo/ui/checkbox";
 import { FormField } from "@repo/ui/form-field";
@@ -39,7 +39,7 @@ const ApplyPartnerPage = () => {
   } = useApplyPartnerForm();
 
   return (
-    <Layout footer={null}>
+    <RootLayout footer={null}>
       <form onSubmit={handleSubmit}>
         <div className="w-full flex flex-col lg:flex-row lg:justify-between layout-padding-y">
           <div className="lg:hidden bold-heading4 text-center mb-[74px]">
@@ -150,7 +150,7 @@ const ApplyPartnerPage = () => {
           </div>
         </div>
       </form>
-    </Layout>
+    </RootLayout>
   );
 };
 

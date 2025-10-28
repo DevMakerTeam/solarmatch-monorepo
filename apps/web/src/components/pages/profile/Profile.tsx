@@ -1,6 +1,6 @@
 // 회원정보 페이지
 
-import Layout from "@/components/Layout";
+import RootLayout from "@/components/Layout/root";
 import { useTestLoginStore } from "@/stores/testLoginStore";
 import { useModals } from "@repo/hooks";
 import { Button } from "@repo/ui/button";
@@ -29,7 +29,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <Layout footer={null}>
+    <RootLayout footer={null}>
       <div className="flex flex-col lg:flex-row lg:justify-between layout-padding-y">
         <span className="bold-heading4 lg:bold-heading3 mb-[65px] lg:mb-0">
           회원정보
@@ -91,7 +91,7 @@ const ProfilePage = () => {
           {userType === "partner" && <PartnerInfo />}
         </div>
       </div>
-    </Layout>
+    </RootLayout>
   );
 };
 
