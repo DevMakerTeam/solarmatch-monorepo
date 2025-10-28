@@ -4,7 +4,7 @@ import { AriaAttributes, ForwardedRef, forwardRef } from "react";
 import { ButtonProps } from "./types";
 
 export const ButtonVariants = cva(
-  `w-full flex gap-[12px] items-center justify-center bold-body rounded-[8px] cursor-pointer disabled:cursor-not-allowed focus:outline-none focus:ring-0 px-[20px]`,
+  `w-full flex gap-[12px] items-center justify-center bold-body rounded-[8px] cursor-pointer disabled:cursor-not-allowed focus:outline-none focus:ring-0 px-[20px] whitespace-nowrap`,
   {
     variants: {
       variant: {
