@@ -4,7 +4,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = Object.values(ORDER_TYPES).map(type => ({
-    params: { types: type },
+    params: { type },
   }));
 
   return {
@@ -15,10 +15,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 // 빌드 시 한 번만 실행
 export const getStaticProps: GetStaticProps = async context => {
-  const { types } = context.params as { types: string };
+  const { type } = context.params as { type: string };
 
   return {
-    props: { type: types },
+    props: { type: type },
   };
 };
 
