@@ -52,6 +52,7 @@ const Pagination = ({
           {pageNumbers.map(page => (
             <div
               onClick={() => handlePageChange(page)}
+              key={`pagination-page-${page}`}
               className={cn(
                 "w-[30px] h-[30px] rounded-full flex items-center justify-center regular-body cursor-pointer",
                 page === currentPage && "bg-primary text-white"
