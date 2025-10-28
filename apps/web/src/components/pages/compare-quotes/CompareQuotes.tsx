@@ -1,6 +1,6 @@
 // 솔라매치 맞춤 견적받기 페이지
 
-import Layout from "@/components/Layout";
+import RootLayout from "@/components/Layout/root";
 import { Button } from "@repo/ui/button";
 import { FormField } from "@repo/ui/form-field";
 import { Input } from "@repo/ui/input";
@@ -10,7 +10,7 @@ import { SOLAR_INSTALLATION_TYPES } from "./constants";
 
 const CompareQuotesPage = () => {
   return (
-    <Layout footer={null}>
+    <RootLayout footer={null}>
       <div className="w-full flex flex-col lg:flex-row lg:justify-between layout-padding-y">
         <div className="flex flex-col text-center lg:text-left bold-heading4 lg:bold-heading3 mb-[65px] lg:mb-0">
           <p>솔라매치</p>
@@ -135,7 +135,7 @@ const CompareQuotesPage = () => {
           </Button>
         </form>
       </div>
-    </Layout>
+    </RootLayout>
   );
 };
 

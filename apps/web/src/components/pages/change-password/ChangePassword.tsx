@@ -1,6 +1,6 @@
 // 비밀번호 변경하기 페이지
 
-import Layout from "@/components/Layout";
+import RootLayout from "@/components/Layout/root";
 import { useModals } from "@repo/hooks";
 import { Button } from "@repo/ui/button";
 import { FormField } from "@repo/ui/form-field";
@@ -17,7 +17,7 @@ const ChangePasswordPage = () => {
   };
 
   return (
-    <Layout footer={null}>
+    <RootLayout footer={null}>
       <form>
         <div className="layout-padding-y max-w-[408px] w-full mx-auto">
           <h1 className="bold-heading4 lg:bold-heading3 text-center mb-[26px] lg:mb-[13px]">
@@ -46,7 +46,7 @@ const ChangePasswordPage = () => {
           </Button>
         </div>
       </form>
-    </Layout>
+    </RootLayout>
   );
 };
 

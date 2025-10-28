@@ -1,6 +1,6 @@
 // 고객센터 페이지
 
-import Layout from "@/components/Layout";
+import RootLayout from "@/components/Layout/root";
 import { useAccordion } from "@repo/hooks";
 import { Accordion } from "@repo/ui/accordion";
 import { Icon } from "@repo/ui/icon";
@@ -12,7 +12,7 @@ const SupportPage = () => {
   const faqAccordion = useAccordion<number>(1);
 
   return (
-    <Layout footer={null}>
+    <RootLayout footer={null}>
       <div className="layout-padding-y flex flex-col lg:flex-row gap-[35px] lg:gap-[130px]">
         <h1 className="bold-heading4 lg:bold-heading3 text-center lg:text-left text-nowrap">
           고객센터
@@ -88,7 +88,7 @@ const SupportPage = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </RootLayout>
   );
 };
 

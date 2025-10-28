@@ -1,6 +1,6 @@
 // 회원가입 페이지
 
-import Layout from "@/components/Layout";
+import RootLayout from "@/components/Layout/root";
 import { Button } from "@repo/ui/button";
 import { Checkbox } from "@repo/ui/checkbox";
 import { FormField } from "@repo/ui/form-field";
@@ -9,7 +9,7 @@ import { Input } from "@repo/ui/input";
 
 const SignupPage = () => {
   return (
-    <Layout footer={null}>
+    <RootLayout footer={null}>
       <form>
         <div className="w-full flex flex-col lg:flex-row lg:justify-between layout-padding-y">
           <div className="bold-heading4 lg:bold-heading3 text-center lg:text-left lg:max-w-[140px] mb-[65px] lg:mb-0">
@@ -157,7 +157,7 @@ const SignupPage = () => {
           </div>
         </div>
       </form>
-    </Layout>
+    </RootLayout>
   );
 };
 

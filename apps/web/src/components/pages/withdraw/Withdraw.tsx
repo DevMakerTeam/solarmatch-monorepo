@@ -1,5 +1,5 @@
 // 회원탈퇴 페이지
-import Layout from "@/components/Layout";
+import RootLayout from "@/components/Layout/root";
 import { useModals } from "@repo/hooks";
 import { Button } from "@repo/ui/button";
 import { Checkbox } from "@repo/ui/checkbox";
@@ -20,7 +20,7 @@ const WithdrawPage = () => {
   };
 
   return (
-    <Layout footer={null}>
+    <RootLayout footer={null}>
       <div className="layout-padding-y max-w-[408px] w-full mx-auto">
         <p className="whitespace-pre-line text-center lg:text-left bold-heading4 lg:bold-heading3 mb-[45px]">
           {"잠깐만요!\n탈퇴 전 꼭 확인해 주세요."}
@@ -52,7 +52,7 @@ const WithdrawPage = () => {
           탈퇴하기
         </Button>
       </div>
-    </Layout>
+    </RootLayout>
   );
 };
 
