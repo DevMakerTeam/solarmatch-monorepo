@@ -29,7 +29,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <RootLayout footer={null}>
+    <RootLayout>
       <div className="flex flex-col lg:flex-row lg:justify-between layout-padding-y">
         <span className="bold-heading4 lg:bold-heading3 mb-[65px] lg:mb-0">
           회원정보

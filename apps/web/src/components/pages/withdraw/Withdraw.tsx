@@ -20,7 +20,7 @@ const WithdrawPage = () => {
   };
 
   return (
-    <RootLayout footer={null}>
+    <RootLayout>
       <div className="layout-padding-y max-w-[408px] w-full mx-auto">
         <p className="whitespace-pre-line text-center lg:text-left bold-heading4 lg:bold-heading3 mb-[45px]">
           {"잠깐만요!\n탈퇴 전 꼭 확인해 주세요."}

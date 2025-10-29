@@ -33,7 +33,7 @@ const FindAccountPage = () => {
   }, [isSuccess]);
 
   return (
-    <RootLayout footer={null}>
+    <RootLayout>
       <div className="flex flex-col layout-padding-y text-center max-w-[408px] w-full mx-auto">
         <h1 className="bold-heading4 lg:bold-heading3 mb-[13px] lg:mb-[26px]">
           계정 찾기

@@ -1,4 +1,4 @@
-import MainLayout from "@/components/Layout/root";
+import RootLayout from "@/components/Layout/root";
 import { OrderType } from "@/constants";
 import { PropsWithChildren } from "react";
 import OrdersNav from "./components/OrdersNav";
@@ -12,7 +12,7 @@ const OrdersLayout = ({
   sideType,
 }: PropsWithChildren<OrdersLayoutProps>) => {
   return (
-    <MainLayout footer={null}>
+    <RootLayout>
       <div className="layout-padding-y flex flex-col lg:flex-row gap-[40px] lg:gap-[120px]">
         <div className="flex flex-col gap-[45px]">
           <span className="bold-heading4 lg:bold-heading3 text-center lg:text-left whitespace-nowrap">
@@ -24,7 +24,7 @@ const OrdersLayout = ({
 
         {children}
       </div>
-    </MainLayout>
+    </RootLayout>
   );
 };
 

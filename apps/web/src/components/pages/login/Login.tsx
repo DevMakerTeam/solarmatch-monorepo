@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const LoginPage = () => {
   return (
-    <RootLayout footer={null}>
+    <RootLayout>
       <div className="layout-padding-y">
         <h1 className="bold-heading4 lg:bold-heading3 text-center mb-[55px]">
           로그인

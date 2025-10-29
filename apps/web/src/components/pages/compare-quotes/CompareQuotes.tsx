@@ -10,7 +10,7 @@ import { Textarea } from "@repo/ui/textarea";
 
 const CompareQuotesPage = () => {
   return (
-    <RootLayout footer={null}>
+    <RootLayout>
       <div className="w-full flex flex-col lg:flex-row lg:justify-between layout-padding-y">
         <div className="flex flex-col text-center lg:text-left bold-heading4 lg:bold-heading3 mb-[65px] lg:mb-0">
           <p>솔라매치</p>
