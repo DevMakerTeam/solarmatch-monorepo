@@ -1,12 +1,7 @@
-import Footer from "@/components/Footer";
+import LayoutFooter from "@/components/Layout/root/components/LayoutFooter";
 import LayoutHeader from "@/components/Layout/root/components/LayoutHeader";
 import { cn } from "@repo/utils";
-import {
-  DetailedHTMLProps,
-  HTMLAttributes,
-  PropsWithChildren,
-  ReactNode,
-} from "react";
+import { DetailedHTMLProps, HTMLAttributes, PropsWithChildren } from "react";
 
 type OmitWrapper<T> = Omit<T, "children">;
 type HTMLProps<T extends HTMLElement> = OmitWrapper<
@@ -16,13 +11,11 @@ type HTMLProps<T extends HTMLElement> = OmitWrapper<
 interface RootLayoutProps {
   wrapperProps?: HTMLProps<HTMLDivElement>;
   mainProps?: HTMLProps<HTMLElement>;
-  footer?: ReactNode;
   isPx?: boolean;
 }
 
 export default function RootLayout({
   children,
-  footer = <Footer />,
   wrapperProps = {},
   mainProps = {},
   isPx = true,
@@ -46,7 +39,7 @@ export default function RootLayout({
       >
         {children}
       </main>
-      {footer}
+      <LayoutFooter />
     </div>
   );
 }
