@@ -12,7 +12,7 @@ const SupportPage = () => {
   const faqAccordion = useAccordion<number>(1);
 
   return (
-    <RootLayout footer={null}>
+    <RootLayout>
       <div className="layout-padding-y flex flex-col lg:flex-row gap-[35px] lg:gap-[130px]">
         <h1 className="bold-heading4 lg:bold-heading3 text-center lg:text-left text-nowrap">
           고객센터

@@ -39,7 +39,7 @@ const ApplyPartnerPage = () => {
   } = useApplyPartnerForm();
 
   return (
-    <RootLayout footer={null}>
+    <RootLayout>
       <form onSubmit={handleSubmit}>
         <div className="w-full flex flex-col lg:flex-row lg:justify-between layout-padding-y">
           <div className="lg:hidden bold-heading4 text-center mb-[74px]">

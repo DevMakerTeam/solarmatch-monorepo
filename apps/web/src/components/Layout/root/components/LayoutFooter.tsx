@@ -9,7 +9,7 @@ const COMPANY_CONTACT = {
   BUSINESS_REGISTRATION_NUMBER: "123-45-67890",
 };
 
-export default function Footer() {
+export default function LayoutFooter() {
   return (
     <div className={cn("w-full bg-light-gray")}>
       {/* mobile */}

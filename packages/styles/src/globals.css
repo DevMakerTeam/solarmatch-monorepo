@@ -173,8 +173,8 @@ body {
   padding-bottom: 145px;
 
   @media (min-width: 1024px) {
-    padding-top: 170px;
-    padding-bottom: 150px;
+    padding-top: 130px;
+    padding-bottom: 100px;
   }
 }
 

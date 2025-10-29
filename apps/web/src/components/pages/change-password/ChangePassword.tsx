@@ -17,7 +17,7 @@ const ChangePasswordPage = () => {
   };
 
   return (
-    <RootLayout footer={null}>
+    <RootLayout>
       <form>
         <div className="layout-padding-y max-w-[408px] w-full mx-auto">
           <h1 className="bold-heading4 lg:bold-heading3 text-center mb-[26px] lg:mb-[13px]">

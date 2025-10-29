@@ -9,7 +9,7 @@ import { Input } from "@repo/ui/input";
 
 const SignupPage = () => {
   return (
-    <RootLayout footer={null}>
+    <RootLayout>
       <form>
         <div className="w-full flex flex-col lg:flex-row lg:justify-between layout-padding-y">
           <div className="bold-heading4 lg:bold-heading3 text-center lg:text-left lg:max-w-[140px] mb-[65px] lg:mb-0">
