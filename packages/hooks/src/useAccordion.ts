@@ -27,4 +27,3 @@ export const useAccordion = <T extends string | number>(
     isOpen,
   };
 };
-
