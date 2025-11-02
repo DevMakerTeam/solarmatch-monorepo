@@ -5,11 +5,13 @@ import OrdersNav from "./components/OrdersNav";
 
 interface OrdersLayoutProps {
   sideType: OrderType;
+  installType: string;
 }
 
 const OrdersLayout = ({
   children,
   sideType,
+  installType,
 }: PropsWithChildren<OrdersLayoutProps>) => {
   return (
     <RootLayout>
@@ -19,7 +21,7 @@ const OrdersLayout = ({
             신청내역
           </span>
 
-          <OrdersNav sideType={sideType} />
+          <OrdersNav sideType={sideType} installType={installType} />
         </div>
 
         {children}

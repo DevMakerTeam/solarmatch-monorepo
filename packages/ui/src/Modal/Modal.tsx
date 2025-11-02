@@ -9,13 +9,14 @@ const Modal = ({
   onClose,
   modalContainerClassName,
   modalContentClassName,
+  isCloseButtonVisible = true,
 }: ModalProps) => {
   useHiddenScrollbar();
 
   return (
     <>
       {/* 오버레이 */}
-      <div className="fixed inset-0 bg-black/50 z-60" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/60 z-60" onClick={onClose} />
 
       {/* 모달 컨텐츠 */}
       <div
@@ -25,13 +26,15 @@ const Modal = ({
         )}
       >
         {/* X 버튼 */}
-        <Button
-          variant="ghost"
-          onClick={onClose}
-          className="absolute top-[20px] right-[20px] w-[22px] h-[22px] flex items-center justify-center text-black"
-        >
-          <Icon iconName="x" className="w-[22px] h-[22px]" />
-        </Button>
+        {isCloseButtonVisible && (
+          <Button
+            variant="ghost"
+            onClick={onClose}
+            className="absolute top-[20px] right-[20px] w-[22px] h-[22px] flex items-center justify-center text-black"
+          >
+            <Icon iconName="x" className="w-[22px] h-[22px]" />
+          </Button>
+        )}
 
         {/* 컨텐츠 */}
         <div

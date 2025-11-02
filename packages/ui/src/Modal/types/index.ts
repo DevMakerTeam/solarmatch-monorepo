@@ -5,6 +5,7 @@ export interface ModalProps {
   onClose: () => void;
   modalContainerClassName?: string;
   modalContentClassName?: string;
+  isCloseButtonVisible?: boolean;
 }
 
 export interface ConfirmModalProps extends Omit<ModalProps, "children"> {
