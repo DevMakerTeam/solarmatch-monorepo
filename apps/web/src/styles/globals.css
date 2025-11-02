@@ -34,4 +34,27 @@
     z-index: 0;
     animation: highlight 1s ease-in-out forwards;
   }
+
+  /* 얇은 스크롤바 스타일 */
+  .thin-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #cccccc transparent;
+  }
+
+  .thin-scrollbar::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  .thin-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .thin-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #cccccc;
+    border-radius: 4px;
+  }
+
+  .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #999999;
+  }
 }

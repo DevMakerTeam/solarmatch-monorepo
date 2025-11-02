@@ -4,17 +4,21 @@ import Link from "next/link";
 
 interface OrdersNavProps {
   sideType: OrderType;
+  installType: string;
 }
 
-const OrdersNav = ({ sideType }: OrdersNavProps) => {
+const OrdersNav = ({ sideType, installType }: OrdersNavProps) => {
   return (
     <nav className="hidden lg:flex flex-col gap-[20px]">
-      {Object.entries(ORDER_TYPE_LABELS).map(([link, label]) => (
-        <Link key={`orders-nav-${link}`} href={`/orders/${link}`}>
+      {Object.entries(ORDER_TYPE_LABELS).map(([type, label]) => (
+        <Link
+          key={`orders-nav-${type}`}
+          href={`/orders/${type}${installType ? `?install=${installType}` : ""}`}
+        >
           <span
             className={cn(
               "bold-heading6",
-              sideType === link ? "text-primary" : "text-middle-gray"
+              sideType === type ? "text-primary" : "text-middle-gray"
             )}
           >
             {label}
