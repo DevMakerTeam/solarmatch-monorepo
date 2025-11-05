@@ -1,5 +1,6 @@
 import OrdersLayout from "@/components/Layout/orders";
 import {
+  ORDER_TYPES,
   ORDER_TYPE_LABELS,
   OrderType,
   SOLAR_INSTALLATION_TYPES,
@@ -8,6 +9,7 @@ import { Button } from "@repo/ui/button";
 import { Pagination } from "@repo/ui/pagination";
 import { BasicOption, Select } from "@repo/ui/select";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import OrdersItem from "./components/OrdersItem";
 import { usePageUrl } from "@repo/hooks";
 
@@ -39,8 +41,16 @@ const OrdersPage = ({
   const router = useRouter();
   const { currentPage, handlePageChange } = usePageUrl();
 
+  // 다른 type 페이지들을 미리 prefetch하여 이동 속도 개선
+  useEffect(() => {
+    const otherTypes = Object.values(ORDER_TYPES).filter(t => t !== type);
+    otherTypes.forEach(otherType => {
+      router.prefetch(`/orders/${otherType}?install=${install}`);
+    });
+  }, [type, install, router]);
+
   const onChangeMobileType = (value: string) => {
-    router.push(`/orders/${value}`);
+    router.push(`/orders/${value}?install=${install}`);
   };
 
   const handleChangeInstallationType = (value: string) => {
@@ -88,13 +98,7 @@ const OrdersPage = ({
           <div className="flex flex-col gap-[16px]">
             {/* Item */}
             {Array.from({ length: 8 }).map((_, index) => (
-              <OrdersItem
-                key={`order-item-${index}`}
-                id={index}
-                type={type}
-                currentPage={currentPage}
-                install={install}
-              />
+              <OrdersItem key={`order-item-${index}`} id={index} type={type} />
             ))}
           </div>
 

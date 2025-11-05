@@ -3,16 +3,12 @@ import Link from "next/link";
 
 interface OrdersItemProps {
   type: OrderType;
-  install: string;
-  currentPage: number;
   id: number;
 }
 
-const OrdersItem = ({ type, id, currentPage, install }: OrdersItemProps) => {
+const OrdersItem = ({ type, id }: OrdersItemProps) => {
   return (
-    <Link
-      href={`/orders/${type}/${id}?install=${install}${currentPage !== 1 ? `&page=${currentPage}` : ""}`}
-    >
+    <Link href={`/orders/${type}/${id}`} prefetch={true}>
       <div className="w-full flex justify-between lg:items-center pb-[20px] lg:pb-[16px] border-b-1 border-border-color">
         <div className="flex lg:items-center gap-[10px] lg:gap-[16px]">
           <div className="flex flex-col lg:flex-row gap-[12px] lg:gap-[14px]">
