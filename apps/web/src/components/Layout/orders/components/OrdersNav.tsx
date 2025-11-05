@@ -14,6 +14,7 @@ const OrdersNav = ({ sideType, installType }: OrdersNavProps) => {
         <Link
           key={`orders-nav-${type}`}
           href={`/orders/${type}${installType ? `?install=${installType}` : ""}`}
+          prefetch={true}
         >
           <span
             className={cn(
