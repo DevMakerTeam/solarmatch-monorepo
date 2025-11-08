@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 interface OrdersNavProps {
   sideType: OrderType;
-  installType: string;
+  installType?: string;
 }
 
 const OrdersNav = ({ sideType, installType }: OrdersNavProps) => {
