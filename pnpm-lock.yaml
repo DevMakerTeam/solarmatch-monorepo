@@ -90,6 +90,9 @@ importers:
 
   apps/admin:
     dependencies:
+      '@repo/constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
       '@repo/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
@@ -130,6 +133,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@repo/constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
       '@repo/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
@@ -167,6 +173,8 @@ importers:
       typescript:
         specifier: ^5.6.2
         version: 5.9.2
+
+  packages/constants: {}
 
   packages/eslint-config:
     dependencies:

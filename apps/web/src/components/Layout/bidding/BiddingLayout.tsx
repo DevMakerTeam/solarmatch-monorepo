@@ -1,10 +1,10 @@
 import RootLayout from "@/components/Layout/root";
-import { OrderType } from "@/constants";
+import { SolarStructureType } from "@repo/constants";
 import { PropsWithChildren } from "react";
 import BiddingNav from "./components/BiddingNav";
 
 interface BiddingLayoutProps {
-  sideType: OrderType;
+  sideType: SolarStructureType;
   installType?: string;
 }
 

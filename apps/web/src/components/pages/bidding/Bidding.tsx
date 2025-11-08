@@ -1,10 +1,10 @@
 import OrdersLayout from "@/components/Layout/bidding";
+import { SOLAR_INSTALLATION_TYPES } from "@/constants";
 import {
-  ORDER_TYPES,
-  ORDER_TYPE_LABELS,
-  OrderType,
-  SOLAR_INSTALLATION_TYPES,
-} from "@/constants";
+  SOLAR_STRUCTURE_TYPE_LABELS,
+  SOLAR_STRUCTURE_TYPES,
+  SolarStructureType,
+} from "@repo/constants";
 import { Button } from "@repo/ui/button";
 import { Pagination } from "@repo/ui/pagination";
 import { BasicOption, Select } from "@repo/ui/select";
@@ -14,7 +14,7 @@ import BiddingItem from "./components/BiddingItem";
 import { usePageUrl } from "@repo/hooks";
 
 const MOBILE_TYPE_SELECT_OPTIONS: BasicOption[] = Object.entries(
-  ORDER_TYPE_LABELS
+  SOLAR_STRUCTURE_TYPE_LABELS
 ).map(([value, label]) => {
   return {
     label,
@@ -35,7 +35,7 @@ const BiddingPage = ({
   type,
   install,
 }: {
-  type: OrderType;
+  type: SolarStructureType;
   install: string;
 }) => {
   const router = useRouter();
@@ -43,7 +43,9 @@ const BiddingPage = ({
 
   // 다른 type 페이지들을 미리 prefetch하여 이동 속도 개선
   useEffect(() => {
-    const otherTypes = Object.values(ORDER_TYPES).filter(t => t !== type);
+    const otherTypes = Object.values(SOLAR_STRUCTURE_TYPES).filter(
+      t => t !== type
+    );
     otherTypes.forEach(otherType => {
       router.prefetch(`/bidding/${otherType}?install=${install}`);
     });

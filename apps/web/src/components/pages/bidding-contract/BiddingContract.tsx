@@ -1,5 +1,5 @@
 import OrdersLayout from "@/components/Layout/bidding";
-import { ORDER_TYPES, OrderType } from "@/constants";
+import { SolarStructureType, SOLAR_STRUCTURE_TYPES } from "@repo/constants";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import BiddingContractTop from "./components/BiddingContractTop";
@@ -8,7 +8,7 @@ import BiddingContractInstallList from "./components/BiddingContractInstallList"
 import { Pagination } from "@repo/ui/pagination";
 
 interface BiddingContractPageProps {
-  type: OrderType;
+  type: SolarStructureType;
   id: string;
 }
 
@@ -17,7 +17,9 @@ const BiddingContractPage = ({ type, id }: BiddingContractPageProps) => {
 
   // 다른 type 페이지들을 미리 prefetch하여 이동 속도 개선
   useEffect(() => {
-    const otherTypes = Object.values(ORDER_TYPES).filter(t => t !== type);
+    const otherTypes = Object.values(SOLAR_STRUCTURE_TYPES).filter(
+      t => t !== type
+    );
     otherTypes.forEach(otherType => {
       router.prefetch(`/bidding/${otherType}/${id}/contract`);
     });

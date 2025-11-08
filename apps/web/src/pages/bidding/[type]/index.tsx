@@ -1,5 +1,6 @@
 import BiddingPage from "@/components/pages/bidding";
-import { ORDER_TYPES, OrderType, SOLAR_INSTALLATION_TYPES } from "@/constants";
+import { SOLAR_INSTALLATION_TYPES } from "@/constants";
+import { SOLAR_STRUCTURE_TYPES, SolarStructureType } from "@repo/constants";
 import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async context => {
@@ -7,7 +8,9 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const { install } = context.query;
 
   // type 유효성 검사
-  const isValidType = Object.values(ORDER_TYPES).includes(type as OrderType);
+  const isValidType = Object.values(SOLAR_STRUCTURE_TYPES).includes(
+    type as SolarStructureType
+  );
   if (!isValidType) {
     return {
       notFound: true,
