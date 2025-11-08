@@ -93,16 +93,6 @@ export default function LayoutHeader() {
                 <div className="absolute top-full right-0 mt-[10px] w-[92px] bg-white rounded-[8px] shadow-lg border border-border-color overflow-hidden py-[13px] px-[16px]">
                   <Button
                     onClick={() => {
-                      router.push("/orders");
-                      setIsDropdownOpen(false);
-                    }}
-                    variant="ghost"
-                    className="w-full text-center bold-body text-middle-gray hover:text-black transition-colors"
-                  >
-                    신청내역
-                  </Button>
-                  <Button
-                    onClick={() => {
                       router.push("/profile");
                       setIsDropdownOpen(false);
                     }}

@@ -39,12 +39,6 @@ const DrawerItemData: Omit<HeaderDrawerItemProps, "onClose">[] = [
   },
   {
     userOnly: true,
-    icon: "checkList",
-    link: "/orders",
-    text: "신청내역",
-  },
-  {
-    userOnly: true,
     icon: "circlePerson",
     link: "/profile",
     text: "회원정보",
