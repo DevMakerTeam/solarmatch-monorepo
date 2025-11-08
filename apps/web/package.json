@@ -10,6 +10,7 @@
     "commit": "pnpm --filter @repo/scripts commit"
   },
   "dependencies": {
+    "@repo/constants": "workspace:*",
     "@repo/hooks": "workspace:*",
     "@repo/styles": "workspace:*",
     "@repo/ui": "workspace:*",

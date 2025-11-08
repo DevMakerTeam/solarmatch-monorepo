@@ -1,8 +1,8 @@
-import { OrderType } from "@/constants";
+import { SolarStructureType } from "@repo/constants";
 import Link from "next/link";
 
 interface BiddingItemProps {
-  type: OrderType;
+  type: SolarStructureType;
   id: number;
 }
 

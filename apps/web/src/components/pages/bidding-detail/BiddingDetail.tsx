@@ -1,6 +1,7 @@
 // 견적확인 상세 페이지
 import OrdersLayout from "@/components/Layout/bidding";
-import { ORDER_TYPES, OrderType } from "@/constants";
+
+import { SolarStructureType, SOLAR_STRUCTURE_TYPES } from "@repo/constants";
 import { useTestLoginStore } from "@/stores/testLoginStore";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -10,7 +11,7 @@ import BidList from "./components/BidList";
 import BidButton from "./components/BidButton";
 
 interface BiddingDetailPageProps {
-  type: OrderType;
+  type: SolarStructureType;
   id: string;
 }
 
@@ -20,7 +21,9 @@ const BiddingDetailPage = ({ type, id }: BiddingDetailPageProps) => {
 
   // 다른 type 페이지들을 미리 prefetch하여 이동 속도 개선
   useEffect(() => {
-    const otherTypes = Object.values(ORDER_TYPES).filter(t => t !== type);
+    const otherTypes = Object.values(SOLAR_STRUCTURE_TYPES).filter(
+      t => t !== type
+    );
     otherTypes.forEach(otherType => {
       router.prefetch(`/bidding/${otherType}/${id}`);
     });
