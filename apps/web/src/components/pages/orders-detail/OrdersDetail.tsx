@@ -27,7 +27,7 @@ const OrdersDetailPage = ({ type, id }: OrdersDetailPageProps) => {
   }, [type, id, router]);
 
   return (
-    <OrdersLayout sideType={type} installType="">
+    <OrdersLayout sideType={type}>
       <div className="w-full flex flex-col">
         <OrdersDetailTop />
         <OrdersDetailInformation />

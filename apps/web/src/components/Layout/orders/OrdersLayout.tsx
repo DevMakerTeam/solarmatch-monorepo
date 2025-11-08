@@ -5,7 +5,7 @@ import OrdersNav from "./components/OrdersNav";
 
 interface OrdersLayoutProps {
   sideType: OrderType;
-  installType: string;
+  installType?: string;
 }
 
 const OrdersLayout = ({
