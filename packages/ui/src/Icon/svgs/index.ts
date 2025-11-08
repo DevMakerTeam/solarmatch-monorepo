@@ -28,3 +28,5 @@ export { default as trash } from "./trash.svg";
 export { default as webLogo } from "./webLogo.svg";
 export { default as x } from "./x.svg";
 export { default as photoFile } from "./photoFile.svg";
+export { default as person } from "./person.svg";
+export { default as editNote } from "./editNote.svg";
