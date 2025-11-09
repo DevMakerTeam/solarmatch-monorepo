@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 import localFont from "next/font/local";
 import { useState } from "react";
 import "../styles/globals.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Pretendard Variable을 next/font/local로 선언하여 자동 preload 및 FOIT 방지
 const pretendard = localFont({
@@ -18,29 +19,33 @@ const pretendard = localFont({
   display: "swap",
 });
 
+const queryClient = new QueryClient();
+
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [isTestModalOpen, setIsTestModalOpen] = useState(false);
 
   return (
     <div className={pretendard.variable}>
-      <Component {...pageProps} />
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
 
-      {/* 왼쪽 하단 테스트 모달 버튼 */}
-      <button
-        onClick={() => setIsTestModalOpen(true)}
-        className="fixed bottom-6 left-6 z-[9998] bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-3 rounded-lg shadow-lg transition-all hover:scale-105"
-        aria-label="테스트 모달 열기"
-      >
-        🧪 테스트
-      </button>
+        {/* 왼쪽 하단 테스트 모달 버튼 */}
+        <button
+          onClick={() => setIsTestModalOpen(true)}
+          className="fixed bottom-6 left-6 z-[9998] bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-3 rounded-lg shadow-lg transition-all hover:scale-105"
+          aria-label="테스트 모달 열기"
+        >
+          🧪 테스트
+        </button>
 
-      <TestModal
-        isOpen={isTestModalOpen}
-        onClose={() => setIsTestModalOpen(false)}
-      />
-      {/* 왼쪽 하단 테스트 모달 버튼 */}
+        <TestModal
+          isOpen={isTestModalOpen}
+          onClose={() => setIsTestModalOpen(false)}
+        />
+        {/* 왼쪽 하단 테스트 모달 버튼 */}
 
-      <ModalContainer />
+        <ModalContainer />
+      </QueryClientProvider>
     </div>
   );
 }
