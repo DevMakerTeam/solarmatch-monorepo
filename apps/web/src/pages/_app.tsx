@@ -5,6 +5,7 @@ import localFont from "next/font/local";
 import { useState } from "react";
 import "../styles/globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // Pretendard Variable을 next/font/local로 선언하여 자동 preload 및 FOIT 방지
 const pretendard = localFont({
@@ -45,6 +46,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         {/* 왼쪽 하단 테스트 모달 버튼 */}
 
         <ModalContainer />
+
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </div>
   );
