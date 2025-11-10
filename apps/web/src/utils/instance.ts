@@ -24,8 +24,9 @@ instance.interceptors.response.use(
       }
 
       const { status } = res;
+
       const isUnAuthError = status === 401;
-      const isExpiredToken = status === 444;
+      const isExpiredToken = status === 400;
 
       if (isExpiredToken) {
         throw new Error("expired token: please set refresh token logic");
