@@ -2,13 +2,13 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { LogoutModel } from "@/api/auth/types/model/logout-model";
 import { clearAuthCookies } from "./utils/cookies";
 
-const BACKEND_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const handlePost = async (
   req: NextApiRequest,
   res: NextApiResponse<LogoutModel>
 ) => {
-  if (!BACKEND_API_BASE_URL) {
+  if (!API_BASE_URL) {
     clearAuthCookies(res);
     return res.status(500).json({
       success: false,
@@ -17,16 +17,17 @@ const handlePost = async (
     });
   }
 
+  const { accessToken } = req.cookies ?? {};
+  const cookieHeader = req.headers.cookie ?? "";
+
   try {
-    const backendResponse = await fetch(
-      `${BACKEND_API_BASE_URL}/api/auth/logout`,
-      {
-        method: "POST",
-        headers: {
-          Cookie: req.headers.cookie ?? "",
-        },
-      }
-    );
+    const backendResponse = await fetch(`${API_BASE_URL}/api/auth/logout`, {
+      method: "POST",
+      headers: {
+        Cookie: cookieHeader,
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+      },
+    });
 
     const responseBody = (await backendResponse.json()) as LogoutModel;
 

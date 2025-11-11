@@ -10,13 +10,13 @@ type LoginErrorResponse = ApiResponse<null | Record<string, unknown>> & {
 type LoginApiResponse = LoginSuccessResponse | LoginErrorResponse;
 
 const isProduction = process.env.NODE_ENV === "production";
-const BACKEND_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const handlePost = async (
   req: NextApiRequest,
   res: NextApiResponse<LoginApiResponse>
 ) => {
-  if (!BACKEND_API_BASE_URL) {
+  if (!API_BASE_URL) {
     return res.status(500).json({
       success: false,
       message: "API base URL is not configured.",
@@ -27,16 +27,13 @@ const handlePost = async (
   const { email, password } = req.body ?? {};
 
   try {
-    const backendResponse = await fetch(
-      `${BACKEND_API_BASE_URL}/api/auth/login`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      }
-    );
+    const backendResponse = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
     const responseBody = (await backendResponse.json()) as LoginApiResponse;
 

@@ -3,31 +3,41 @@ import { AUTH_API_QUERY_KEY } from "@/api/auth/AuthApi.query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import type { MeModel } from "@/api/auth/types/model/me-model";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const clearAuthState = useAuthStore(state => state.clearAuthState);
+  const { clearAuthState, setAuthState } = useAuth();
 
-  const { mutate: logoutMutation, isPending } = useLogoutMutation({
-    options: {
+  const { mutate, isPending } = useLogoutMutation();
+
+  const handleLogout = () => {
+    const previousMe = queryClient.getQueryData<MeModel | undefined>(
+      AUTH_API_QUERY_KEY.ME()
+    );
+
+    queryClient.cancelQueries({ queryKey: AUTH_API_QUERY_KEY.ME() });
+
+    mutate(undefined, {
       onSuccess: () => {
-        queryClient.invalidateQueries({
+        clearAuthState();
+        queryClient.removeQueries({
           queryKey: AUTH_API_QUERY_KEY.ME(),
+          exact: true,
         });
         router.replace("/");
       },
-    },
-  });
-
-  const handleLogout = () => {
-    queryClient.setQueryData<MeModel | undefined>(
-      AUTH_API_QUERY_KEY.ME(),
-      undefined
-    );
-    clearAuthState();
-    logoutMutation(undefined);
+      onError: () => {
+        if (previousMe?.success) {
+          setAuthState({
+            isLoggedIn: true,
+            user: previousMe.data,
+          });
+          queryClient.setQueryData(AUTH_API_QUERY_KEY.ME(), previousMe);
+        }
+      },
+    });
   };
 
   return {
