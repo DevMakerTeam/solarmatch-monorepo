@@ -1,10 +1,11 @@
+import { cn } from "@repo/utils";
 import { FormHelperProps } from "./types";
 
-const FormHelper = ({ message, children }: FormHelperProps) => {
+const FormHelper = ({ message, className, children }: FormHelperProps) => {
   const isShowErrorText = !!message?.error;
 
   return (
-    <div className="flex flex-col gap-[8px] w-full">
+    <div className={cn("flex flex-col gap-[8px] w-full", className)}>
       {children}
 
       {isShowErrorText && (
