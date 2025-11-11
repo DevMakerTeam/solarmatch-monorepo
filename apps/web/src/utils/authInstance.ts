@@ -1,5 +1,6 @@
 import axios, {
   AxiosError,
+  AxiosInstance,
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
@@ -9,9 +10,10 @@ interface RetriableRequestConfig extends InternalAxiosRequestConfig {
 }
 
 const isServer = typeof window === "undefined";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
-const instance = axios.create({
-  baseURL: isServer ? process.env.NEXT_PUBLIC_API_BASE_URL : "",
+const authInstance: AxiosInstance = axios.create({
+  baseURL: isServer ? API_BASE_URL : "",
   timeout: 5000,
   headers: {
     "Content-Type": "application/json",
@@ -65,7 +67,7 @@ const refreshAccessToken = async () => {
   }
 };
 
-instance.interceptors.response.use(
+authInstance.interceptors.response.use(
   response => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as RetriableRequestConfig | undefined;
@@ -93,7 +95,7 @@ instance.interceptors.response.use(
         }
         return new Promise<AxiosResponse>((resolve, reject) => {
           refreshQueue.push({ resolve, reject });
-        }).then(() => instance(originalRequest));
+        }).then(() => authInstance(originalRequest));
       }
 
       originalRequest._retry = true;
@@ -105,7 +107,7 @@ instance.interceptors.response.use(
         if (!isServer && process.env.NODE_ENV === "development") {
           console.log("[axios] retry original request after refresh");
         }
-        return instance(originalRequest);
+        return authInstance(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError);
         await fetch(LOGOUT_ENDPOINT, {
@@ -125,4 +127,4 @@ instance.interceptors.response.use(
   }
 );
 
-export default instance;
+export default authInstance;
