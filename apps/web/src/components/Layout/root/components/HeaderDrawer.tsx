@@ -6,6 +6,10 @@ import { Button } from "@repo/ui/button";
 import { Icon } from "@repo/ui/icon";
 import { cn, getCurrentBreakpoint } from "@repo/utils";
 import { useEffect } from "react";
+import { useLoginLink } from "../hooks/useLoginLink";
+import Link from "next/link";
+import { useAuthStatus } from "@/hooks/useAuthStatus";
+import { useLogout } from "@/hooks/useLogout";
 
 interface HeaderDrawerProps {
   isOpen: boolean;
@@ -50,9 +54,6 @@ const DrawerItemData: Omit<HeaderDrawerItemProps, "onClose">[] = [
   },
 ];
 
-// TODO: API 연동 시 제거
-const isLogin = true;
-
 // xl 브레이크포인트에서 drawer 자동 닫기 훅
 const useCloseOnDesktop = (isOpen: boolean, onClose: () => void) => {
   useEffect(() => {
@@ -76,6 +77,14 @@ const useCloseOnDesktop = (isOpen: boolean, onClose: () => void) => {
 export default function HeaderDrawer({ isOpen, onClose }: HeaderDrawerProps) {
   // xl 브레이크포인트에서 자동 닫기
   useCloseOnDesktop(isOpen, onClose);
+
+  const { loginLink, isReady } = useLoginLink();
+  const { isLoggedIn, isLoading } = useAuthStatus();
+  const { logout, isPending: isLogoutPending } = useLogout();
+
+  const visibleItems = DrawerItemData.filter(
+    item => !item.userOnly || isLoggedIn
+  );
 
   return (
     <Drawer
@@ -109,37 +118,52 @@ export default function HeaderDrawer({ isOpen, onClose }: HeaderDrawerProps) {
 
         {/* 스크롤 가능한 컨텐츠 영역 */}
         <div className="flex-1 overflow-y-auto px-[30px]">
-          {!isLogin && (
+          {!isLoading && !isLoggedIn && (
             <div className="w-full mt-[42px] flex flex-col gap-[20px] mb-[34px]">
               <p className="bold-heading5">로그인 후 이용해보세요.</p>
 
               <div className="flex items-center gap-[10px]">
-                <Button variant="outline" className="button-size-lg">
-                  회원가입
-                </Button>
+                <Link href="/signup" className="w-full">
+                  <Button variant="outline" className="button-size-lg w-full">
+                    회원가입
+                  </Button>
+                </Link>
 
-                <Button variant="solid" className="button-size-lg">
-                  로그인
-                </Button>
+                <Link href={isReady ? loginLink : "/login"} className="w-full">
+                  <Button variant="solid" className="button-size-lg w-full">
+                    로그인
+                  </Button>
+                </Link>
               </div>
             </div>
           )}
           <div
             className={cn(
               "border-b-1 border-border-color",
-              isLogin && "mt-[16px]"
+              isLoggedIn && !isLoading && "mt-[16px]"
             )}
           ></div>
 
           <div className="flex flex-col">
-            {DrawerItemData.filter(item => !item.userOnly || isLogin).map(
-              item => (
-                <HeaderDrawerItem key={item.text} onClose={onClose} {...item} />
-              )
-            )}
+            {visibleItems.map(item => (
+              <HeaderDrawerItem
+                key={item.text}
+                onClose={onClose}
+                {...item}
+                onAction={
+                  item.text === "로그아웃"
+                    ? () => {
+                        logout();
+                        onClose();
+                      }
+                    : undefined
+                }
+                disabled={isLogoutPending && item.text === "로그아웃"}
+              />
+            ))}
           </div>
 
-          {isLogin && (
+          {isLoggedIn && !isLoading && (
             <Button
               className="mt-[42px] mb-[30px] button-size-lg"
               onClick={onClose}

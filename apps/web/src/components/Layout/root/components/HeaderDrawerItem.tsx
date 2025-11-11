@@ -10,6 +10,8 @@ export interface HeaderDrawerItemProps {
   link?: string;
   text: string;
   onClose: () => void;
+  onAction?: () => void;
+  disabled?: boolean;
 }
 
 export default function HeaderDrawerItem({
@@ -18,6 +20,8 @@ export default function HeaderDrawerItem({
   link,
   text,
   onClose,
+  onAction,
+  disabled = false,
 }: HeaderDrawerItemProps) {
   const commonStyles =
     "flex items-center justify-start gap-[20px] p-[20px_13px] border-b-1 border-border-color w-full bold-heading6";
@@ -27,6 +31,7 @@ export default function HeaderDrawerItem({
   const isLogoutButton = !link && userOnly;
 
   const handleLogout = () => {
+    onAction?.();
     onClose();
   };
 
@@ -36,6 +41,7 @@ export default function HeaderDrawerItem({
         variant="ghost"
         className={cn(commonStyles, "w-full h-fit")}
         onClick={handleLogout}
+        disabled={disabled}
       >
         {iconComponent}
         {text}

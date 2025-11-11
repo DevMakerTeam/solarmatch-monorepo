@@ -19,7 +19,7 @@ export const signupFormSchema = yup.object().shape({
   email: yup
     .string()
     .required(HELPER_TEXT.REQUIRED_INPUT)
-    .email(HELPER_TEXT.EMAIL),
+    .matches(REGEX.EMAIL, HELPER_TEXT.EMAIL),
   emailVerifyCode: yup
     .string()
     .required(HELPER_TEXT.REQUIRED_INPUT)

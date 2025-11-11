@@ -5,8 +5,13 @@ import { Button } from "@repo/ui/button";
 import { Icon } from "@repo/ui/icon";
 import { Input } from "@repo/ui/input";
 import Link from "next/link";
+import { useLogin } from "./hooks/useLogin";
+import { Controller, FormProvider } from "react-hook-form";
+import { FormHelper } from "@repo/ui/form-helper";
 
 const LoginPage = () => {
+  const { formMethods, handleLoginSubmit } = useLogin();
+
   return (
     <RootLayout>
       <div className="layout-padding-y">
@@ -35,16 +40,52 @@ const LoginPage = () => {
 
           <hr className="h-[1px] w-full border-border-color my-[35px]"></hr>
 
-          <Input
-            className="input-size-lg mb-[10px]"
-            placeholder="아이디를 입력해주세요"
-          />
-          <Input
-            className="input-size-lg mb-[20px]"
-            placeholder="비밀번호를 입력해주세요"
-          />
+          <FormProvider {...formMethods}>
+            <form onSubmit={handleLoginSubmit} className="w-full">
+              <Controller
+                control={formMethods.control}
+                name="email"
+                render={({ field, formState: { errors } }) => (
+                  <FormHelper
+                    message={{ error: errors.email?.message }}
+                    className="mb-[10px]"
+                  >
+                    <Input
+                      className="input-size-lg"
+                      placeholder="아이디를 입력해주세요"
+                      {...field}
+                    />
+                  </FormHelper>
+                )}
+              />
 
-          <Button className="button-size-xl mb-[35px]">로그인</Button>
+              <Controller
+                control={formMethods.control}
+                name="password"
+                render={({ field, formState: { errors } }) => (
+                  <FormHelper
+                    message={{ error: errors.password?.message }}
+                    className="mb-[20px]"
+                  >
+                    <Input
+                      className="input-size-lg"
+                      type="password"
+                      placeholder="비밀번호를 입력해주세요"
+                      {...field}
+                    />
+                  </FormHelper>
+                )}
+              />
+
+              <Button
+                className="button-size-xl mb-[35px]"
+                type="submit"
+                disabled={!formMethods.formState.isValid}
+              >
+                로그인
+              </Button>
+            </form>
+          </FormProvider>
 
           <div className="mx-auto flex items-center">
             <Link href="find-account">계정 찾기</Link>

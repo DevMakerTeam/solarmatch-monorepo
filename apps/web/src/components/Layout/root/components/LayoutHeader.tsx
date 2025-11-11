@@ -1,19 +1,22 @@
 import HeaderDrawer from "@/components/Layout/root/components/HeaderDrawer";
-import { useTestLoginStore } from "@/stores/testLoginStore";
 import { Button } from "@repo/ui/button";
 import { Icon } from "@repo/ui/icon";
 import { cn } from "@repo/utils";
 import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 import { PropsWithChildren, useEffect, useRef, useState } from "react";
+import { useLoginLink } from "../hooks/useLoginLink";
+import { useAuthStatus } from "@/hooks/useAuthStatus";
+import { useLogout } from "@/hooks/useLogout";
 
 export default function LayoutHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-
-  const { isLoggedIn, logout } = useTestLoginStore();
+  const { isLoggedIn, user, isLoading } = useAuthStatus();
+  const { isReady, loginLink } = useLoginLink();
+  const { logout, isPending: isLogoutPending } = useLogout();
 
   // 외부 클릭 시 드롭다운 닫기
   useEffect(() => {
@@ -68,7 +71,12 @@ export default function LayoutHeader() {
 
       {/* right side */}
       <div className="hidden lg:flex items-center gap-[30px]">
-        {isLoggedIn ? (
+        {isLoading ? (
+          <div
+            className="w-[120px] h-[40px] rounded-[20px] bg-gray-100 animate-pulse"
+            aria-hidden
+          />
+        ) : isLoggedIn ? (
           <>
             <div className="relative" ref={dropdownRef}>
               <Button
@@ -76,7 +84,7 @@ export default function LayoutHeader() {
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
                 <div className="flex gap-[8px] items-center">
-                  <p className="heavy-body">장윤호님</p>
+                  <p className="heavy-body">{user?.name ?? "사용자"}</p>
 
                   <Icon
                     iconName="chevronDown"
@@ -103,11 +111,11 @@ export default function LayoutHeader() {
                   </Button>
                   <Button
                     onClick={() => {
-                      // 로그아웃 로직
-                      logout();
                       setIsDropdownOpen(false);
+                      logout();
                     }}
                     variant="ghost"
+                    disabled={isLogoutPending}
                     className="w-full text-center bold-body text-middle-gray hover:text-black transition-colors"
                   >
                     로그아웃
@@ -117,12 +125,17 @@ export default function LayoutHeader() {
             </div>
           </>
         ) : (
-          <LinkItem href="/login" aria-label="로그인 페이지" isNav={false}>
+          <LinkItem
+            href={loginLink}
+            aria-label="로그인 페이지"
+            isNav={false}
+            isRender={isReady}
+          >
             로그인
           </LinkItem>
         )}
 
-        {isLoggedIn && (
+        {isLoggedIn && !isLoading && (
           <LinkItem
             href="/apply-partner"
             aria-label="파트너 지원 페이지"
@@ -134,7 +147,7 @@ export default function LayoutHeader() {
           </LinkItem>
         )}
 
-        {!isLoggedIn && (
+        {!isLoggedIn && !isLoading && (
           <LinkItem href="/signup" aria-label="회원가입 페이지" isNav={false}>
             회원가입
           </LinkItem>
@@ -156,17 +169,19 @@ export default function LayoutHeader() {
 
 interface LinkItemProps extends LinkProps {
   isNav: boolean;
+  isRender?: boolean;
 }
 
 function LinkItem({
   href,
   isNav,
   children,
+  isRender = true,
   ...props
 }: PropsWithChildren<LinkItemProps>) {
   return (
     <Link
-      href={href}
+      href={isRender ? href : "/login"}
       role="link"
       {...props}
       className={cn(
