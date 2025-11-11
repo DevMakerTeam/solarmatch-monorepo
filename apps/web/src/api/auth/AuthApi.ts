@@ -1,4 +1,5 @@
-import instance from "@/utils/instance";
+import authInstance from "@/utils/authInstance";
+import externalInstance from "@/utils/externalInstance";
 import { AxiosInstance } from "axios";
 import { SignupDto } from "./types/dto/signup-dto";
 import { SignupModel } from "./types/model/signup-model";
@@ -12,7 +13,7 @@ import { FindAccountDto } from "./types/dto/find-account-dto";
 import { FindAccountModel } from "./types/model/find-account-model";
 
 export class AuthApi {
-  axios: AxiosInstance = instance;
+  axios: AxiosInstance = authInstance;
   constructor(axios?: AxiosInstance) {
     if (axios) this.axios = axios;
   }
@@ -72,7 +73,7 @@ export class AuthApi {
 
   // 계정 찾기
   findAccount = async (req: FindAccountDto): Promise<FindAccountModel> => {
-    const { data } = await this.axios({
+    const { data } = await externalInstance({
       method: "POST",
       url: "/api/auth/find-account",
       data: req,

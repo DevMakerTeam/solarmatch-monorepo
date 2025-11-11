@@ -9,7 +9,9 @@ const FormHelper = ({ message, className, children }: FormHelperProps) => {
       {children}
 
       {isShowErrorText && (
-        <span className="text-cancel regular-caption">{message?.error}</span>
+        <span className="text-cancel regular-caption text-left">
+          {message?.error}
+        </span>
       )}
     </div>
   );
