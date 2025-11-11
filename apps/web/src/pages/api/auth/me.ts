@@ -6,13 +6,13 @@ type MeSuccessResponse = MeModel & { success: true };
 type MeErrorResponse = ApiResponse<MeModel["data"] | null> & { success: false };
 type MeApiResponse = MeSuccessResponse | MeErrorResponse;
 
-const BACKEND_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const handleGet = async (
   req: NextApiRequest,
   res: NextApiResponse<MeApiResponse>
 ) => {
-  if (!BACKEND_API_BASE_URL) {
+  if (!API_BASE_URL) {
     return res.status(500).json({
       success: false,
       message: "API base URL is not configured.",
@@ -32,7 +32,7 @@ const handleGet = async (
 
   try {
     const cookieHeader = req.headers.cookie;
-    const backendResponse = await fetch(`${BACKEND_API_BASE_URL}/api/auth/me`, {
+    const backendResponse = await fetch(`${API_BASE_URL}/api/auth/me`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,

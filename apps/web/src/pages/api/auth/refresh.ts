@@ -10,13 +10,13 @@ type RefreshErrorResponse = ApiResponse<null | Record<string, unknown>> & {
 type RefreshApiResponse = RefreshSuccessResponse | RefreshErrorResponse;
 
 const isProduction = process.env.NODE_ENV === "production";
-const BACKEND_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const handlePost = async (
   req: NextApiRequest,
   res: NextApiResponse<RefreshApiResponse>
 ) => {
-  if (!BACKEND_API_BASE_URL) {
+  if (!API_BASE_URL) {
     return res.status(500).json({
       success: false,
       message: "API base URL is not configured.",
@@ -37,16 +37,13 @@ const handlePost = async (
   }
 
   try {
-    const backendResponse = await fetch(
-      `${BACKEND_API_BASE_URL}/api/auth/refresh`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ refreshToken }),
-      }
-    );
+    const backendResponse = await fetch(`${API_BASE_URL}/api/auth/refresh`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ refreshToken }),
+    });
 
     const responseBody = (await backendResponse.json()) as RefreshApiResponse;
 

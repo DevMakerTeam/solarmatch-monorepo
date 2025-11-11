@@ -1,10 +1,10 @@
 import { useMeQuery } from "@/api/auth/AuthApi.query";
 import { AxiosError } from "axios";
 import { useEffect } from "react";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const useAuthStatus = () => {
-  const { isLoggedIn, user, setAuthState, clearAuthState } = useAuthStore();
+  const { isLoggedIn, user, setAuthState, clearAuthState } = useAuth();
 
   const { data, isLoading, isFetching, isError, error, refetch } = useMeQuery({
     options: {

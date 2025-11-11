@@ -3,14 +3,14 @@ import { useLoginForm } from "./useLoginForm";
 import { useRouter } from "next/router";
 import { useQueryClient } from "@tanstack/react-query";
 import { AUTH_API_QUERY_KEY } from "@/api/auth/AuthApi.query";
-import { useAuthStore } from "@/stores/authStore";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const useLogin = () => {
   const formMethods = useLoginForm();
   const router = useRouter();
   const { returnUrl } = router.query;
   const queryClient = useQueryClient();
-  const setAuthState = useAuthStore(state => state.setAuthState);
+  const { setAuthState } = useAuth();
 
   // 로그인
   const { mutate: loginMutation } = useLoginMutation({

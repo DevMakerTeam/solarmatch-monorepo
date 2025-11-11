@@ -7,11 +7,15 @@ import "../styles/globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { MeModel } from "@/api/auth/types/model/me-model";
-import { useAuthStore } from "@/stores/authStore";
 import { AUTH_API_QUERY_KEY } from "@/api/auth/AuthApi.query";
 import { isTokenExpired } from "@/utils/authToken";
 import type { RefreshModel } from "@/api/auth/types/model/refresh-model";
 import { serializeCookie } from "@/pages/api/auth/utils/cookies";
+import {
+  AuthProvider,
+  defaultAuthState,
+  type AuthState,
+} from "@/contexts/AuthContext";
 
 // Pretendard Variable을 next/font/local로 선언하여 자동 preload 및 FOIT 방지
 const pretendard = localFont({
@@ -26,50 +30,47 @@ const pretendard = localFont({
   display: "swap",
 });
 
-type AuthInitialState = {
-  isLoggedIn: boolean;
-  user: MeModel["data"] | null;
-};
-
 type CustomAppProps = AppProps & {
   pageProps: AppProps["pageProps"] & {
-    authInitialState?: AuthInitialState;
+    authInitialState?: AuthState;
   };
 };
 
 export default function MyApp({ Component, pageProps }: CustomAppProps) {
   const [queryClient] = useState(() => new QueryClient());
-  const setAuthState = useAuthStore(state => state.setAuthState);
-  const clearAuthState = useAuthStore(state => state.clearAuthState);
 
-  const authInitialState = pageProps.authInitialState;
+  const authInitialState: AuthState =
+    pageProps.authInitialState ?? defaultAuthState;
 
-  const syncAuthState = useCallback(() => {
-    if (authInitialState?.isLoggedIn && authInitialState.user) {
-      setAuthState({
-        isLoggedIn: true,
-        user: authInitialState.user,
-      });
-      queryClient.setQueryData(AUTH_API_QUERY_KEY.ME(), {
-        success: true,
-        data: authInitialState.user,
-      });
-    } else {
-      clearAuthState();
-      queryClient.removeQueries({
-        queryKey: AUTH_API_QUERY_KEY.ME(),
-      });
-    }
-  }, [authInitialState, clearAuthState, queryClient, setAuthState]);
+  const handleAuthStateChange = useCallback(
+    (state: AuthState) => {
+      if (state.isLoggedIn && state.user) {
+        queryClient.setQueryData(AUTH_API_QUERY_KEY.ME(), {
+          success: true,
+          data: state.user,
+        });
+      } else {
+        queryClient.removeQueries({
+          queryKey: AUTH_API_QUERY_KEY.ME(),
+        });
+      }
+    },
+    [queryClient]
+  );
 
   useEffect(() => {
-    syncAuthState();
-  }, [syncAuthState]);
+    handleAuthStateChange(authInitialState);
+  }, [authInitialState, handleAuthStateChange]);
 
   return (
     <div className={pretendard.variable}>
       <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
+        <AuthProvider
+          initialState={authInitialState}
+          onAuthStateChange={handleAuthStateChange}
+        >
+          <Component {...pageProps} />
+        </AuthProvider>
 
         <ModalContainer />
 
@@ -85,7 +86,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   const { ctx } = appContext;
   const req = ctx.req;
 
-  let authInitialState: AuthInitialState | undefined = undefined;
+  let authInitialState: AuthState | undefined = undefined;
 
   if (req) {
     const parseCookies = (cookieHeader?: string) => {
