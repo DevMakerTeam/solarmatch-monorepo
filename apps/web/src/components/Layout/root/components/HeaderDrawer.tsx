@@ -79,7 +79,7 @@ export default function HeaderDrawer({ isOpen, onClose }: HeaderDrawerProps) {
   useCloseOnDesktop(isOpen, onClose);
 
   const { loginLink, isReady } = useLoginLink();
-  const { isLoggedIn, isLoading, user } = useAuthStatus();
+  const { isLoggedIn, isLoading } = useAuthStatus();
   const { logout, isPending: isLogoutPending } = useLogout();
 
   const visibleItems = DrawerItemData.filter(
