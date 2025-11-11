@@ -1,11 +1,17 @@
-import TestModal from "@/components/TestModal";
 import { ModalContainer } from "@repo/ui/modal";
-import type { AppProps } from "next/app";
+import type { AppContext, AppProps } from "next/app";
+import App from "next/app";
 import localFont from "next/font/local";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "../styles/globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import type { MeModel } from "@/api/auth/types/model/me-model";
+import { useAuthStore } from "@/stores/authStore";
+import { AUTH_API_QUERY_KEY } from "@/api/auth/AuthApi.query";
+import { isTokenExpired } from "@/utils/authToken";
+import type { RefreshModel } from "@/api/auth/types/model/refresh-model";
+import { serializeCookie } from "@/pages/api/auth/utils/cookies";
 
 // Pretendard Variable을 next/font/local로 선언하여 자동 preload 및 FOIT 방지
 const pretendard = localFont({
@@ -20,30 +26,50 @@ const pretendard = localFont({
   display: "swap",
 });
 
-const queryClient = new QueryClient();
+type AuthInitialState = {
+  isLoggedIn: boolean;
+  user: MeModel["data"] | null;
+};
 
-export default function MyApp({ Component, pageProps }: AppProps) {
-  const [isTestModalOpen, setIsTestModalOpen] = useState(false);
+type CustomAppProps = AppProps & {
+  pageProps: AppProps["pageProps"] & {
+    authInitialState?: AuthInitialState;
+  };
+};
+
+export default function MyApp({ Component, pageProps }: CustomAppProps) {
+  const [queryClient] = useState(() => new QueryClient());
+  const setAuthState = useAuthStore(state => state.setAuthState);
+  const clearAuthState = useAuthStore(state => state.clearAuthState);
+
+  const authInitialState = pageProps.authInitialState;
+
+  const syncAuthState = useCallback(() => {
+    if (authInitialState?.isLoggedIn && authInitialState.user) {
+      setAuthState({
+        isLoggedIn: true,
+        user: authInitialState.user,
+      });
+      queryClient.setQueryData(AUTH_API_QUERY_KEY.ME(), {
+        success: true,
+        data: authInitialState.user,
+      });
+    } else {
+      clearAuthState();
+      queryClient.removeQueries({
+        queryKey: AUTH_API_QUERY_KEY.ME(),
+      });
+    }
+  }, [authInitialState, clearAuthState, queryClient, setAuthState]);
+
+  useEffect(() => {
+    syncAuthState();
+  }, [syncAuthState]);
 
   return (
     <div className={pretendard.variable}>
       <QueryClientProvider client={queryClient}>
         <Component {...pageProps} />
-
-        {/* 왼쪽 하단 테스트 모달 버튼 */}
-        <button
-          onClick={() => setIsTestModalOpen(true)}
-          className="fixed bottom-6 left-6 z-[9998] bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-3 rounded-lg shadow-lg transition-all hover:scale-105"
-          aria-label="테스트 모달 열기"
-        >
-          🧪 테스트
-        </button>
-
-        <TestModal
-          isOpen={isTestModalOpen}
-          onClose={() => setIsTestModalOpen(false)}
-        />
-        {/* 왼쪽 하단 테스트 모달 버튼 */}
 
         <ModalContainer />
 
@@ -52,3 +78,188 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     </div>
   );
 }
+
+MyApp.getInitialProps = async (appContext: AppContext) => {
+  const appProps = await App.getInitialProps(appContext);
+
+  const { ctx } = appContext;
+  const req = ctx.req;
+
+  let authInitialState: AuthInitialState | undefined = undefined;
+
+  if (req) {
+    const parseCookies = (cookieHeader?: string) => {
+      if (!cookieHeader) {
+        return {} as Record<string, string>;
+      }
+
+      return cookieHeader
+        .split(";")
+        .reduce<Record<string, string>>((acc, cur) => {
+          const [key, ...valueParts] = cur.trim().split("=");
+          if (!key) {
+            return acc;
+          }
+
+          acc[key] = valueParts.join("=");
+          return acc;
+        }, {});
+    };
+
+    const buildCookieHeader = (cookies: Record<string, string>) =>
+      Object.entries(cookies)
+        .filter(([, value]) => value !== undefined && value !== null)
+        .map(([key, value]) => `${key}=${value}`)
+        .join("; ");
+
+    const isProduction = process.env.NODE_ENV === "production";
+
+    const protocol =
+      (req.headers["x-forwarded-proto"] as string | undefined) ?? "http";
+    const host = req.headers.host;
+
+    if (host) {
+      const origin = `${protocol}://${host}`;
+      const cookies = parseCookies(req.headers.cookie);
+      let accessToken = cookies.accessToken;
+      const refreshToken = cookies.refreshToken;
+
+      const setResponseCookies = (
+        access: string,
+        refresh: string | undefined
+      ) => {
+        if (!ctx.res) {
+          return;
+        }
+
+        const cookieHeaders = [
+          serializeCookie("accessToken", access, {
+            secure: isProduction,
+          }),
+        ];
+
+        if (refresh) {
+          cookieHeaders.push(
+            serializeCookie("refreshToken", refresh, {
+              secure: isProduction,
+            })
+          );
+        }
+
+        ctx.res.setHeader("Set-Cookie", cookieHeaders);
+      };
+
+      const clearResponseCookies = () => {
+        if (!ctx.res) {
+          return;
+        }
+
+        ctx.res.setHeader("Set-Cookie", [
+          serializeCookie("accessToken", "", {
+            secure: isProduction,
+            maxAge: 0,
+          }),
+          serializeCookie("refreshToken", "", {
+            secure: isProduction,
+            maxAge: 0,
+          }),
+        ]);
+      };
+
+      const refreshAccessToken = async () => {
+        try {
+          const refreshResponse = await fetch(`${origin}/api/auth/refresh`, {
+            method: "POST",
+            headers: {
+              cookie: buildCookieHeader(cookies),
+            },
+          });
+
+          if (!refreshResponse.ok) {
+            clearResponseCookies();
+            return false;
+          }
+
+          const refreshData = (await refreshResponse.json()) as RefreshModel;
+
+          if (!refreshData.success) {
+            clearResponseCookies();
+            return false;
+          }
+
+          const { accessToken: refreshedAccessToken } = refreshData.data;
+          const refreshedRefreshToken = (
+            refreshData.data as typeof refreshData.data & {
+              refreshToken?: string;
+            }
+          ).refreshToken;
+
+          accessToken = refreshedAccessToken;
+          cookies.accessToken = refreshedAccessToken;
+
+          if (refreshedRefreshToken) {
+            cookies.refreshToken = refreshedRefreshToken;
+          }
+
+          setResponseCookies(refreshedAccessToken, refreshedRefreshToken);
+
+          return true;
+        } catch (error) {
+          console.error("Failed to refresh access token on server:", error);
+          clearResponseCookies();
+          return false;
+        }
+      };
+
+      const ensureValidAccessToken = async () => {
+        if (accessToken) {
+          const isExpired = isTokenExpired(accessToken, 5);
+
+          if (!isExpired) {
+            return true;
+          }
+        }
+
+        if (!refreshToken) {
+          clearResponseCookies();
+          return false;
+        }
+
+        return refreshAccessToken();
+      };
+
+      try {
+        const hasValidAccessToken = await ensureValidAccessToken();
+
+        if (hasValidAccessToken) {
+          const response = await fetch(`${origin}/api/auth/me`, {
+            headers: {
+              cookie: buildCookieHeader(cookies),
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+
+          if (response.ok) {
+            const data = (await response.json()) as MeModel;
+            if (data.success) {
+              authInitialState = {
+                isLoggedIn: true,
+                user: data.data,
+              };
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch auth state on server:", error);
+      }
+    }
+  }
+
+  return {
+    ...appProps,
+    pageProps: {
+      ...appProps.pageProps,
+      authInitialState,
+    },
+  };
+};
