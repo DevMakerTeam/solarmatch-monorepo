@@ -11,6 +11,10 @@ import { RefreshDto } from "./types/dto/refresh-dto";
 import { RefreshModel } from "./types/model/refresh-model";
 import { FindAccountDto } from "./types/dto/find-account-dto";
 import { FindAccountModel } from "./types/model/find-account-model";
+import { PasswordResetConfirmDto } from "./types/dto/password-reset-confirm-dto";
+import { PasswordResetConfirmModel } from "./types/model/password-reset-confirm-model";
+import { PasswordResetRequestDto } from "./types/dto/password-reset-request-dto";
+import { PasswordResetRequestModel } from "./types/model/password-reset-request-model";
 
 export class AuthApi {
   axios: AxiosInstance = authInstance;
@@ -76,6 +80,32 @@ export class AuthApi {
     const { data } = await externalInstance({
       method: "POST",
       url: "/api/auth/find-account",
+      data: req,
+    });
+
+    return data;
+  };
+
+  // 비밀번호 재설정
+  passwordResetConfirm = async (
+    req: PasswordResetConfirmDto
+  ): Promise<PasswordResetConfirmModel> => {
+    const { data } = await externalInstance({
+      method: "POST",
+      url: "/api/auth/password-reset/confirm",
+      data: req,
+    });
+
+    return data;
+  };
+
+  // 비밀번호 재설정 요청
+  passwordResetRequest = async (
+    req: PasswordResetRequestDto
+  ): Promise<PasswordResetRequestModel> => {
+    const { data } = await externalInstance({
+      method: "POST",
+      url: "/api/auth/password-reset/request",
       data: req,
     });
 
