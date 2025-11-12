@@ -14,7 +14,7 @@ export default function LayoutHeader() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const { isLoggedIn, user } = useAuthStatus();
+  const { isLoggedIn, userName } = useAuthStatus();
   const { isReady, loginLink } = useLoginLink();
   const { logout, isPending: isLogoutPending } = useLogout();
 
@@ -79,7 +79,7 @@ export default function LayoutHeader() {
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
                 <div className="flex gap-[8px] items-center">
-                  <p className="heavy-body">{user?.name}</p>
+                  <p className="heavy-body">{userName}</p>
 
                   <Icon
                     iconName="chevronDown"

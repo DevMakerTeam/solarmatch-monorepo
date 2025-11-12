@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 
 export const useAuthStatus = () => {
-  const { isLoggedIn, user, setAuthState, clearAuthState } = useAuth();
+  const { isLoggedIn, user, userName, setAuthState, clearAuthState } =
+    useAuth();
 
   const { data, isLoading, isFetching, isError, error, refetch } = useMeQuery({
     options: {
@@ -19,6 +20,7 @@ export const useAuthStatus = () => {
       setAuthState({
         isLoggedIn: true,
         user: data.data,
+        userName: data.data.name,
       });
     }
   }, [data, setAuthState]);
@@ -36,5 +38,6 @@ export const useAuthStatus = () => {
     isError: isLoggedIn ? isError : false,
     error,
     refetch,
+    userName,
   };
 };
