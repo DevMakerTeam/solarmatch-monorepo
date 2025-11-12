@@ -6,11 +6,16 @@ import { Button } from "@repo/ui/button";
 import { FormField } from "@repo/ui/form-field";
 import { Icon } from "@repo/ui/icon";
 import { Input } from "@repo/ui/input";
+import { useResetPassword } from "./hooks/useResetPassword";
+import { Controller } from "react-hook-form";
+import { FormHelper } from "@repo/ui/form-helper";
 
 const ResetPasswordPage = () => {
+  const { control, resetPasswordValidation, handleSubmit } = useResetPassword();
+
   return (
     <RootLayout>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="layout-padding-y max-w-[408px] w-full mx-auto">
           <h1 className="bold-heading4 lg:bold-heading3 text-center mb-[26px] lg:mb-[13px]">
             비밀번호 변경하기
@@ -36,19 +41,50 @@ const ResetPasswordPage = () => {
                   8~16자 영문, 숫자, 특수문자를 조합하여 입력해 주세요.
                 </span>
               </div>
-              <Input
-                placeholder="비밀번호를 입력해 주세요."
-                className="input-size-lg"
+
+              <Controller
+                control={control}
+                name="newPassword"
+                render={({ field, formState: { errors } }) => (
+                  <FormHelper message={{ error: errors.newPassword?.message }}>
+                    <Input
+                      placeholder="비밀번호를 입력해 주세요."
+                      className="input-size-lg"
+                      type="password"
+                      maxLength={16}
+                      {...field}
+                    />
+                  </FormHelper>
+                )}
               />
 
-              <Input
-                placeholder="입력한 비밀번호를 한번 더 입력해 주세요."
-                className="input-size-lg"
+              <Controller
+                control={control}
+                name="newPasswordConfirm"
+                render={({ field, formState: { errors } }) => (
+                  <FormHelper
+                    message={{ error: errors.newPasswordConfirm?.message }}
+                  >
+                    <Input
+                      placeholder="입력한 비밀번호를 한번 더 입력해 주세요."
+                      className="input-size-lg"
+                      type="password"
+                      maxLength={16}
+                      {...field}
+                    />
+                  </FormHelper>
+                )}
               />
             </div>
           </FormField>
 
-          <Button className="button-size-xl">비밀번호 변경하기</Button>
+          <Button
+            className="button-size-xl"
+            disabled={resetPasswordValidation}
+            type="submit"
+          >
+            비밀번호 변경하기
+          </Button>
         </div>
       </form>
     </RootLayout>

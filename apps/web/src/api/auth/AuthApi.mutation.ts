@@ -13,6 +13,12 @@ export const AUTH_API_MUTATION_KEY = {
     ["refresh", params].filter(isNotNullish),
   FIND_ACCOUNT: (params?: Parameter<typeof authApi.findAccount>) =>
     ["find-account", params].filter(isNotNullish),
+  PASSWORD_RESET_CONFIRM: (
+    params?: Parameter<typeof authApi.passwordResetConfirm>
+  ) => ["password-reset-confirm", params].filter(isNotNullish),
+  PASSWORD_RESET_REQUEST: (
+    params?: Parameter<typeof authApi.passwordResetRequest>
+  ) => ["password-reset-request", params].filter(isNotNullish),
 };
 
 // 회원가입
@@ -61,6 +67,26 @@ export const useFindAccountMutation = (
 ) => {
   return useMutation({
     mutationFn: authApi.findAccount,
+    ...params?.options,
+  });
+};
+
+// 비밀번호 재설정
+export const usePasswordResetConfirmMutation = (
+  params?: UseMutationParams<typeof authApi.passwordResetConfirm>
+) => {
+  return useMutation({
+    mutationFn: authApi.passwordResetConfirm,
+    ...params?.options,
+  });
+};
+
+// 비밀번호 재설정 요청
+export const usePasswordResetRequestMutation = (
+  params?: UseMutationParams<typeof authApi.passwordResetRequest>
+) => {
+  return useMutation({
+    mutationFn: authApi.passwordResetRequest,
     ...params?.options,
   });
 };
