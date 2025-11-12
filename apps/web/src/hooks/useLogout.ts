@@ -33,6 +33,7 @@ export const useLogout = () => {
           setAuthState({
             isLoggedIn: true,
             user: previousMe.data,
+            userName: previousMe.data.name,
           });
           queryClient.setQueryData(AUTH_API_QUERY_KEY.ME(), previousMe);
         }

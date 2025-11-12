@@ -246,6 +246,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
               authInitialState = {
                 isLoggedIn: true,
                 user: data.data,
+                userName: data.data.name,
               };
             }
           }

@@ -15,10 +15,13 @@ export const useLogin = () => {
   // 로그인
   const { mutate: loginMutation } = useLoginMutation({
     options: {
-      onSuccess: () => {
+      onSuccess: ({ data }) => {
+        const { name } = data;
+
         setAuthState({
           isLoggedIn: true,
           user: null,
+          userName: name,
         });
 
         queryClient.invalidateQueries({

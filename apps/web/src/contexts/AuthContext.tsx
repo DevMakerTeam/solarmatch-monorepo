@@ -12,6 +12,7 @@ import type { MeModel } from "@/api/auth/types/model/me-model";
 export type AuthState = {
   isLoggedIn: boolean;
   user: MeModel["data"] | null;
+  userName: string | null;
 };
 
 export type AuthContextValue = AuthState & {
@@ -28,12 +29,17 @@ type AuthProviderProps = {
 export const defaultAuthState: AuthState = {
   isLoggedIn: false,
   user: null,
+  userName: null,
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 const areAuthStatesEqual = (a: AuthState, b: AuthState) => {
   if (a.isLoggedIn !== b.isLoggedIn) {
+    return false;
+  }
+
+  if (a.userName !== b.userName) {
     return false;
   }
 
