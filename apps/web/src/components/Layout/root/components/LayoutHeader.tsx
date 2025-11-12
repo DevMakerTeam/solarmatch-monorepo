@@ -14,7 +14,7 @@ export default function LayoutHeader() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const { isLoggedIn, user, isLoading } = useAuthStatus();
+  const { isLoggedIn, user } = useAuthStatus();
   const { isReady, loginLink } = useLoginLink();
   const { logout, isPending: isLogoutPending } = useLogout();
 
@@ -71,12 +71,7 @@ export default function LayoutHeader() {
 
       {/* right side */}
       <div className="hidden lg:flex items-center gap-[30px]">
-        {isLoading ? (
-          <div
-            className="w-[120px] h-[40px] rounded-[20px] bg-gray-100 animate-pulse"
-            aria-hidden
-          />
-        ) : isLoggedIn ? (
+        {isLoggedIn ? (
           <>
             <div className="relative" ref={dropdownRef}>
               <Button
@@ -135,7 +130,7 @@ export default function LayoutHeader() {
           </LinkItem>
         )}
 
-        {isLoggedIn && !isLoading && (
+        {isLoggedIn && (
           <LinkItem
             href="/apply-partner"
             aria-label="파트너 지원 페이지"
@@ -147,7 +142,7 @@ export default function LayoutHeader() {
           </LinkItem>
         )}
 
-        {!isLoggedIn && !isLoading && (
+        {!isLoggedIn && (
           <LinkItem href="/signup" aria-label="회원가입 페이지" isNav={false}>
             회원가입
           </LinkItem>
