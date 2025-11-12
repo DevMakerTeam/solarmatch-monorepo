@@ -79,7 +79,7 @@ export default function LayoutHeader() {
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
                 <div className="flex gap-[8px] items-center">
-                  <p className="heavy-body">{user?.name ?? "사용자"}</p>
+                  <p className="heavy-body">{user?.name}</p>
 
                   <Icon
                     iconName="chevronDown"
