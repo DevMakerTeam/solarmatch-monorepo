@@ -44,11 +44,13 @@ export default function MyApp({ Component, pageProps }: CustomAppProps) {
 
   const handleAuthStateChange = useCallback(
     (state: AuthState) => {
-      if (state.isLoggedIn && state.user) {
-        queryClient.setQueryData(AUTH_API_QUERY_KEY.ME(), {
-          success: true,
-          data: state.user,
-        });
+      if (state.isLoggedIn) {
+        if (state.user) {
+          queryClient.setQueryData(AUTH_API_QUERY_KEY.ME(), {
+            success: true,
+            data: state.user,
+          });
+        }
       } else {
         queryClient.removeQueries({
           queryKey: AUTH_API_QUERY_KEY.ME(),

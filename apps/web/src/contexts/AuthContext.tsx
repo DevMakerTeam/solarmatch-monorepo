@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { MeModel } from "@/api/auth/types/model/me-model";
 
@@ -59,16 +52,8 @@ export const AuthProvider = ({
   onAuthStateChange,
   children,
 }: AuthProviderProps) => {
+  // initialState는 최초 마운트 시에만 사용 (useState로 초기화)
   const [authState, internalSetAuthState] = useState<AuthState>(initialState);
-  const prevInitialStateRef = useRef<AuthState>(initialState);
-
-  useEffect(() => {
-    const prevInitialState = prevInitialStateRef.current;
-    if (!areAuthStatesEqual(prevInitialState, initialState)) {
-      prevInitialStateRef.current = initialState;
-      internalSetAuthState(initialState);
-    }
-  }, [initialState]);
 
   useEffect(() => {
     onAuthStateChange?.(authState);
