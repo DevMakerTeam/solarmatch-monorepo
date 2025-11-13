@@ -10,6 +10,7 @@ import { useLoginLink } from "../hooks/useLoginLink";
 import Link from "next/link";
 import { useAuthStatus } from "@/hooks/useAuthStatus";
 import { useLogout } from "@/hooks/useLogout";
+import { SOLAR_STRUCTURE_TYPES } from "@repo/constants";
 
 interface HeaderDrawerProps {
   isOpen: boolean;
@@ -26,7 +27,7 @@ const DrawerItemData: Omit<HeaderDrawerItemProps, "onClose">[] = [
   {
     userOnly: false,
     icon: "clock",
-    link: "/bidding",
+    link: `/bidding/${SOLAR_STRUCTURE_TYPES.RESIDENTIAL_SOLAR}`,
     text: "견적확인",
   },
   {

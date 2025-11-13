@@ -8,6 +8,7 @@ import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import { useLoginLink } from "../hooks/useLoginLink";
 import { useAuthStatus } from "@/hooks/useAuthStatus";
 import { useLogout } from "@/hooks/useLogout";
+import { SOLAR_STRUCTURE_TYPES } from "@repo/constants";
 
 export default function LayoutHeader() {
   const [isOpen, setIsOpen] = useState(false);
@@ -58,7 +59,11 @@ export default function LayoutHeader() {
         <LinkItem href="/" aria-label="홈페이지" isNav>
           홈페이지
         </LinkItem>
-        <LinkItem href="/bidding" aria-label="견적확인 페이지" isNav>
+        <LinkItem
+          href={`/bidding/${SOLAR_STRUCTURE_TYPES.RESIDENTIAL_SOLAR}`}
+          aria-label="견적확인 페이지"
+          isNav
+        >
           견적확인
         </LinkItem>
         <LinkItem href="/cases" aria-label="시공사례 페이지" isNav>
