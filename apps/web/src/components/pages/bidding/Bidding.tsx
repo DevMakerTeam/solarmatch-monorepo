@@ -2,14 +2,13 @@ import OrdersLayout from "@/components/Layout/bidding";
 import { SOLAR_INSTALLATION_TYPES } from "@/constants";
 import {
   SOLAR_STRUCTURE_TYPE_LABELS,
-  SOLAR_STRUCTURE_TYPES,
   SolarStructureType,
 } from "@repo/constants";
 import { Button } from "@repo/ui/button";
 import { Pagination } from "@repo/ui/pagination";
 import { BasicOption, Select } from "@repo/ui/select";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useMemo } from "react";
 import BiddingItem from "./components/BiddingItem";
 import { usePageUrl } from "@repo/hooks";
 
@@ -31,25 +30,27 @@ const SOLAR_INSTALLATION_TYPE_OPTIONS: BasicOption[] =
   });
 
 // 견적확인 페이지
-const BiddingPage = ({
-  type,
-  install,
-}: {
-  type: SolarStructureType;
-  install: string;
-}) => {
+const BiddingPage = () => {
   const router = useRouter();
   const { currentPage, handlePageChange } = usePageUrl();
 
-  // 다른 type 페이지들을 미리 prefetch하여 이동 속도 개선
-  useEffect(() => {
-    const otherTypes = Object.values(SOLAR_STRUCTURE_TYPES).filter(
-      t => t !== type
-    );
-    otherTypes.forEach(otherType => {
-      router.prefetch(`/bidding/${otherType}?install=${install}`);
-    });
-  }, [type, install, router]);
+  // 경로에서 type 추출 (예: /bidding/residential-solar -> residential-solar)
+  const type = useMemo(() => {
+    const pathWithoutQuery = router.asPath.split("?")[0];
+    const pathSegments = pathWithoutQuery.split("/");
+    const typeIndex = pathSegments.indexOf("bidding");
+    return (
+      typeIndex !== -1 && pathSegments[typeIndex + 1]
+        ? pathSegments[typeIndex + 1]
+        : ""
+    ) as SolarStructureType;
+  }, [router.asPath]);
+
+  // install 쿼리스트링 처리 (없으면 첫 번째 값 사용)
+  const install = useMemo(() => {
+    const installQuery = router.query.install as string | undefined;
+    return installQuery || SOLAR_INSTALLATION_TYPES[0].value;
+  }, [router.query.install]);
 
   const onChangeMobileType = (value: string) => {
     router.push(`/bidding/${value}?install=${install}`);
@@ -60,7 +61,7 @@ const BiddingPage = ({
   };
 
   return (
-    <OrdersLayout sideType={type} installType={install}>
+    <OrdersLayout sideType={type}>
       <div className="flex flex-col gap-[35px] lg:gap-[55px] w-full">
         <div className="w-full">
           {/* mobile */}

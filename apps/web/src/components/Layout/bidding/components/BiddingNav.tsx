@@ -1,37 +1,32 @@
 import {
   SOLAR_STRUCTURE_TYPE_LABELS,
-  SOLAR_STRUCTURE_TYPES,
   SolarStructureType,
 } from "@repo/constants";
+import { SOLAR_INSTALLATION_TYPES } from "@/constants";
 import { cn } from "@repo/utils";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useMemo } from "react";
 
 interface BiddingNavProps {
   sideType: SolarStructureType;
-  installType?: string;
 }
 
-const BiddingNav = ({ sideType, installType }: BiddingNavProps) => {
+const BiddingNav = ({ sideType }: BiddingNavProps) => {
   const router = useRouter();
 
-  // 마운트 시 모든 type 페이지를 미리 prefetch하여 이동 속도 개선
-  useEffect(() => {
-    Object.values(SOLAR_STRUCTURE_TYPES).forEach(type => {
-      router.prefetch(
-        `/bidding/${type}${installType ? `?install=${installType}` : ""}`
-      );
-    });
-  }, [installType, router]);
+  // install 쿼리스트링 처리 (없으면 첫 번째 값 사용)
+  const installType = useMemo(() => {
+    const installQuery = router.query.install as string | undefined;
+    return installQuery || SOLAR_INSTALLATION_TYPES[0].value;
+  }, [router.query.install]);
 
   return (
     <nav className="hidden lg:flex flex-col gap-[20px]">
       {Object.entries(SOLAR_STRUCTURE_TYPE_LABELS).map(([type, label]) => (
         <Link
           key={`bidding-nav-${type}`}
-          href={`/bidding/${type}${installType ? `?install=${installType}` : ""}`}
-          prefetch={true}
+          href={`/bidding/${type}?install=${installType}`}
         >
           <span
             className={cn(

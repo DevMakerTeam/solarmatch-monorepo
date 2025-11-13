@@ -5,13 +5,11 @@ import BiddingNav from "./components/BiddingNav";
 
 interface BiddingLayoutProps {
   sideType: SolarStructureType;
-  installType?: string;
 }
 
 const BiddingLayout = ({
   children,
   sideType,
-  installType,
 }: PropsWithChildren<BiddingLayoutProps>) => {
   return (
     <RootLayout>
@@ -21,7 +19,7 @@ const BiddingLayout = ({
             견적확인
           </span>
 
-          <BiddingNav sideType={sideType} installType={installType} />
+          <BiddingNav sideType={sideType} />
         </div>
 
         {children}
