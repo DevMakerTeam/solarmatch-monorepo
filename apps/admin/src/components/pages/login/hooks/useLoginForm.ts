@@ -3,7 +3,6 @@ import { HELPER_TEXT, REGEX } from "@repo/constants";
 import { FieldValues, useForm, UseFormProps } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { getCookie } from "@/utils/cookie";
 
 interface LoginFormDataType extends LoginDto, FieldValues {
   isSave: boolean;
@@ -23,7 +22,10 @@ export const loginFormSchema = yup.object().shape({
 
 export const useLoginForm = (options?: UseFormProps<LoginFormDataType>) => {
   const getSavedEmail = () => {
-    return getCookie("savedEmail") || "";
+    if (typeof window === "undefined") {
+      return "";
+    }
+    return localStorage.getItem("savedEmail") || "";
   };
 
   const savedEmail = getSavedEmail();

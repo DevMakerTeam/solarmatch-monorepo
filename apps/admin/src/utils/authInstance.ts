@@ -43,29 +43,7 @@ const resolveQueue = () => {
   refreshQueue = [];
 };
 
-const getCookie = (name: string): string | undefined => {
-  if (typeof document === "undefined") {
-    return undefined;
-  }
-
-  const match = document.cookie.match(
-    new RegExp(
-      "(?:^|; )" + name.replace(/([.$?*|{}()[]\\\/\+^])/g, "\\$1") + "=([^;]*)"
-    )
-  );
-  return match ? decodeURIComponent(match[1]) : undefined;
-};
-
 const refreshAccessToken = async () => {
-  // refreshToken이 없으면 refresh 시도하지 않음
-  const refreshToken = getCookie("refreshToken");
-  if (!refreshToken) {
-    if (!isServer && process.env.NODE_ENV === "development") {
-      console.log("[axios] refresh token not found, skipping refresh");
-    }
-    throw new Error("Refresh token not found");
-  }
-
   if (!isServer && process.env.NODE_ENV === "development") {
     console.log("[axios] refreshing access token…");
   }

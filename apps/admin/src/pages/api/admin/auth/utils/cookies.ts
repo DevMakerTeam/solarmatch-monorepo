@@ -36,10 +36,10 @@ export const serializeCookie = (
 };
 
 export const setAuthCookies = (
-  _: NextApiResponse,
+  res: NextApiResponse,
   tokens: { accessToken?: string; refreshToken?: string },
   options?: CookieOptions
-): string[] => {
+) => {
   const cookies: string[] = [];
 
   if (tokens.accessToken) {
@@ -50,7 +50,9 @@ export const setAuthCookies = (
     cookies.push(serializeCookie("refreshToken", tokens.refreshToken, options));
   }
 
-  return cookies;
+  if (cookies.length > 0) {
+    res.setHeader("Set-Cookie", cookies);
+  }
 };
 
 export const clearAuthCookies = (
