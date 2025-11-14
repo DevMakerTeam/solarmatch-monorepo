@@ -23,6 +23,7 @@ function Input(
     ["aria-required"]: ariaRequiredProp,
     ["aria-disabled"]: ariaDisabledProp,
     ["aria-readonly"]: ariaReadonlyProp,
+    autoComplete = "off",
     ...props
   }: InputProps,
   ref: ForwardedRef<HTMLInputElement>
@@ -56,6 +57,7 @@ function Input(
       aria-required={ariaRequired}
       aria-disabled={ariaDisabled}
       aria-readonly={ariaReadonly}
+      autoComplete={autoComplete}
       {...props}
     />
   );
