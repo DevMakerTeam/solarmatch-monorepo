@@ -54,13 +54,9 @@ const handlePost = async (
       return res.status(backendResponse.status).json(responseBody);
     }
 
-    const authCookies = setAuthCookies(res, responseBody.data, {
+    setAuthCookies(res, responseBody.data, {
       secure: isProduction,
     });
-
-    if (authCookies.length > 0) {
-      res.setHeader("Set-Cookie", authCookies);
-    }
 
     return res.status(200).json(responseBody);
   } catch (error) {
