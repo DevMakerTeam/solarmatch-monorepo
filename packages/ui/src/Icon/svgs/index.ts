@@ -30,3 +30,4 @@ export { default as x } from "./x.svg";
 export { default as photoFile } from "./photoFile.svg";
 export { default as person } from "./person.svg";
 export { default as editNote } from "./editNote.svg";
+export { default as editPencil } from "./editPencil.svg";
