@@ -1,4 +1,3 @@
-export type GetQnaListDto = {
-  page?: number;
-  pageSize?: number;
-};
+import { PaginationParams } from "@repo/types";
+
+export type GetQnaListDto = PaginationParams;
