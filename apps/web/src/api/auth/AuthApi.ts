@@ -1,5 +1,4 @@
-import authInstance from "@/utils/authInstance";
-import externalInstance from "@/utils/externalInstance";
+import instance from "@/utils/instance";
 import { AxiosInstance } from "axios";
 import { SignupDto } from "./types/dto/signup-dto";
 import { SignupModel } from "./types/model/signup-model";
@@ -17,7 +16,7 @@ import { PasswordResetRequestDto } from "./types/dto/password-reset-request-dto"
 import { PasswordResetRequestModel } from "./types/model/password-reset-request-model";
 
 export class AuthApi {
-  axios: AxiosInstance = authInstance;
+  axios: AxiosInstance = instance;
   constructor(axios?: AxiosInstance) {
     if (axios) this.axios = axios;
   }
@@ -77,7 +76,7 @@ export class AuthApi {
 
   // 계정 찾기
   findAccount = async (req: FindAccountDto): Promise<FindAccountModel> => {
-    const { data } = await externalInstance({
+    const { data } = await this.axios({
       method: "POST",
       url: "/api/auth/find-account",
       data: req,
@@ -90,7 +89,7 @@ export class AuthApi {
   passwordResetConfirm = async (
     req: PasswordResetConfirmDto
   ): Promise<PasswordResetConfirmModel> => {
-    const { data } = await externalInstance({
+    const { data } = await this.axios({
       method: "POST",
       url: "/api/auth/password-reset/confirm",
       data: req,
@@ -103,7 +102,7 @@ export class AuthApi {
   passwordResetRequest = async (
     req: PasswordResetRequestDto
   ): Promise<PasswordResetRequestModel> => {
-    const { data } = await externalInstance({
+    const { data } = await this.axios({
       method: "POST",
       url: "/api/auth/password-reset/request",
       data: req,

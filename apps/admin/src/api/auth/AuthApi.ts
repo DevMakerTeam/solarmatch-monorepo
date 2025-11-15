@@ -1,4 +1,4 @@
-import authInstance from "@/utils/authInstance";
+import instance from "@/utils/instance";
 import { AxiosInstance } from "axios";
 import { LoginDto } from "./types/dto/login-dto";
 import { LoginModel } from "./types/model/login-model";
@@ -7,7 +7,7 @@ import { RefreshDto } from "./types/dto/refresh-dto";
 import { RefreshModel } from "./types/model/refresh-model";
 
 export class AuthApi {
-  axios: AxiosInstance = authInstance;
+  axios: AxiosInstance = instance;
   constructor(axios?: AxiosInstance) {
     if (axios) this.axios = axios;
   }

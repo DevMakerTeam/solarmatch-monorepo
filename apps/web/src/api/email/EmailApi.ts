@@ -1,4 +1,4 @@
-import externalInstance from "@/utils/externalInstance";
+import instance from "@/utils/instance";
 import { AxiosInstance } from "axios";
 import { VerifyCodeDto } from "./types/dto/verify-code-dto";
 import { VerifyCodeModel } from "./types/model/verify-code-model";
@@ -6,7 +6,7 @@ import { SendVerificationDto } from "./types/dto/send-verification-dto";
 import { SendVerificationModel } from "./types/model/send-verification-model";
 
 export class EmailApi {
-  axios: AxiosInstance = externalInstance;
+  axios: AxiosInstance = instance;
   constructor(axios?: AxiosInstance) {
     if (axios) this.axios = axios;
   }

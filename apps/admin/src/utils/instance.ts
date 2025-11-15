@@ -10,10 +10,9 @@ interface RetriableRequestConfig extends InternalAxiosRequestConfig {
 }
 
 const isServer = typeof window === "undefined";
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
-const authInstance: AxiosInstance = axios.create({
-  baseURL: isServer ? API_BASE_URL : "",
+const instance: AxiosInstance = axios.create({
+  baseURL: "", // 클라이언트에서는 Next.js API Route로 요청
   timeout: 5000,
   headers: {
     "Content-Type": "application/json",
@@ -67,7 +66,7 @@ const refreshAccessToken = async () => {
   }
 };
 
-authInstance.interceptors.response.use(
+instance.interceptors.response.use(
   response => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as RetriableRequestConfig | undefined;
@@ -95,7 +94,7 @@ authInstance.interceptors.response.use(
         }
         return new Promise<AxiosResponse>((resolve, reject) => {
           refreshQueue.push({ resolve, reject });
-        }).then(() => authInstance(originalRequest));
+        }).then(() => instance(originalRequest));
       }
 
       originalRequest._retry = true;
@@ -107,7 +106,7 @@ authInstance.interceptors.response.use(
         if (!isServer && process.env.NODE_ENV === "development") {
           console.log("[axios] retry original request after refresh");
         }
-        return authInstance(originalRequest);
+        return instance(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError);
         await fetch(LOGOUT_ENDPOINT, {
@@ -127,4 +126,4 @@ authInstance.interceptors.response.use(
   }
 );
 
-export default authInstance;
+export default instance;
