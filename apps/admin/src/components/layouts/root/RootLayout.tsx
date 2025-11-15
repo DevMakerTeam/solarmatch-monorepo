@@ -16,7 +16,9 @@ const AdminRootLayout = ({ children }: PropsWithChildren) => {
       <main
         className={cn("flex-1 pt-[64px] lg:pt-0 lg:pl-[260px] min-h-screen")}
       >
-        {children}
+        <div className="layout-padding-y px-[16px] lg:px-[140px]">
+          {children}
+        </div>
       </main>
     </div>
   );
