@@ -1,15 +1,16 @@
 // 고객센터 페이지
 
 import RootLayout from "@/components/Layout/root";
-import { useAccordion } from "@repo/hooks";
 import { Accordion } from "@repo/ui/accordion";
 import { Icon } from "@repo/ui/icon";
 import { cn } from "@repo/utils";
 import { motion } from "framer-motion";
-import { faqData } from "./constants";
+import { useSupport } from "./hooks/useSupport";
+import { Pagination } from "@repo/ui/pagination";
 
 const SupportPage = () => {
-  const faqAccordion = useAccordion<number>(1);
+  const { qnaList, totalPages, currentPage, handlePageChange, qnaAccordion } =
+    useSupport();
 
   return (
     <RootLayout>
@@ -46,13 +47,14 @@ const SupportPage = () => {
             </div>
           </div>
 
-          <div className="flex flex-col">
-            {faqData.map((faq, i) => {
+          {/* QnA 리스트 */}
+          <div className="flex flex-col mb-[30px] lg:mb-[50px]">
+            {qnaList.map((qna, i) => {
               return (
                 <Accordion
-                  key={faq.id}
-                  isOpen={faqAccordion.isOpen(faq.id)}
-                  onToggle={() => faqAccordion.handleToggle(faq.id)}
+                  key={qna.id}
+                  isOpen={qnaAccordion.isOpen(qna.id)}
+                  onToggle={() => qnaAccordion.handleToggle(qna.id)}
                   className="border-b border-border-color"
                 >
                   <Accordion.Trigger
@@ -65,10 +67,10 @@ const SupportPage = () => {
                     <span className="text-[#000DD5] bold-body shrink-0">
                       Q.
                     </span>
-                    <span className="bold-body">{faq.title}</span>
+                    <span className="bold-body">{qna.question}</span>
                     <motion.div
                       animate={{
-                        rotate: faqAccordion.isOpen(faq.id) ? 180 : 0,
+                        rotate: qnaAccordion.isOpen(qna.id) ? 180 : 0,
                       }}
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="ml-auto"
@@ -79,13 +81,19 @@ const SupportPage = () => {
                       />
                     </motion.div>
                   </Accordion.Trigger>
-                  <Accordion.Content className="p-4 medium-body bg-light-gray border-t border-border-color">
-                    {faq.content}
+                  <Accordion.Content className="p-4 medium-body bg-light-gray border-t border-border-color whitespace-pre-line">
+                    {qna.answer}
                   </Accordion.Content>
                 </Accordion>
               );
             })}
           </div>
+
+          <Pagination
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+            totalPages={totalPages}
+          />
         </div>
       </div>
     </RootLayout>
