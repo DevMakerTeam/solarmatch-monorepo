@@ -20,7 +20,10 @@ const PartnerAddress = () => {
   };
 
   const handleComplete = (data: Address) => {
-    setValue("baseAddress", `${data.address} (${data.buildingName})`);
+    setValue(
+      "baseAddress",
+      `${data.address}${data.buildingName && ` (${data.buildingName})`}`
+    );
   };
 
   return (
