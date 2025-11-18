@@ -1,89 +1,94 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import { HELPER_TEXT, REGEX } from "@repo/constants";
+import { PARTNER_REGIONS, PartnerRegion } from "@repo/types";
+import { useForm, UseFormProps, type Resolver } from "react-hook-form";
 import * as yup from "yup";
 
-// Validation 스키마
-const schema = yup.object({
-  experience: yup
+/**
+ * @param companyName 업체명
+ * @param baseAddress 업체 기본 주소
+ * @param detailAddress 업체 상세 주소
+ * @param phone 업체 전화번호
+ * @param representativeName 대표자 성명
+ * @param companyEmail 업체 이메일 주소
+ * @param experienceYears 활동경력
+ * @param serviceAreas 활동 가능 지역
+ * @param logoImageId 로고 이미지 ID
+ * @param companyIntroduction 업체 소개글
+ */
+export const applyPartnerFormSchema = yup.object().shape({
+  companyName: yup.string().required(HELPER_TEXT.REQUIRED_INPUT),
+  baseAddress: yup.string().required(HELPER_TEXT.REQUIRED_INPUT),
+  detailAddress: yup.string().required(HELPER_TEXT.REQUIRED_INPUT),
+  phone: yup
+    .string()
+    .required(HELPER_TEXT["REQUIRED_INPUT"])
+    .matches(REGEX["PHONE_ALL"], HELPER_TEXT["PHONE"]),
+  representativeName: yup.string().required(HELPER_TEXT.REQUIRED_INPUT),
+  companyEmail: yup
+    .string()
+    .required(HELPER_TEXT.REQUIRED_INPUT)
+    .matches(REGEX.EMAIL, HELPER_TEXT.EMAIL),
+  experienceYears: yup
     .number()
-    .required("활동 경력을 입력해 주세요")
-    .positive("경력은 0보다 커야 합니다")
-    .integer("경력은 정수로 입력해 주세요")
-    .typeError("숫자를 입력해 주세요"),
-  regions: yup
+    .transform((_, originalValue) => {
+      // 빈 값이면 undefined 반환 (required 에러)
+      if (
+        originalValue === "" ||
+        originalValue === null ||
+        originalValue === undefined
+      ) {
+        return undefined;
+      }
+      // 숫자로 변환 시도
+      const num = Number(originalValue);
+      // NaN이면 NaN 반환 (typeError로 NUMBER 에러)
+      if (isNaN(num)) {
+        return NaN;
+      }
+      return num;
+    })
+    .typeError(HELPER_TEXT.NUMBER)
+    .required(HELPER_TEXT.REQUIRED_INPUT)
+    .min(0, HELPER_TEXT.NUMBER_MIN),
+  serviceAreas: yup
     .array()
-    .of(yup.string().required())
-    .min(1, "최소 1개의 지역을 선택해 주세요")
-    .max(3, "최대 3개까지 선택 가능합니다")
-    .required("활동 가능지역을 선택해 주세요"),
+    .of(yup.mixed<PartnerRegion>().oneOf(PARTNER_REGIONS).required())
+    .min(1, HELPER_TEXT.SERVICE_AREAS_MIN)
+    .max(3, HELPER_TEXT.SERVICE_AREAS_MAX)
+    .required(HELPER_TEXT.REQUIRED_INPUT),
+  logoImageId: yup.number().optional(),
+  companyIntroduction: yup.string().optional(),
   agreePrivacy: yup
     .boolean()
-    .oneOf([true], "개인정보 수집 및 이용에 동의해 주세요")
-    .required("개인정보 수집 및 이용에 동의해 주세요"),
+    .oneOf([true], HELPER_TEXT.REQUIRED_CHECKBOX)
+    .required(HELPER_TEXT.REQUIRED_CHECKBOX),
 });
 
-// Form 데이터 타입
-export type ApplyPartnerFormData = yup.InferType<typeof schema>;
+type InferedForm = yup.InferType<typeof applyPartnerFormSchema>;
+export type ApplyPartnerFormData = InferedForm;
 
-export function useApplyPartnerForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-    watch,
-    setValue,
-  } = useForm<ApplyPartnerFormData>({
-    resolver: yupResolver(schema),
+export function useApplyPartnerForm(
+  options?: UseFormProps<ApplyPartnerFormData>
+) {
+  return useForm<ApplyPartnerFormData>({
+    resolver: yupResolver(
+      applyPartnerFormSchema
+    ) as unknown as Resolver<ApplyPartnerFormData>,
     mode: "onChange",
     defaultValues: {
-      experience: undefined,
-      regions: [],
+      experienceYears: undefined,
+      serviceAreas: [],
+      logoImageId: undefined,
+      companyIntroduction: undefined,
       agreePrivacy: false,
+      baseAddress: "",
+      detailAddress: "",
+      phone: "",
+      companyEmail: "",
+      companyName: "",
+      representativeName: "",
     },
+    ...options,
   });
-
-  const selectedRegions = watch("regions");
-
-  // 지역 토글 함수
-  const toggleRegion = (region: string) => {
-    const currentRegions = selectedRegions || [];
-
-    if (currentRegions.includes(region)) {
-      // 이미 선택된 경우 제거
-      setValue(
-        "regions",
-        currentRegions.filter(r => r !== region),
-        {
-          shouldValidate: true,
-        }
-      );
-    } else {
-      // 선택되지 않은 경우 추가 (최대 3개까지)
-      if (currentRegions.length < 3) {
-        setValue("regions", [...currentRegions, region], {
-          shouldValidate: true,
-        });
-      }
-    }
-  };
-
-  // 지역 선택 여부 확인
-  const isRegionSelected = (region: string) => {
-    return selectedRegions?.includes(region) || false;
-  };
-
-  const onSubmit = (data: ApplyPartnerFormData) => {
-    console.log("Form submitted:", data);
-    // TODO: API 호출 로직 추가
-  };
-
-  return {
-    register,
-    handleSubmit: handleSubmit(onSubmit),
-    errors,
-    selectedRegions,
-    toggleRegion,
-    isRegionSelected,
-    isValid,
-  };
 }
