@@ -5,6 +5,14 @@ const nextConfig = {
   transpilePackages: ["@repo/ui", "@repo/utils"],
   // 바깥 디렉터리(import 외부) 허용
   experimental: { externalDir: true },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "solarmatch-images.s3.ap-northeast-2.amazonaws.com",
+      },
+    ],
+  },
   webpack(config, { buildId, dev, isServer, defaultLoaders, webpack }) {
     // @svgr/webpack 설정
     config.module.rules.push({
