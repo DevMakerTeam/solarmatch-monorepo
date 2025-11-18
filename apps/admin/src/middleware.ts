@@ -38,23 +38,17 @@ export async function middleware(request: NextRequest) {
     // 외부 API 경로로 변환 (경로 그대로 유지)
     const externalUrl = `${API_BASE_URL}${pathname}`;
 
-    // 요청 본문 읽기
+    // 원본 메서드
     const method = request.method;
-    let body: string | undefined;
 
-    if (method !== "GET" && method !== "HEAD") {
-      try {
-        body = await request.text();
-      } catch (error) {
-        console.error("Middleware proxy body error:", error);
-        // 본문이 없는 경우 무시
-      }
-    }
+    // 원본 헤더 복사 후 불필요한 헤더는 제거
+    const headers = new Headers(request.headers);
+    headers.delete("host");
+    headers.delete("content-length");
+    // content-type은 유지해야 multipart/form-data의 boundary가 보존됨
 
-    const headers: HeadersInit = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    };
+    // Authorization 헤더 설정
+    headers.set("authorization", `Bearer ${accessToken}`);
 
     // 쿼리 파라미터 추가
     const searchParams = request.nextUrl.searchParams.toString();
@@ -63,20 +57,23 @@ export async function middleware(request: NextRequest) {
       : externalUrl;
 
     try {
-      // 외부 API로 프록시 요청
-      const response = await fetch(urlWithQuery, {
+      // GET/HEAD는 body 없음, 그 외는 원본 스트림 전달
+      const init: RequestInit = {
         method,
         headers,
-        body,
-      });
+        body:
+          method === "GET" || method === "HEAD"
+            ? undefined
+            : (request.body as ReadableStream | undefined),
+      };
 
-      const data = await response.json();
+      const response = await fetch(urlWithQuery, init);
 
-      return NextResponse.json(data, {
+      // 응답을 그대로 스트리밍 전달
+      const resHeaders = new Headers(response.headers);
+      return new NextResponse(response.body, {
         status: response.status,
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: resHeaders,
       });
     } catch (error) {
       console.error("Middleware proxy error:", error);

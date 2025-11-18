@@ -1,5 +1,6 @@
 import axios, {
   AxiosError,
+  AxiosHeaders,
   AxiosInstance,
   AxiosResponse,
   InternalAxiosRequestConfig,
@@ -18,6 +19,21 @@ const instance: AxiosInstance = axios.create({
     "Content-Type": "application/json",
   },
   withCredentials: true,
+});
+
+// multipart/form-data 전송 시 Content-Type은 브라우저가 boundary 포함하여 자동 설정하도록 둔다
+instance.interceptors.request.use(config => {
+  const hasFormDataBody =
+    typeof FormData !== "undefined" && config.data instanceof FormData;
+  if (hasFormDataBody) {
+    // FormData 전송 시에는 Content-Type을 제거하여 브라우저가 boundary 포함해 자동 설정하도록 함
+    if (config.headers instanceof AxiosHeaders) {
+      config.headers.set("Content-Type", undefined);
+    } else if (config.headers) {
+      delete (config.headers as Record<string, unknown>)["Content-Type"];
+    }
+  }
+  return config;
 });
 
 const REFRESH_ENDPOINT = "/api/admin/auth/refresh";
