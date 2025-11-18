@@ -6,7 +6,7 @@ import {
   matchesMediaQuery,
 } from "./breakpoints";
 import { cn } from "./cn";
-import { formatPhoneNumberKR } from "./format";
+import { formatNumberInput, formatPhoneNumberKR } from "./format";
 
 export {
   BREAKPOINTS,
@@ -15,5 +15,6 @@ export {
   getCurrentBreakpoint,
   isBreakpoint,
   matchesMediaQuery,
+  formatNumberInput,
   formatPhoneNumberKR,
 };
