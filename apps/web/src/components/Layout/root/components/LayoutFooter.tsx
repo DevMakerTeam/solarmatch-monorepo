@@ -6,7 +6,7 @@ const COMPANY_CONTACT = {
   MAIN_PHONE: "02-123-4567",
   CEO_NAME: "장윤호",
   CONTACT_EMAIL: "solarmatch@company.com",
-  BUSINESS_REGISTRATION_NUMBER: "123-45-67890",
+  BUSINESS_REGISTRATION_NUMBER: "501-19-48310",
 };
 
 export default function LayoutFooter() {
