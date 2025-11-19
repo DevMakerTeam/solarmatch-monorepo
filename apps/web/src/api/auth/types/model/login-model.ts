@@ -1,4 +1,4 @@
-import { ApiResponse } from "@repo/types";
+import { ApiResponse, Role } from "@repo/types";
 
 export type LoginModel = ApiResponse<{
   accessToken: string;
@@ -7,4 +7,5 @@ export type LoginModel = ApiResponse<{
   userId: number;
   email: string;
   name: string;
+  role: Role;
 }>;

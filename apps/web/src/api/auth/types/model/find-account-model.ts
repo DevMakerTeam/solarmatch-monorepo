@@ -1,10 +1,8 @@
-import { ApiResponse } from "@repo/types";
-
-export type AccountProviderType = "LOCAL" | "KAKAO";
+import { ApiResponse, Provider } from "@repo/types";
 
 export type FindAccountModelData = {
   maskedEmail: string;
-  provider: AccountProviderType;
+  provider: Provider;
   createdAt: string;
 };
 

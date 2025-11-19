@@ -1,6 +1,4 @@
-import { ApiResponse } from "@repo/types";
-
-export type Role = "USER" | "ADMIN";
+import { ApiResponse, Role } from "@repo/types";
 
 export type LoginModel = ApiResponse<{
   accessToken: string;
