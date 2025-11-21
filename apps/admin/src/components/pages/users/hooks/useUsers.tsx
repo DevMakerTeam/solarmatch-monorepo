@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { GetUsersModel } from "@/api/users/types/model/get-users-model";
 import { useGetUsersQuery } from "@/api/users/UsersApi.query";
 import { usePageUrl } from "@repo/hooks";
@@ -137,6 +137,19 @@ const useUsers = () => {
     );
   };
 
+  // 또는 handleRowClick 함수로 바로 라우팅
+  const handleRowClick = useCallback(
+    (row: GetUsersModel["data"]["data"][number]) => {
+      const userId =
+        userType === "PARTNER" ? row.partnerInfo?.userId : row.userInfo?.id;
+
+      if (userId) {
+        router.push(`/users/${userId}`);
+      }
+    },
+    [userType, router]
+  );
+
   return {
     totalPages,
     currentPage,
@@ -146,6 +159,7 @@ const useUsers = () => {
     showDeletedOnly,
     handleShowDeletedOnlyChange,
     table,
+    handleRowClick,
   };
 };
 

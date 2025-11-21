@@ -1,19 +1,13 @@
 import { GetUsersModel } from "@/api/users/types/model/get-users-model";
 import { cn } from "@repo/utils";
 import { flexRender, Table } from "@tanstack/react-table";
-import { useRouter } from "next/router";
 
 interface UserListProps {
   table: Table<GetUsersModel["data"]["data"][number]>;
+  handleRowClick: (row: GetUsersModel["data"]["data"][number]) => void;
 }
 
-const UserList = ({ table }: UserListProps) => {
-  const router = useRouter();
-
-  const handleRowClick = (id: number) => {
-    router.push(`/users/${id}`);
-  };
-
+const UserList = ({ table, handleRowClick }: UserListProps) => {
   return (
     <div className="w-full overflow-x-auto mb-[40px] lg:mb-[50px]">
       <table className="w-max min-w-full table-fixed">
@@ -59,7 +53,7 @@ const UserList = ({ table }: UserListProps) => {
             <tr
               key={row.id}
               className="border-b border-border-color cursor-pointer hover:bg-light-gray transition-colors"
-              onClick={() => handleRowClick(row.original.userInfo.id)}
+              onClick={() => handleRowClick(row.original)}
             >
               {row.getVisibleCells().map((cell, index) => {
                 const isFirst = index === 0;
