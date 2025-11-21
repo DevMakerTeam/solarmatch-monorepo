@@ -3,7 +3,9 @@ import {
   useGetUserDetailQuery,
   USERS_API_QUERY_KEY,
 } from "@/api/users/UsersApi.query";
+import { useModals } from "@repo/hooks";
 import { isNotNullish } from "@repo/types";
+import { ConfirmModal } from "@repo/ui/modal";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 
@@ -24,6 +26,8 @@ export const useUserDetail = () => {
   const isPartner = !!userDetail?.partnerInfo;
 
   // 회원 탈퇴 처리
+  const { open: openDeleteUserModal, close: closeDeleteUserModal } =
+    useModals();
   const { mutate: deleteUser } = useDeleteUserMutation({
     options: {
       onSuccess: () => {
@@ -39,12 +43,21 @@ export const useUserDetail = () => {
   const handleDeleteUser = (id?: number) => {
     if (!isNotNullish(id)) return;
 
-    deleteUser(id);
+    openDeleteUserModal(ConfirmModal, {
+      onConfirm: () => deleteUser(id),
+      onClose: closeDeleteUserModal,
+      text: "정말 탈퇴 처리 하시겠습니까?",
+    });
+  };
+
+  const goToList = () => {
+    router.back();
   };
 
   return {
     userDetail,
     isPartner,
     handleDeleteUser,
+    goToList,
   };
 };

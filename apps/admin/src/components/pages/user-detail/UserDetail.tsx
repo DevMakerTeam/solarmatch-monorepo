@@ -7,13 +7,16 @@ import { Button } from "@repo/ui/button";
 import { useUserDetail } from "./hooks/useUserDetail";
 
 const UserDetail = () => {
-  const { userDetail, isPartner, handleDeleteUser } = useUserDetail();
+  const { userDetail, isPartner, handleDeleteUser, goToList } = useUserDetail();
 
   return (
     <AdminRootLayout>
       <form className="flex flex-col gap-[32px] lg:gap-[42px]">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-[7px] medium-body w-fit cursor-pointer">
+          <div
+            className="flex items-center gap-[7px] medium-body w-fit cursor-pointer"
+            onClick={goToList}
+          >
             <Icon
               iconName="chevronLeft"
               className="w-4 h-4 text-black stroke-[1.3]"
