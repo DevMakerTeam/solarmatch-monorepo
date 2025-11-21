@@ -21,3 +21,13 @@ export const useDeleteUserMutation = (
     ...params?.options,
   });
 };
+
+// 회원 목록 엑셀 다운로드
+export const useUsersExcelDownloadMutation = (
+  params?: UseMutationParams<typeof usersApi.usersExcelDownload>
+) => {
+  return useMutation({
+    mutationFn: usersApi.usersExcelDownload,
+    ...params?.options,
+  });
+};

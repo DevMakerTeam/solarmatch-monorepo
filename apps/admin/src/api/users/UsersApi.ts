@@ -6,6 +6,8 @@ import { GetUserDetailModel } from "./types/model/get-user-detail-model";
 import { EditUserDto } from "./types/dto/edit-user-dto";
 import { EditUserModel } from "./types/model/edit-user-model";
 import { DeleteUserModel } from "./types/model/delete-user-model";
+import { UsersExcelDownloadDto } from "./types/dto/users-excel-download-dto";
+import { UsersExcelDownloadModel } from "./types/model/users-excel-download-model";
 
 class UsersApi {
   axios: AxiosInstance = instance;
@@ -54,6 +56,25 @@ class UsersApi {
     });
 
     return data;
+  };
+
+  // 회원 목록 엑셀 다운로드
+  usersExcelDownload = async (
+    params: UsersExcelDownloadDto
+  ): Promise<UsersExcelDownloadModel> => {
+    const response = await this.axios({
+      method: "GET",
+      url: "/api/admin/users/excel",
+      params,
+      responseType: "blob",
+    });
+
+    const timestamp = response.headers["date"] || new Date().toISOString();
+
+    return {
+      blob: response.data,
+      timestamp,
+    };
   };
 }
 

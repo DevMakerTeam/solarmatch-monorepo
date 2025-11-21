@@ -11,6 +11,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import ApplyStatus from "../components/ApplyStatus";
+import { useUsersExcelDownloadMutation } from "@/api/users/UsersApi.mutation";
 
 const PAGE_SIZE = 10;
 
@@ -150,6 +151,37 @@ const useUsers = () => {
     [userType, router]
   );
 
+  // 회원 목록 엑셀 다운로드
+  const { mutate: usersExcelDownload } = useUsersExcelDownloadMutation({
+    options: {
+      onSuccess: ({ blob, timestamp }) => {
+        const serverDate = new Date(timestamp);
+        const year = serverDate.getFullYear();
+        const month = String(serverDate.getMonth() + 1).padStart(2, "0");
+        const day = String(serverDate.getDate()).padStart(2, "0");
+        const hours = String(serverDate.getHours()).padStart(2, "0");
+        const minutes = String(serverDate.getMinutes()).padStart(2, "0");
+        const seconds = String(serverDate.getSeconds()).padStart(2, "0");
+        const dateTime = `${year}${month}${day}_${hours}${minutes}${seconds}`;
+        const userTypeLabel = userType === "PARTNER" ? "PARTNER" : "USER";
+        const filename = `회원목록_${userTypeLabel}_${dateTime}.xlsx`;
+
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        link.click();
+        window.URL.revokeObjectURL(url);
+      },
+    },
+  });
+  const handleUsersExcelDownload = useCallback(() => {
+    usersExcelDownload({
+      type: userType,
+      showDeletedOnly,
+    });
+  }, [userType, showDeletedOnly, usersExcelDownload]);
+
   return {
     totalPages,
     currentPage,
@@ -160,6 +192,7 @@ const useUsers = () => {
     handleShowDeletedOnlyChange,
     table,
     handleRowClick,
+    handleUsersExcelDownload,
   };
 };
 
