@@ -163,6 +163,7 @@ body {
   --button-size-lg: 50px;
   --button-size-xl: 60px;
 
+  --input-size-xs: 30px;
   --input-size-sm: 40px;
   --input-size-md: 50px;
   --input-size-lg: 60px;
@@ -207,6 +208,12 @@ body {
   font-weight: 600;
   padding-top: 14px;
   padding-bottom: 14px;
+}
+
+@utility input-size-xs {
+  height: var(--input-size-xs);
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 
 @utility input-size-sm {

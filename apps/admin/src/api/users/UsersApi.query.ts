@@ -2,7 +2,7 @@ import { isNotNullish, Parameter, UseQueryParams } from "@repo/types";
 import usersApi from "./UsersApi";
 import { useQuery } from "@tanstack/react-query";
 
-const USERS_API_QUERY_KEY = {
+export const USERS_API_QUERY_KEY = {
   GET_USERS: (params?: Parameter<typeof usersApi.getUsers>) =>
     ["get-users", params].filter(isNotNullish),
   GET_USER_DETAIL: (params?: Parameter<typeof usersApi.getUserDetail>) =>

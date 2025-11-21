@@ -16,6 +16,7 @@ const UsersPage = () => {
     showDeletedOnly,
     handleShowDeletedOnlyChange,
     table,
+    handleRowClick,
   } = useUsers();
 
   return (
@@ -77,7 +78,7 @@ const UsersPage = () => {
       </div>
 
       {/* list */}
-      <UserList table={table} />
+      <UserList table={table} handleRowClick={handleRowClick} />
 
       {/* pagination */}
       <Pagination
