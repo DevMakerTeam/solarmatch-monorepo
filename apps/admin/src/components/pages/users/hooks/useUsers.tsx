@@ -13,7 +13,7 @@ import {
 import ApplyStatus from "../components/ApplyStatus";
 import { useUsersExcelDownloadMutation } from "@/api/users/UsersApi.mutation";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 9;
 
 const useUsers = () => {
   const { currentPage, handlePageChange } = usePageUrl();
