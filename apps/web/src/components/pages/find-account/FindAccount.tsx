@@ -18,6 +18,9 @@ const FindAccountPage = () => {
     verifyCodeSuccess,
     findAccountFormValidation,
     foundAccounts,
+    isSendVerificationPending,
+    isVerifyCodePending,
+    isFindAccountPending,
   } = useFindAccount();
 
   return (
@@ -36,6 +39,9 @@ const FindAccountPage = () => {
               handleVerifyCode={handleVerifyCode}
               verifyCodeSuccess={verifyCodeSuccess}
               findAccountFormValidation={findAccountFormValidation}
+              isSendVerificationPending={isSendVerificationPending}
+              isVerifyCodePending={isVerifyCodePending}
+              isFindAccountPending={isFindAccountPending}
             />
           ) : findAccountSuccess ? (
             <FoundAccountView foundAccounts={foundAccounts} />

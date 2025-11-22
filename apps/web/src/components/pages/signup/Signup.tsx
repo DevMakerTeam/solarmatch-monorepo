@@ -23,6 +23,11 @@ const SignupPage = () => {
     handleVerifySmsCode,
     verifySmsCodeSuccess,
     signupFormValidation,
+    isSendEmailVerificationPending,
+    isEmailVerifyCodePending,
+    isSendSmsVerificationPending,
+    isVerifySmsCodePending,
+    isSignupPending,
   } = useSignup();
 
   return (
@@ -71,6 +76,7 @@ const SignupPage = () => {
                           onClick={() =>
                             handleSendEmailVerificationCode(field.value)
                           }
+                          isLoading={isSendEmailVerificationPending}
                         >
                           인증하기
                         </Button>
@@ -100,6 +106,7 @@ const SignupPage = () => {
                             invalid || !field.value || emailVerifyCodeSuccess
                           }
                           onClick={() => handleEmailVerifyCode(field.value)}
+                          isLoading={isEmailVerifyCodePending}
                         >
                           확인
                         </Button>
@@ -231,6 +238,7 @@ const SignupPage = () => {
                           onClick={() =>
                             handleSendSmsVerificationCode(field.value)
                           }
+                          isLoading={isSendSmsVerificationPending}
                         >
                           인증하기
                         </Button>
@@ -259,6 +267,7 @@ const SignupPage = () => {
                             invalid || !field.value || verifySmsCodeSuccess
                           }
                           onClick={() => handleVerifySmsCode(field.value)}
+                          isLoading={isVerifySmsCodePending}
                         >
                           확인
                         </Button>
@@ -302,6 +311,7 @@ const SignupPage = () => {
                 type="submit"
                 className="button-size-lg lg:button-size-xl"
                 disabled={!signupFormValidation}
+                isLoading={isSignupPending}
               >
                 회원가입 하기
               </Button>

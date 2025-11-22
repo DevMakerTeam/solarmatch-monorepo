@@ -26,6 +26,7 @@ const ApplyPartnerPage = () => {
     deleteLogoImage,
     url,
     logoImageId,
+    isApplyPending,
   } = useApplyPartner();
 
   return (
@@ -278,6 +279,7 @@ const ApplyPartnerPage = () => {
                 type="submit"
                 className="button-size-xl"
                 disabled={!isValid}
+                isLoading={isApplyPending}
               >
                 지원하기
               </Button>

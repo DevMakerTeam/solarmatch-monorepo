@@ -20,14 +20,16 @@ export const useResetPassword = () => {
   );
 
   // 비밀번호 재설정
-  const { mutate: passwordResetConfirmMutation } =
-    usePasswordResetConfirmMutation({
-      options: {
-        onSuccess: () => {
-          router.replace("/login");
-        },
+  const {
+    mutate: passwordResetConfirmMutation,
+    isPending: isPasswordResetConfirmPending,
+  } = usePasswordResetConfirmMutation({
+    options: {
+      onSuccess: () => {
+        router.replace("/login");
       },
-    });
+    },
+  });
   const handleSubmit = handleSubmitForm(({ newPassword }) => {
     passwordResetConfirmMutation({
       newPassword,
@@ -35,5 +37,10 @@ export const useResetPassword = () => {
     });
   });
 
-  return { control, resetPasswordValidation, handleSubmit };
+  return {
+    control,
+    resetPasswordValidation,
+    handleSubmit,
+    isPasswordResetConfirmPending,
+  };
 };

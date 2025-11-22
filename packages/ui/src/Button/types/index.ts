@@ -6,4 +6,5 @@ export interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof ButtonVariants> {
   icon?: ReactNode;
+  isLoading?: boolean;
 }

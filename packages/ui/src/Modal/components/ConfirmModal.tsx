@@ -13,6 +13,7 @@ const ConfirmModal = ({
   text,
   modalContainerClassName,
   modalContentClassName,
+  isLoading = false,
 }: ConfirmModalProps) => {
   return (
     <Modal
@@ -42,6 +43,7 @@ const ConfirmModal = ({
             variant="solid"
             className="button-size-lg w-full"
             onClick={onConfirm}
+            isLoading={isLoading}
           >
             확인
           </Button>

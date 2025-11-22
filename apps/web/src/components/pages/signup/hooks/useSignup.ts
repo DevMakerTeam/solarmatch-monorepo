@@ -20,14 +20,18 @@ export const useSignup = () => {
   const {
     mutate: sendEmailVerificationMutation,
     isSuccess: sendEmailVerificationSuccess,
+    isPending: isSendEmailVerificationPending,
   } = useSendEmailVerificationMutation();
   const handleSendEmailVerificationCode = (email: string) => {
     sendEmailVerificationMutation({ email });
   };
 
   // 이메일 인증 코드 확인
-  const { mutate: emailVerifyCodeMutation, isSuccess: emailVerifyCodeSuccess } =
-    useEmailVerifyCodeMutation();
+  const {
+    mutate: emailVerifyCodeMutation,
+    isSuccess: emailVerifyCodeSuccess,
+    isPending: isEmailVerifyCodePending,
+  } = useEmailVerifyCodeMutation();
   const handleEmailVerifyCode = (verificationCode: string) => {
     const email = getValues("email");
 
@@ -41,6 +45,7 @@ export const useSignup = () => {
   const {
     mutate: sendSmsVerificationMutation,
     isSuccess: sendSmsVerificationSuccess,
+    isPending: isSendSmsVerificationPending,
   } = useSendSmsVerificationMutation();
   const handleSendSmsVerificationCode = (phone: string) => {
     const phoneNumber = phone.replace(/[^0-9]/g, "");
@@ -49,8 +54,11 @@ export const useSignup = () => {
   };
 
   // SMS 인증 코드 검증
-  const { mutate: verifySmsCodeMutation, isSuccess: verifySmsCodeSuccess } =
-    useVerifySmsCodeMutation();
+  const {
+    mutate: verifySmsCodeMutation,
+    isSuccess: verifySmsCodeSuccess,
+    isPending: isVerifySmsCodePending,
+  } = useVerifySmsCodeMutation();
   const handleVerifySmsCode = (code: string) => {
     const phoneNumber = getValues("phone").replace(/[^0-9]/g, "");
 
@@ -66,13 +74,14 @@ export const useSignup = () => {
     emailVerifyCodeSuccess &&
     verifySmsCodeSuccess;
 
-  const { mutate: signupMutation } = useSignupMutation({
-    options: {
-      onSuccess: () => {
-        router.replace("/login");
+  const { mutate: signupMutation, isPending: isSignupPending } =
+    useSignupMutation({
+      options: {
+        onSuccess: () => {
+          router.replace("/login");
+        },
       },
-    },
-  });
+    });
   const handleSubmit = formMethods.handleSubmit(data => {
     const { phone } = data;
 
@@ -86,6 +95,7 @@ export const useSignup = () => {
     formMethods,
     handleSubmit,
     handleSendEmailVerificationCode,
+    isSendEmailVerificationPending,
     sendEmailVerificationSuccess,
     handleEmailVerifyCode,
     emailVerifyCodeSuccess,
@@ -94,5 +104,9 @@ export const useSignup = () => {
     handleVerifySmsCode,
     verifySmsCodeSuccess,
     signupFormValidation,
+    isEmailVerifyCodePending,
+    isSendSmsVerificationPending,
+    isVerifySmsCodePending,
+    isSignupPending,
   };
 };

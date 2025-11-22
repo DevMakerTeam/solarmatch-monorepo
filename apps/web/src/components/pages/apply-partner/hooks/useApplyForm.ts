@@ -78,13 +78,15 @@ export const useApplyPartner = () => {
     return current;
   };
 
-  const { mutate: applyMutation } = useApplyMutation({
-    options: {
-      onSuccess: () => {
-        router.replace("/");
+  const { mutate: applyMutation, isPending: isApplyPending } = useApplyMutation(
+    {
+      options: {
+        onSuccess: () => {
+          router.replace("/");
+        },
       },
-    },
-  });
+    }
+  );
   const handleSubmit = formMethods.handleSubmit(data => {
     applyMutation(data);
   });
@@ -101,5 +103,6 @@ export const useApplyPartner = () => {
     deleteLogoImage,
     url,
     logoImageId,
+    isApplyPending,
   };
 };

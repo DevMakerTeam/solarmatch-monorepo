@@ -22,6 +22,7 @@ export const useFindAccount = () => {
   const {
     mutate: sendVerificationMutation,
     isSuccess: sendVerificationSuccess,
+    isPending: isSendVerificationPending,
   } = useSendVerificationMutation();
   const handleSendVerification = (phone: string) => {
     const phoneNumber = phone.replace(/[^0-9]/g, "");
@@ -29,8 +30,11 @@ export const useFindAccount = () => {
   };
 
   // SMS 인증 코드 검증
-  const { mutate: verifyCodeMutation, isSuccess: verifyCodeSuccess } =
-    useVerifyCodeMutation();
+  const {
+    mutate: verifyCodeMutation,
+    isSuccess: verifyCodeSuccess,
+    isPending: isVerifyCodePending,
+  } = useVerifyCodeMutation();
   const handleVerifyCode = (code: string) => {
     const phoneNumber = getValues("phoneNumber").replace(/[^0-9]/g, "");
     verifyCodeMutation({ phoneNumber, code });
@@ -44,6 +48,7 @@ export const useFindAccount = () => {
     mutate: findAccountMutation,
     isSuccess: findAccountSuccess,
     isIdle: findAccountIdle,
+    isPending: isFindAccountPending,
   } = useFindAccountMutation({
     options: {
       onSuccess: ({ data }) => {
@@ -73,5 +78,8 @@ export const useFindAccount = () => {
     verifyCodeSuccess,
     findAccountFormValidation,
     foundAccounts,
+    isSendVerificationPending,
+    isVerifyCodePending,
+    isFindAccountPending,
   };
 };

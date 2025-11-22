@@ -13,26 +13,28 @@ export const useLogin = () => {
   const { setAuthState } = useAuth();
 
   // 로그인
-  const { mutate: loginMutation } = useLoginMutation({
-    options: {
-      onSuccess: ({ data }) => {
-        const { name } = data;
+  const { mutate: loginMutation, isPending: isLoginPending } = useLoginMutation(
+    {
+      options: {
+        onSuccess: ({ data }) => {
+          const { name } = data;
 
-        setAuthState({
-          isLoggedIn: true,
-          user: null,
-          userName: name,
-        });
+          setAuthState({
+            isLoggedIn: true,
+            user: null,
+            userName: name,
+          });
 
-        queryClient.invalidateQueries({
-          queryKey: AUTH_API_QUERY_KEY.ME(),
-        });
+          queryClient.invalidateQueries({
+            queryKey: AUTH_API_QUERY_KEY.ME(),
+          });
 
-        const replaceUrl = returnUrl ? (returnUrl as string) : "/";
-        router.replace(replaceUrl);
+          const replaceUrl = returnUrl ? (returnUrl as string) : "/";
+          router.replace(replaceUrl);
+        },
       },
-    },
-  });
+    }
+  );
   const handleLoginSubmit = formMethods.handleSubmit(({ email, password }) => {
     loginMutation({ email, password });
   });
@@ -40,5 +42,6 @@ export const useLogin = () => {
   return {
     formMethods,
     handleLoginSubmit,
+    isLoginPending,
   };
 };

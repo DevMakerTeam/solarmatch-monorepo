@@ -10,7 +10,7 @@ import { Controller, FormProvider } from "react-hook-form";
 import { FormHelper } from "@repo/ui/form-helper";
 
 const LoginPage = () => {
-  const { formMethods, handleLoginSubmit } = useLogin();
+  const { formMethods, handleLoginSubmit, isLoginPending } = useLogin();
 
   return (
     <RootLayout>
@@ -81,6 +81,7 @@ const LoginPage = () => {
                 className="button-size-xl mb-[35px]"
                 type="submit"
                 disabled={!formMethods.formState.isValid}
+                isLoading={isLoginPending}
               >
                 로그인
               </Button>
