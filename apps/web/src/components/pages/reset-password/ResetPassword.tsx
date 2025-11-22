@@ -11,7 +11,12 @@ import { Controller } from "react-hook-form";
 import { FormHelper } from "@repo/ui/form-helper";
 
 const ResetPasswordPage = () => {
-  const { control, resetPasswordValidation, handleSubmit } = useResetPassword();
+  const {
+    control,
+    resetPasswordValidation,
+    handleSubmit,
+    isPasswordResetConfirmPending,
+  } = useResetPassword();
 
   return (
     <RootLayout>
@@ -82,6 +87,7 @@ const ResetPasswordPage = () => {
             className="button-size-xl"
             disabled={resetPasswordValidation}
             type="submit"
+            isLoading={isPasswordResetConfirmPending}
           >
             비밀번호 변경하기
           </Button>

@@ -47,27 +47,29 @@ export const useSupportForm = () => {
   }, [detailAnswer, detailQuestion, reset]);
 
   // QnA 등록
-  const { mutate: createQnaMutation } = useCreateQnaMutation({
-    options: {
-      onSuccess: () => {
-        router.push("/support");
-        queryClient.invalidateQueries({
-          queryKey: QNA_API_QUERY_KEY.GET_QNA_LIST(),
-        });
+  const { mutate: createQnaMutation, isPending: isCreateQnaPending } =
+    useCreateQnaMutation({
+      options: {
+        onSuccess: () => {
+          router.push("/support");
+          queryClient.invalidateQueries({
+            queryKey: QNA_API_QUERY_KEY.GET_QNA_LIST(),
+          });
+        },
       },
-    },
-  });
+    });
   // QnA 수정
-  const { mutate: editQnaMutation } = useEditQnaMutation({
-    options: {
-      onSuccess: () => {
-        router.push("/support");
-        queryClient.invalidateQueries({
-          queryKey: QNA_API_QUERY_KEY.GET_QNA_LIST(),
-        });
+  const { mutate: editQnaMutation, isPending: isEditQnaPending } =
+    useEditQnaMutation({
+      options: {
+        onSuccess: () => {
+          router.push("/support");
+          queryClient.invalidateQueries({
+            queryKey: QNA_API_QUERY_KEY.GET_QNA_LIST(),
+          });
+        },
       },
-    },
-  });
+    });
   const handleSubmit = formMethods.handleSubmit(data => {
     if (isEditMode) {
       editQnaMutation({ id: Number(idSlot), ...data });
@@ -95,6 +97,8 @@ export const useSupportForm = () => {
     });
   };
 
+  const isLoading = isCreateQnaPending || isEditQnaPending;
+
   return {
     control,
     handleCancel,
@@ -103,5 +107,6 @@ export const useSupportForm = () => {
     detailAnswer,
     detailQuestion,
     isFormValid,
+    isLoading,
   };
 };

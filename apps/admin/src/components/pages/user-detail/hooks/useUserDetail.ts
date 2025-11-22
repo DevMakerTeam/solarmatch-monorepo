@@ -28,18 +28,19 @@ export const useUserDetail = () => {
   // 회원 탈퇴 처리
   const { open: openDeleteUserModal, close: closeDeleteUserModal } =
     useModals();
-  const { mutate: deleteUser } = useDeleteUserMutation({
-    options: {
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: USERS_API_QUERY_KEY.GET_USER_DETAIL(),
-        });
-        queryClient.invalidateQueries({
-          queryKey: USERS_API_QUERY_KEY.GET_USER_DETAIL(Number(idSlot)),
-        });
+  const { mutate: deleteUser, isPending: isDeleteUserPending } =
+    useDeleteUserMutation({
+      options: {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: USERS_API_QUERY_KEY.GET_USER_DETAIL(),
+          });
+          queryClient.invalidateQueries({
+            queryKey: USERS_API_QUERY_KEY.GET_USER_DETAIL(Number(idSlot)),
+          });
+        },
       },
-    },
-  });
+    });
   const handleDeleteUser = (id?: number) => {
     if (!isNotNullish(id)) return;
 
@@ -47,6 +48,7 @@ export const useUserDetail = () => {
       onConfirm: () => deleteUser(id),
       onClose: closeDeleteUserModal,
       text: "정말 탈퇴 처리 하시겠습니까?",
+      isLoading: isDeleteUserPending,
     });
   };
 

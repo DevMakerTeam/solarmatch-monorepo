@@ -2,9 +2,10 @@ import { cn } from "@repo/utils";
 import { cva } from "class-variance-authority";
 import { AriaAttributes, ForwardedRef, forwardRef } from "react";
 import { ButtonProps } from "./types";
+import { Spinner } from "../Spinner";
 
 export const ButtonVariants = cva(
-  `w-full flex gap-[12px] items-center justify-center bold-body rounded-[8px] cursor-pointer disabled:cursor-not-allowed focus:outline-none focus:ring-0 px-[20px] whitespace-nowrap`,
+  `w-full flex gap-[12px] items-center justify-center bold-body rounded-[8px] cursor-pointer disabled:cursor-not-allowed focus:outline-none focus:ring-0 px-[20px] whitespace-nowrap group`,
   {
     variants: {
       variant: {
@@ -25,6 +26,22 @@ export const ButtonVariants = cva(
   }
 );
 
+export const SpinnerColorVariants = cva("", {
+  variants: {
+    variant: {
+      solid: "border-l-white border-r-white border-b-white",
+      outline:
+        "border-l-primary border-r-primary border-b-primary group-hover:border-l-white group-hover:border-r-white group-hover:border-b-white group-active:border-l-white group-active:border-r-white group-active:border-b-white",
+      kakao: "border-l-white border-r-white border-b-white",
+      cancel: "border-l-white border-r-white border-b-white",
+      ghost: "border-l-primary border-r-primary border-b-primary",
+    },
+  },
+  defaultVariants: {
+    variant: "solid",
+  },
+});
+
 function ButtonComponent(
   {
     icon,
@@ -33,6 +50,7 @@ function ButtonComponent(
     children,
     type,
     disabled,
+    isLoading = false,
     ["aria-disabled"]: ariaDisabledProp,
     ["aria-pressed"]: ariaPressed,
     ["aria-label"]: ariaLabel,
@@ -46,7 +64,7 @@ function ButtonComponent(
 
   // a11y settings
   const ariaDisabled: AriaAttributes["aria-disabled"] =
-    ariaDisabledProp ?? (disabled ? true : undefined);
+    ariaDisabledProp ?? (disabled || isLoading ? true : undefined);
 
   // ghost variant의 경우 기본 스타일 적용 안함
   const buttonClassName = cn(
@@ -60,7 +78,7 @@ function ButtonComponent(
     <button
       ref={ref}
       type={resolvedType}
-      disabled={disabled}
+      disabled={disabled || isLoading}
       aria-disabled={ariaDisabled}
       aria-pressed={ariaPressed}
       aria-label={ariaLabel}
@@ -69,8 +87,14 @@ function ButtonComponent(
       className={buttonClassName}
       {...props}
     >
-      {children}
-      {icon}
+      {isLoading ? (
+        <Spinner size="sm" className={SpinnerColorVariants({ variant })} />
+      ) : (
+        <>
+          {children}
+          {icon}
+        </>
+      )}
     </button>
   );
 }

@@ -16,7 +16,9 @@
     "./modal": "./src/Modal/index.tsx",
     "./pagination": "./src/Pagination/index.tsx",
     "./accordion": "./src/Accordion/index.tsx",
-    "./form-helper": "./src/FormHelper/index.tsx"
+    "./form-helper": "./src/FormHelper/index.tsx",
+    "./toast": "./src/Toast/index.tsx",
+    "./spinner": "./src/Spinner/index.tsx"
   },
   "dependencies": {
     "@repo/hooks": "workspace:*",

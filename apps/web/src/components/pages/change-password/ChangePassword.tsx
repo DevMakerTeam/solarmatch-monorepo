@@ -8,7 +8,8 @@ import { Controller } from "react-hook-form";
 import { FormHelper } from "@repo/ui/form-helper";
 
 const ChangePasswordPage = () => {
-  const { control, isValid, handleSubmit } = useChangePassword();
+  const { control, isValid, handleSubmit, isPasswordResetRequestPending } =
+    useChangePassword();
 
   return (
     <RootLayout>
@@ -44,7 +45,12 @@ const ChangePasswordPage = () => {
             )}
           />
 
-          <Button className="button-size-xl" type="submit" disabled={!isValid}>
+          <Button
+            className="button-size-xl"
+            type="submit"
+            disabled={!isValid}
+            isLoading={isPasswordResetRequestPending}
+          >
             이메일로 재설정 링크 전송하기
           </Button>
         </form>

@@ -12,19 +12,21 @@ export const useChangePassword = () => {
   const { open: openEmailLinkModal, close: closeEmailLinkModal } = useModals();
 
   // 비밀번호 재설정 요청
-  const { mutate: passwordResetRequestMutation } =
-    usePasswordResetRequestMutation({
-      options: {
-        onSuccess: () => {
-          openEmailLinkModal(EmailLinkModal, { onClose: closeEmailLinkModal });
-        },
+  const {
+    mutate: passwordResetRequestMutation,
+    isPending: isPasswordResetRequestPending,
+  } = usePasswordResetRequestMutation({
+    options: {
+      onSuccess: () => {
+        openEmailLinkModal(EmailLinkModal, { onClose: closeEmailLinkModal });
       },
-    });
+    },
+  });
   const handleSubmit = handleSubmitForm(({ email }) => {
     passwordResetRequestMutation({
       email,
     });
   });
 
-  return { control, isValid, handleSubmit };
+  return { control, isValid, handleSubmit, isPasswordResetRequestPending };
 };

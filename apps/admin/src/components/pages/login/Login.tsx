@@ -8,7 +8,7 @@ import { Controller } from "react-hook-form";
 
 // 로그인 페이지
 const LoginPage = () => {
-  const { control, handleSubmit, isValid } = useLogin();
+  const { control, handleSubmit, isValid, isLoginPending } = useLogin();
 
   return (
     <div className="w-full h-screen flex flex-col bg-gradient-to-b from-[rgba(0,4,64,1)] to-[rgba(0,7,108,1)]">
@@ -63,6 +63,7 @@ const LoginPage = () => {
               className="button-size-lg lg:button-size-xl w-full mb-[30px]"
               type="submit"
               disabled={!isValid}
+              isLoading={isLoginPending}
             >
               로그인
             </Button>

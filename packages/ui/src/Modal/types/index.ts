@@ -11,4 +11,5 @@ export interface ModalProps {
 export interface ConfirmModalProps extends Omit<ModalProps, "children"> {
   onConfirm: () => void;
   text: string;
+  isLoading?: boolean;
 }

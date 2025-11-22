@@ -7,7 +7,8 @@ import { Controller } from "react-hook-form";
 import { FormHelper } from "@repo/ui/form-helper";
 
 export const SupportFormPage = () => {
-  const { control, handleCancel, handleSubmit, isFormValid } = useSupportForm();
+  const { control, handleCancel, handleSubmit, isFormValid, isLoading } =
+    useSupportForm();
 
   return (
     <AdminRootLayout>
@@ -66,6 +67,7 @@ export const SupportFormPage = () => {
                 className="button-size-lg w-[156px]"
                 type="submit"
                 disabled={!isFormValid}
+                isLoading={isLoading}
               >
                 등록하기
               </Button>

@@ -13,17 +13,19 @@ export const useLogin = () => {
     formState: { isValid },
   } = formMethods;
 
-  const { mutate: loginMutation } = useLoginMutation({
-    options: {
-      onSuccess: () => {
-        setAuthState({
-          isLoggedIn: true,
-        });
+  const { mutate: loginMutation, isPending: isLoginPending } = useLoginMutation(
+    {
+      options: {
+        onSuccess: () => {
+          setAuthState({
+            isLoggedIn: true,
+          });
 
-        router.replace("/");
+          router.replace("/");
+        },
       },
-    },
-  });
+    }
+  );
 
   const handleSubmit = formMethods.handleSubmit(
     ({ email, password, isSave }) => {
@@ -38,5 +40,5 @@ export const useLogin = () => {
     }
   );
 
-  return { control, handleSubmit, isValid };
+  return { control, handleSubmit, isValid, isLoginPending };
 };

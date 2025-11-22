@@ -18,6 +18,7 @@ const UsersPage = () => {
     table,
     handleRowClick,
     handleUsersExcelDownload,
+    isUsersExcelDownloadPending,
   } = useUsers();
 
   return (
@@ -59,6 +60,7 @@ const UsersPage = () => {
             variant="outline"
             className="button-size-md w-full lg:w-[122px] order-1 lg:order-2"
             onClick={handleUsersExcelDownload}
+            isLoading={isUsersExcelDownloadPending}
           >
             고객정보추출
           </Button>
