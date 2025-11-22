@@ -29,10 +29,9 @@ export const ButtonVariants = cva(
 export const SpinnerColorVariants = cva("", {
   variants: {
     variant: {
-      solid:
-        "border-l-white border-r-white border-b-white group-disabled:border-l-primary group-disabled:border-r-primary group-disabled:border-b-primary",
+      solid: "border-l-white border-r-white border-b-white",
       outline:
-        "border-l-primary border-r-primary border-b-primary group-hover:border-l-white group-hover:border-r-white group-hover:border-b-white group-active:border-l-white group-active:border-r-white group-active:border-b-white group-disabled:border-l-primary group-disabled:border-r-primary group-disabled:border-b-primary",
+        "border-l-primary border-r-primary border-b-primary group-hover:border-l-white group-hover:border-r-white group-hover:border-b-white group-active:border-l-white group-active:border-r-white group-active:border-b-white",
       kakao: "border-l-white border-r-white border-b-white",
       cancel: "border-l-white border-r-white border-b-white",
       ghost: "border-l-primary border-r-primary border-b-primary",
@@ -57,6 +56,7 @@ function ButtonComponent(
     ["aria-label"]: ariaLabel,
     ["aria-describedby"]: ariaDescribedby,
     ["aria-busy"]: ariaBusy,
+    onClick: onClickProp,
     ...props
   }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
@@ -65,7 +65,7 @@ function ButtonComponent(
 
   // a11y settings
   const ariaDisabled: AriaAttributes["aria-disabled"] =
-    ariaDisabledProp ?? (disabled || isLoading ? true : undefined);
+    ariaDisabledProp ?? (disabled ? true : undefined);
 
   // ghost variant의 경우 기본 스타일 적용 안함
   const buttonClassName = cn(
@@ -75,17 +75,30 @@ function ButtonComponent(
     className
   );
 
+  // onClick 핸들러 래핑: isLoading일 때 이벤트 막기
+  const handleClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    if (isLoading || disabled) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    onClickProp?.(event);
+  };
+
   return (
     <button
       ref={ref}
       type={resolvedType}
-      disabled={disabled || isLoading}
+      disabled={disabled}
       aria-disabled={ariaDisabled}
       aria-pressed={ariaPressed}
       aria-label={ariaLabel}
       aria-describedby={ariaDescribedby}
       aria-busy={ariaBusy}
       className={buttonClassName}
+      onClick={handleClick}
       {...props}
     >
       {isLoading ? (
