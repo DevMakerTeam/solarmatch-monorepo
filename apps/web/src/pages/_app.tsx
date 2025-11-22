@@ -1,4 +1,5 @@
 import { ModalContainer } from "@repo/ui/modal";
+import { ToastContainer } from "@repo/ui/toast";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
 import localFont from "next/font/local";
@@ -75,6 +76,7 @@ export default function MyApp({ Component, pageProps }: CustomAppProps) {
         </AuthProvider>
 
         <ModalContainer />
+        <ToastContainer />
 
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
