@@ -28,6 +28,7 @@ const SignupPage = () => {
     isSendSmsVerificationPending,
     isVerifySmsCodePending,
     isSignupPending,
+    isKakaoSignup,
   } = useSignup();
 
   return (
@@ -61,7 +62,9 @@ const SignupPage = () => {
                             className="input-size-md"
                             placeholder="이메일 주소를 입력해 주세요."
                             required
-                            disabled={sendEmailVerificationSuccess}
+                            disabled={
+                              isKakaoSignup || sendEmailVerificationSuccess
+                            }
                             {...field}
                           />
                         </FormHelper>
@@ -69,6 +72,7 @@ const SignupPage = () => {
                         <Button
                           className="max-w-[97px] lg:max-w-[120px] w-full button-size-lg"
                           disabled={
+                            isKakaoSignup ||
                             invalid ||
                             !field.value ||
                             sendEmailVerificationSuccess
@@ -93,6 +97,7 @@ const SignupPage = () => {
                           className="input-size-md"
                           placeholder="인증번호 6자리를 입력해 주세요."
                           disabled={
+                            isKakaoSignup ||
                             !sendEmailVerificationSuccess ||
                             emailVerifyCodeSuccess
                           }
@@ -103,7 +108,10 @@ const SignupPage = () => {
                         <Button
                           className="max-w-[97px] lg:max-w-[120px] w-full button-size-lg"
                           disabled={
-                            invalid || !field.value || emailVerifyCodeSuccess
+                            isKakaoSignup ||
+                            invalid ||
+                            !field.value ||
+                            emailVerifyCodeSuccess
                           }
                           onClick={() => handleEmailVerifyCode(field.value)}
                           isLoading={isEmailVerifyCodePending}
@@ -118,7 +126,7 @@ const SignupPage = () => {
 
               <FormField
                 label="비밀번호"
-                required
+                required={!isKakaoSignup}
                 className="mb-[50px] lg:mb-[40px]"
               >
                 <div className="flex flex-col w-full gap-[10px]">
@@ -143,6 +151,7 @@ const SignupPage = () => {
                           type="password"
                           className="input-size-md"
                           maxLength={16}
+                          disabled={isKakaoSignup}
                           {...field}
                         />
                       </FormHelper>
@@ -161,6 +170,7 @@ const SignupPage = () => {
                           type="password"
                           className="input-size-md"
                           maxLength={16}
+                          disabled={isKakaoSignup}
                           {...field}
                         />
                       </FormHelper>
@@ -192,7 +202,11 @@ const SignupPage = () => {
                 </div>
               </FormField>
 
-              <FormField label="휴대전화 번호" required className="mb-[30px]">
+              <FormField
+                label="휴대전화 번호"
+                required={!isKakaoSignup}
+                className="mb-[30px]"
+              >
                 <div className="flex flex-col gap-[10px]">
                   <Controller
                     control={formMethods.control}
@@ -213,8 +227,10 @@ const SignupPage = () => {
                             className="input-size-md"
                             placeholder="휴대전화 번호를 입력해 주세요."
                             maxLength={13}
-                            required
-                            disabled={sendSmsVerificationSuccess}
+                            required={!isKakaoSignup}
+                            disabled={
+                              isKakaoSignup || sendSmsVerificationSuccess
+                            }
                             {...{
                               ...field,
                               value: field.value ?? "",
@@ -231,6 +247,7 @@ const SignupPage = () => {
                         <Button
                           className="max-w-[97px] lg:max-w-[120px] w-full button-size-lg"
                           disabled={
+                            isKakaoSignup ||
                             invalid ||
                             !field.value ||
                             sendSmsVerificationSuccess
@@ -255,7 +272,9 @@ const SignupPage = () => {
                           className="input-size-md"
                           placeholder="인증번호 6자리를 입력해 주세요."
                           disabled={
-                            !sendSmsVerificationSuccess || verifySmsCodeSuccess
+                            isKakaoSignup ||
+                            !sendSmsVerificationSuccess ||
+                            verifySmsCodeSuccess
                           }
                           maxLength={6}
                           {...field}
@@ -264,7 +283,10 @@ const SignupPage = () => {
                         <Button
                           className="max-w-[97px] lg:max-w-[120px] w-full button-size-lg"
                           disabled={
-                            invalid || !field.value || verifySmsCodeSuccess
+                            isKakaoSignup ||
+                            invalid ||
+                            !field.value ||
+                            verifySmsCodeSuccess
                           }
                           onClick={() => handleVerifySmsCode(field.value)}
                           isLoading={isVerifySmsCodePending}

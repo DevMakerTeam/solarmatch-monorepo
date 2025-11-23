@@ -2,8 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { ApiResponse } from "@repo/types";
 import type { LoginModel } from "@/api/auth/types/model/login-model";
 import { setAuthCookies } from "../utils/cookies";
-import { AuthApi } from "@/api/auth/AuthApi";
-import axios from "axios";
+import { KakaoAuthModel } from "@/api/auth/types/model/kakao-auto-model";
 
 type KakaoCallbackSuccessResponse = LoginModel & { success: true };
 type KakaoCallbackErrorResponse = ApiResponse<null | Record<
@@ -46,22 +45,20 @@ const handleGet = async (
   }
 
   try {
-    // 서버사이드용 axios 인스턴스 생성 (백엔드 API에 직접 요청)
-    const serverAxiosInstance = axios.create({
-      baseURL: API_BASE_URL,
-      timeout: 10000,
+    // 백엔드 API에 카카오 인증 코드 전달하여 로그인/회원가입 처리
+    const backendResponse = await fetch(`${API_BASE_URL}/api/auth/kakao/auth`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({ code }),
     });
 
-    // AuthApi에 서버사이드 인스턴스 주입
-    const authApi = new AuthApi(serverAxiosInstance);
+    const response = (await backendResponse.json()) as
+      | ApiResponse<LoginModel["data"]>
+      | ApiResponse<KakaoAuthModel["data"]>;
 
-    // 백엔드 API에 카카오 인증 코드 전달하여 로그인/회원가입 처리
-    const response = await authApi.kakaoAuth({ code });
-
-    if (!response.success) {
+    if (!backendResponse.ok || !response.success) {
       return res.redirect(
         `/login?error=${encodeURIComponent(
           response.message || "로그인에 실패했습니다."
@@ -69,39 +66,57 @@ const handleGet = async (
       );
     }
 
-    // response.data가 LoginModel의 data 구조와 동일하다고 가정
-    // (accessToken, refreshToken 등 포함)
-    const loginData = response.data as LoginModel["data"];
+    // 실제 백엔드 응답 구조 확인
+    // 기존 사용자: LoginModel (accessToken, refreshToken 포함)
+    // 신규 사용자: KakaoAuthModel (socialId, email, phone 등만 포함)
+    const responseData = response.data as unknown;
 
-    console.log("loginData", loginData);
+    // 신규 사용자인 경우: socialId가 있으면 회원가입 페이지로 리다이렉트
+    if (
+      responseData &&
+      typeof responseData === "object" &&
+      "socialId" in responseData
+    ) {
+      const kakaoAuthData = responseData as KakaoAuthModel["data"];
 
-    // 쿠키 설정 및 리다이렉트
-    setAuthCookies(
-      res,
-      {
-        accessToken: loginData.accessToken,
-        refreshToken: loginData.refreshToken,
-      },
-      {
-        secure: isProduction,
-      }
-    );
+      // socialId, email, phone을 쿼리 파라미터로 전달하여 회원가입 페이지로 리다이렉트
+      const queryParams = new URLSearchParams({
+        socialId: String(kakaoAuthData.socialId),
+        ...(kakaoAuthData.email && { email: kakaoAuthData.email }),
+        ...(kakaoAuthData.phone && { phone: kakaoAuthData.phone }),
+      });
 
+      return res.redirect(`/signup?${queryParams.toString()}`);
+    }
+
+    // 기존 사용자인 경우: LoginModel 구조 (토큰 포함)
+    if (
+      responseData &&
+      typeof responseData === "object" &&
+      "accessToken" in responseData &&
+      "refreshToken" in responseData
+    ) {
+      const loginData = responseData as LoginModel["data"];
+      setAuthCookies(
+        res,
+        {
+          accessToken: loginData.accessToken,
+          refreshToken: loginData.refreshToken,
+        },
+        {
+          secure: isProduction,
+        }
+      );
+      return res.redirect("/");
+    }
+
+    // 예상치 못한 응답 구조
     return res.redirect("/");
   } catch (error) {
     console.error("Failed to handle kakao callback:", error);
-
-    let errorMessage = "카카오 로그인 처리 중 오류가 발생했습니다.";
-    if (axios.isAxiosError(error) && error.response?.data) {
-      const errorData = error.response.data as
-        | ApiResponse<unknown>
-        | { message?: string };
-      if ("message" in errorData && errorData.message) {
-        errorMessage = errorData.message;
-      }
-    }
-
-    return res.redirect(`/login?error=${encodeURIComponent(errorMessage)}`);
+    return res.redirect(
+      `/login?error=${encodeURIComponent("카카오 로그인 처리 중 오류가 발생했습니다.")}`
+    );
   }
 };
 
@@ -111,14 +126,15 @@ const kakaoCallbackHandler = async (
 ) => {
   if (req.method !== "GET") {
     res.setHeader("Allow", ["GET"]);
-    return res.status(405).json({
+    res.status(405).json({
       success: false,
       message: "허용되지 않은 요청입니다.",
       data: null,
     });
+    return;
   }
 
-  return handleGet(req, res);
+  await handleGet(req, res);
 };
 
 export default kakaoCallbackHandler;

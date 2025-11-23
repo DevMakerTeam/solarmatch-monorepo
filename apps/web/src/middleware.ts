@@ -12,7 +12,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.rewrite(url);
   }
 
-  if (pathname.startsWith("/api/") && !pathname.startsWith("/api/auth/")) {
+  // Next.js API route로 처리해야 하는 경로 (백엔드로 프록시하지 않음)
+  const nextjsApiRoutes = ["/api/auth/kakao/callback"];
+
+  if (pathname.startsWith("/api/") && !nextjsApiRoutes.includes(pathname)) {
     if (!API_BASE_URL) {
       return NextResponse.json(
         {
