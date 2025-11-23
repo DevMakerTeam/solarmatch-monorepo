@@ -97,7 +97,7 @@ const useUsers = () => {
         }),
       ];
     }
-  }, [userType]);
+  }, [userType, columnHelper]);
   const table = useReactTable({
     data: usersList,
     columns,
@@ -106,7 +106,7 @@ const useUsers = () => {
 
   // type 변경 함수
   const handleTypeChange = (type: "user" | "partner") => {
-    const { page, type: _, showDeletedOnly: __, ...restQuery } = router.query;
+    const { type: _, showDeletedOnly: __, ...restQuery } = router.query;
     router.push(
       {
         pathname: router.pathname,
@@ -123,7 +123,7 @@ const useUsers = () => {
 
   // showDeletedOnly 변경 함수
   const handleShowDeletedOnlyChange = (checked: boolean) => {
-    const { page, type, showDeletedOnly: _, ...restQuery } = router.query;
+    const { type, showDeletedOnly: _, ...restQuery } = router.query;
     router.push(
       {
         pathname: router.pathname,
