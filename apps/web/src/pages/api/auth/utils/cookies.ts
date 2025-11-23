@@ -67,25 +67,8 @@ export const clearAuthCookies = (
     maxAge: 0,
   };
 
-  // 쿠키 삭제를 위해 expires를 과거 날짜로 설정
-  const expiredDate = new Date(0).toUTCString();
-
-  const deleteCookie = (name: string, opts: CookieOptions) => {
-    const segments = [
-      `${name}=`,
-      `Path=${opts.path ?? DEFAULT_OPTIONS.path}`,
-      `Expires=${expiredDate}`,
-      `Max-Age=0`,
-      (opts.httpOnly ?? DEFAULT_OPTIONS.httpOnly) ? "HttpOnly" : undefined,
-      (opts.secure ?? DEFAULT_OPTIONS.secure) ? "Secure" : undefined,
-      `SameSite=${opts.sameSite ?? DEFAULT_OPTIONS.sameSite}`,
-    ].filter(Boolean);
-
-    return segments.join("; ");
-  };
-
   res.setHeader("Set-Cookie", [
-    deleteCookie("accessToken", baseOptions),
-    deleteCookie("refreshToken", baseOptions),
+    serializeCookie("accessToken", "", baseOptions),
+    serializeCookie("refreshToken", "", baseOptions),
   ]);
 };

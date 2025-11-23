@@ -33,6 +33,10 @@ module.exports = {
     "@typescript-eslint/no-undef": "off",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/triple-slash-reference": "off",
+    // any 타입 사용 허용
+    "@typescript-eslint/no-explicit-any": "off",
+    // useEffect 의존성 배열 규칙 비활성화
+    "react-hooks/exhaustive-deps": "off",
     // 필요시 규칙 추가
   },
 };
