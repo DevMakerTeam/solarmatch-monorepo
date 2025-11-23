@@ -8,6 +8,7 @@ import { EditUserModel } from "./types/model/edit-user-model";
 import { DeleteUserModel } from "./types/model/delete-user-model";
 import { UsersExcelDownloadDto } from "./types/dto/users-excel-download-dto";
 import { UsersExcelDownloadModel } from "./types/model/users-excel-download-model";
+import { UsersStatsTodayRegistrationsModel } from "./types/model/users-stats-today-registrations-model";
 
 class UsersApi {
   axios: AxiosInstance = instance;
@@ -76,6 +77,17 @@ class UsersApi {
       timestamp,
     };
   };
+
+  // 오늘 가입 고객 통계 조회
+  usersStatsTodayRegistrations =
+    async (): Promise<UsersStatsTodayRegistrationsModel> => {
+      const { data } = await this.axios({
+        method: "GET",
+        url: "/api/admin/users/stats/today-registrations",
+      });
+
+      return data;
+    };
 }
 
 const usersApi = new UsersApi();
