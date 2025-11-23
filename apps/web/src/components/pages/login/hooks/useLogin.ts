@@ -42,11 +42,17 @@ export const useLogin = () => {
   // 카카오 로그인
   const handleKakaoLogin = () => {
     const kakaoClientId = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
-    // 개발환경에서도 프로덕션 URL 사용 (환경변수가 없으면 기본값 사용)
+
+    if (!kakaoClientId) {
+      console.error("Kakao configuration is not set.");
+      return;
+    }
+
+    // 환경 변수에서 redirect_uri 가져오기
     const kakaoRedirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
 
-    if (!kakaoClientId || !kakaoRedirectUri) {
-      console.error("Kakao configuration is not set.");
+    if (!kakaoRedirectUri) {
+      console.error("KAKAO_REDIRECT_URI is not configured.");
       return;
     }
 

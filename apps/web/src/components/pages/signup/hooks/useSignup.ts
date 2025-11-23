@@ -9,12 +9,36 @@ import {
   useVerifyCodeMutation as useVerifySmsCodeMutation,
 } from "@/api/sms/SmsApi.mutation";
 import { useRouter } from "next/router";
+import { formatPhoneNumberKR } from "@repo/utils";
 
 export const useSignup = () => {
-  const formMethods = useSignupForm();
-  const { getValues } = formMethods;
-
   const router = useRouter();
+  const { email, phone, socialId } = router.query;
+
+  // socialId가 있으면 카카오 로그인으로 간주
+  const isKakaoSignup = !!socialId;
+
+  const formMethods = useSignupForm({
+    defaultValues: {
+      email: typeof email === "string" ? email : "",
+      phone:
+        typeof phone === "string"
+          ? formatPhoneNumberKR(phone.replace(/[^0-9]/g, ""))
+          : "",
+      emailVerifyCode: "",
+      password: "",
+      passwordConfirm: "",
+      name: "",
+      smsVerifyCode: "",
+    },
+    isKakaoSignup,
+  });
+  const {
+    getValues,
+    formState: { errors },
+  } = formMethods;
+
+  console.log({ errors });
 
   // 이메일 인증 코드 전송
   const {
@@ -69,10 +93,12 @@ export const useSignup = () => {
   };
 
   // 회원가입 Form submit validation
-  const signupFormValidation =
-    formMethods.formState.isValid &&
-    emailVerifyCodeSuccess &&
-    verifySmsCodeSuccess;
+  // 카카오 로그인일 때는 이메일/SMS 인증 코드 검증 불필요
+  const signupFormValidation = isKakaoSignup
+    ? formMethods.formState.isValid
+    : formMethods.formState.isValid &&
+      emailVerifyCodeSuccess &&
+      verifySmsCodeSuccess;
 
   const { mutate: signupMutation, isPending: isSignupPending } =
     useSignupMutation({
@@ -85,10 +111,23 @@ export const useSignup = () => {
   const handleSubmit = formMethods.handleSubmit(data => {
     const { phone } = data;
 
-    signupMutation({
-      ...data,
-      phone: phone.replace(/[^0-9]/g, ""),
-    });
+    if (isKakaoSignup) {
+      signupMutation({
+        email: data.email,
+        name: data.name,
+        phone: phone.replace(/[^0-9]/g, ""),
+        socialId: String(socialId),
+        provider: "KAKAO",
+      });
+    } else {
+      signupMutation({
+        email: data.email,
+        name: data.name,
+        password: data.password,
+        phone: phone.replace(/[^0-9]/g, ""),
+        provider: "LOCAL",
+      });
+    }
   });
 
   return {
@@ -108,5 +147,6 @@ export const useSignup = () => {
     isSendSmsVerificationPending,
     isVerifySmsCodePending,
     isSignupPending,
+    isKakaoSignup,
   };
 };

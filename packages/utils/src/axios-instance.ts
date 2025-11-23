@@ -16,6 +16,12 @@ interface CreateAxiosInstanceOptions {
   refreshEndpoint: string;
   loginEndpoint: string;
   logoutEndpoint: string;
+  /**
+   * 인증이 필요 없는 endpoint 목록
+   * 이 endpoint들에서 401/400 에러가 발생해도 refresh/logout을 시도하지 않음
+   * @default ["/api/auth/signup"]
+   */
+  excludedEndpoints?: string[];
 }
 
 const isServer = typeof window === "undefined";
@@ -29,6 +35,7 @@ export function createAxiosInstance({
   refreshEndpoint,
   loginEndpoint,
   logoutEndpoint,
+  excludedEndpoints = ["/api/auth/signup"],
 }: CreateAxiosInstanceOptions): AxiosInstance {
   const instance: AxiosInstance = axios.create({
     baseURL: "", // 클라이언트에서는 Next.js API Route로 요청
@@ -112,13 +119,17 @@ export function createAxiosInstance({
       const isLoginRequest = requestUrl.includes(loginEndpoint);
       const isRefreshRequest = requestUrl.includes(refreshEndpoint);
       const isLogoutRequest = requestUrl.includes(logoutEndpoint);
+      const isExcludedRequest = excludedEndpoints.some(endpoint =>
+        requestUrl.includes(endpoint)
+      );
 
       if (
         (status === 401 || status === 400) &&
         !originalRequest._retry &&
         !isLoginRequest &&
         !isRefreshRequest &&
-        !isLogoutRequest
+        !isLogoutRequest &&
+        !isExcludedRequest
       ) {
         if (isRefreshing) {
           if (!isServer && process.env.NODE_ENV === "development") {
