@@ -1,3 +1,4 @@
 import BiddingContractPage from "@/components/pages/bidding-contract";
+import withAuthGuard from "@/hocs/withAuthGuard";
 
-export default BiddingContractPage;
+export default withAuthGuard(BiddingContractPage);
