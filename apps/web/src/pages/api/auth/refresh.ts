@@ -24,9 +24,13 @@ const handlePost = async (
     });
   }
 
-  const refreshToken =
-    (req.body as { refreshToken?: string } | undefined)?.refreshToken ??
-    req.cookies?.refreshToken;
+  // body에서 refreshToken을 읽거나, 없으면 쿠키에서 읽기
+  const bodyRefreshToken =
+    req.body && typeof req.body === "object" && "refreshToken" in req.body
+      ? (req.body as { refreshToken?: string }).refreshToken
+      : undefined;
+
+  const refreshToken = bodyRefreshToken ?? req.cookies?.refreshToken;
 
   if (!refreshToken) {
     return res.status(401).json({

@@ -24,7 +24,17 @@ const handlePost = async (
     });
   }
 
-  const { email, password } = req.body ?? {};
+  const body = req.body ?? {};
+  const { email, password } =
+    typeof body === "object" && body !== null ? body : {};
+
+  if (!email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "이메일과 비밀번호를 입력해주세요.",
+      data: null,
+    });
+  }
 
   try {
     const backendResponse = await fetch(`${API_BASE_URL}/api/auth/login`, {
