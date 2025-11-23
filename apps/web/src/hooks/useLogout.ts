@@ -22,10 +22,8 @@ export const useLogout = () => {
     mutate(undefined, {
       onSuccess: () => {
         clearAuthState();
-        queryClient.removeQueries({
-          queryKey: AUTH_API_QUERY_KEY.ME(),
-          exact: true,
-        });
+        // 모든 쿼리 캐시 클리어
+        queryClient.clear();
         router.replace("/");
       },
       onError: () => {
