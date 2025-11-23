@@ -14,6 +14,8 @@ import { PasswordResetConfirmDto } from "./types/dto/password-reset-confirm-dto"
 import { PasswordResetConfirmModel } from "./types/model/password-reset-confirm-model";
 import { PasswordResetRequestDto } from "./types/dto/password-reset-request-dto";
 import { PasswordResetRequestModel } from "./types/model/password-reset-request-model";
+import { KakaoAuthDto } from "./types/dto/kakao-auto-dto";
+import { KakaoAuthModel } from "./types/model/kakao-auto-model";
 
 export class AuthApi {
   axios: AxiosInstance = instance;
@@ -105,6 +107,17 @@ export class AuthApi {
     const { data } = await this.axios({
       method: "POST",
       url: "/api/auth/password-reset/request",
+      data: req,
+    });
+
+    return data;
+  };
+
+  // 카카오 로그인/회원가입
+  kakaoAuth = async (req: KakaoAuthDto): Promise<KakaoAuthModel> => {
+    const { data } = await this.axios({
+      method: "POST",
+      url: "/api/auth/kakao/auth",
       data: req,
     });
 

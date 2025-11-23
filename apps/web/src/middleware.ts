@@ -5,6 +5,13 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // 카카오 콜백 경로를 API route로 rewrite
+  if (pathname === "/auth/kakao/callback") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/api/auth/kakao/callback";
+    return NextResponse.rewrite(url);
+  }
+
   if (pathname.startsWith("/api/") && !pathname.startsWith("/api/auth/")) {
     if (!API_BASE_URL) {
       return NextResponse.json(
@@ -69,5 +76,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: "/api/:path*",
+  matcher: ["/api/:path*", "/auth/kakao/callback"],
 };
