@@ -6,10 +6,17 @@ import { BasicOption, Select } from "@repo/ui/select";
 import { Textarea } from "@repo/ui/textarea";
 import { cn, formatPhoneNumberKR } from "@repo/utils";
 import Image from "next/image";
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { UserDetailFormDataType } from "../hooks/useUserDetailForm";
+import { FormHelper } from "@repo/ui/form-helper";
+import { DEFAULT_LOGO_URL } from "@repo/constants";
 
 interface PartnerInfoProps {
   partnerInfo?: PartnerInfoType;
+  uploadLogoImage: (file: File) => void;
+  deleteLogoImage: () => void;
+  url: string | undefined;
 }
 
 const APPLY_STATUS_OPTIONS: BasicOption[] = APPLY_STATUS.map(status => {
@@ -24,9 +31,30 @@ const APPLY_STATUS_OPTIONS: BasicOption[] = APPLY_STATUS.map(status => {
   };
 });
 
-const PartnerInfo = ({ partnerInfo }: PartnerInfoProps) => {
+const PartnerInfo = ({
+  partnerInfo,
+  uploadLogoImage,
+  deleteLogoImage,
+  url,
+}: PartnerInfoProps) => {
+  const { control, watch } = useFormContext<UserDetailFormDataType>();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const logoImageId = watch("logoImageId");
+
+  const openFilePicker = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = e => {
+    const file = e.target.files?.[0];
+    if (file) {
+      uploadLogoImage(file);
+      // 같은 파일 재선택 가능하도록 value 초기화
+      e.currentTarget.value = "";
+    }
+  };
+
   const {
-    companyName,
     baseAddress,
     detailAddress,
     logoUrl,
@@ -35,8 +63,6 @@ const PartnerInfo = ({ partnerInfo }: PartnerInfoProps) => {
     companyEmail,
     experienceYears,
     serviceAreas,
-    companyIntroduction,
-    status,
   } = partnerInfo || {};
 
   return (
@@ -54,7 +80,21 @@ const PartnerInfo = ({ partnerInfo }: PartnerInfoProps) => {
           value={
             <div className="flex items-center justify-between gap-[25px]">
               <div className="w-[65px] h-[65px] min-w-[65px] min-h-[65px] lg:w-[95px] lg:h-[95px] lg:min-w-[95px] lg:min-h-[95px] rounded-full overflow-hidden relative flex items-center justify-center bg-border-color">
-                {logoUrl ? (
+                {logoImageId === -1 ? (
+                  <Image
+                    src={DEFAULT_LOGO_URL}
+                    alt="partner-logo"
+                    fill
+                    className="object-cover"
+                  />
+                ) : url ? (
+                  <Image
+                    src={url}
+                    alt="partner-logo"
+                    fill
+                    className="object-cover"
+                  />
+                ) : logoUrl ? (
                   <Image
                     src={logoUrl}
                     alt="partner-logo"
@@ -73,40 +113,72 @@ const PartnerInfo = ({ partnerInfo }: PartnerInfoProps) => {
                 <Button
                   variant="ghost"
                   className="underline underline-offset-3 medium-caption"
+                  onClick={openFilePicker}
                 >
                   사진 수정
                 </Button>
                 <Button
                   variant="ghost"
-                  className="underline underline-offset-3 medium-caption"
+                  className="underline underline-offset-3 medium-caption disabled:text-deep-gray disabled:cursor-not-allowed"
+                  onClick={deleteLogoImage}
+                  disabled={logoImageId === -1}
                 >
                   기본 이미지
                 </Button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.gif,.webp"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
               </div>
             </div>
           }
         />
-        <PartnerInfoItem
-          field="업체명"
-          value={
-            <Input
-              className="input-size-xs lg:input-size-sm max-w-[280px] lg:min-w-[280px] w-full"
-              placeholder="업체명을 입력해주세요"
-              defaultValue={companyName}
+
+        <Controller
+          control={control}
+          name="companyName"
+          render={({ field, formState: { errors } }) => (
+            <PartnerInfoItem
+              field="업체명"
+              align={errors.companyName ? "start" : "center"}
+              value={
+                <FormHelper message={{ error: errors.companyName?.message }}>
+                  <Input
+                    className="input-size-xs lg:input-size-sm max-w-[280px] lg:min-w-[280px] w-full"
+                    placeholder="업체명을 입력해주세요"
+                    {...field}
+                  />
+                </FormHelper>
+              }
             />
-          }
+          )}
         />
+
         <PartnerInfoItem
           align="start"
           field="업체 소개글"
           value={
-            <Textarea
-              className="h-[76px] lg:h-[94px] lg:min-w-[280px]"
-              placeholder="업체 소개글을 입력해주세요"
-              defaultValue={companyIntroduction}
+            <Controller
+              control={control}
+              name="companyIntroduction"
+              render={({ field, formState: { errors } }) => (
+                <FormHelper
+                  message={{ error: errors.companyIntroduction?.message }}
+                >
+                  <Textarea
+                    className="h-[76px] lg:h-[94px] lg:min-w-[280px]"
+                    placeholder="업체 소개글을 입력해주세요"
+                    {...field}
+                  />
+                </FormHelper>
+              )}
             />
           }
         />
+
         <PartnerInfoItem field="대표 이름" value={representativeName} />
         <PartnerInfoItem
           field="업체 주소"
@@ -124,19 +196,25 @@ const PartnerInfo = ({ partnerInfo }: PartnerInfoProps) => {
           field="활동 지역"
           value={!!serviceAreas?.length ? serviceAreas.join(", ") : ""}
         />
-        <PartnerInfoItem
-          field="가입 승인 여부"
-          value={
-            <Select
-              type="basic"
-              size="sm"
-              className="max-w-[109px] lg:max-w-[133px]"
-              placeholder="선택"
-              options={APPLY_STATUS_OPTIONS}
-              value={status}
-              onChange={() => {}}
+        <Controller
+          control={control}
+          name="partnerStatus"
+          render={({ field }) => (
+            <PartnerInfoItem
+              field="가입 승인 여부"
+              value={
+                <Select
+                  type="basic"
+                  size="sm"
+                  className="max-w-[109px] lg:max-w-[133px]"
+                  placeholder="선택"
+                  options={APPLY_STATUS_OPTIONS}
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              }
             />
-          }
+          )}
         />
       </div>
     </div>

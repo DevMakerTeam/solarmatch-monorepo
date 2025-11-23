@@ -6,10 +6,15 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // /api/admin/* 경로만 처리 (auth 관련은 제외)
-  if (
+  const isAdminApi =
     pathname.startsWith("/api/admin/") &&
-    !pathname.startsWith("/api/admin/auth/")
-  ) {
+    !pathname.startsWith("/api/admin/auth/");
+
+  // /api/image/* 경로 처리 (auth 관련은 제외)
+  const isImageApi =
+    pathname.startsWith("/api/image/") && !pathname.startsWith("/api/auth/");
+
+  if (isAdminApi || isImageApi) {
     if (!API_BASE_URL) {
       return NextResponse.json(
         {
@@ -24,7 +29,8 @@ export async function middleware(request: NextRequest) {
     // 쿠키에서 accessToken 읽기
     const accessToken = request.cookies.get("accessToken")?.value;
 
-    if (!accessToken) {
+    // /api/admin/* 경로는 accessToken 필수, /api/image/* 경로는 선택적
+    if (isAdminApi && !accessToken) {
       return NextResponse.json(
         {
           success: false,
@@ -47,8 +53,10 @@ export async function middleware(request: NextRequest) {
     headers.delete("content-length");
     // content-type은 유지해야 multipart/form-data의 boundary가 보존됨
 
-    // Authorization 헤더 설정
-    headers.set("authorization", `Bearer ${accessToken}`);
+    // Authorization 헤더 설정 (accessToken이 있는 경우에만)
+    if (accessToken) {
+      headers.set("authorization", `Bearer ${accessToken}`);
+    }
 
     // 쿼리 파라미터 추가
     const searchParams = request.nextUrl.searchParams.toString();
@@ -92,5 +100,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: "/api/admin/:path*",
+  matcher: ["/api/admin/:path*", "/api/image/:path*"],
 };

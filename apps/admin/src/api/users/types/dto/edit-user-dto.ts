@@ -4,5 +4,6 @@ export type EditUserDto = {
   id: number;
   partnerStatus: ApplyStatus;
   companyName: string;
-  companyIntroduction: string;
+  companyIntroduction?: string;
+  logoImageId?: number;
 };
