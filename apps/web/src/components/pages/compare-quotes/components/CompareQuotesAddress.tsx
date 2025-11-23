@@ -1,35 +1,35 @@
 import { useAddressSearch } from "@repo/hooks";
 import { Button } from "@repo/ui/button";
 import { FormField } from "@repo/ui/form-field";
-import { FormHelper } from "@repo/ui/form-helper";
 import { Input } from "@repo/ui/input";
 import { Controller, useFormContext } from "react-hook-form";
-import { ApplyPartnerFormData } from "../hooks/useApplyPartnerForm";
+import { CompareQuotesFormType } from "../hooks/useCompareQuotesForm";
+import { FormHelper } from "@repo/ui/form-helper";
 
-const PartnerAddress = () => {
-  const { setValue, control } = useFormContext<ApplyPartnerFormData>();
-  const { handleAddressSearch } = useAddressSearch<ApplyPartnerFormData>({
+const CompareQuotesAddress = () => {
+  const { setValue, control } = useFormContext<CompareQuotesFormType>();
+  const { handleAddressSearch } = useAddressSearch<CompareQuotesFormType>({
     setValue,
     baseAddressFieldName: "baseAddress",
   });
 
   return (
-    <FormField label="업체 주소" required className="mb-[20px] lg:mb-[15px]">
-      <div className="flex flex-col gap-[12px] lg:gap-[8px]">
+    <FormField label="설치 예정 주소" className="mb-[30px]" required>
+      <div className="flex flex-col gap-[10px] w-full">
         <Controller
           control={control}
           name="baseAddress"
           render={({ field }) => (
-            <div className="flex gap-[10px] lg:gap-[5px] items-center">
+            <div className="flex items-center gap-[10px]">
               <Input
                 className="input-size-md"
-                placeholder="주소를 입력해주세요"
+                placeholder="주소를 검색해 주세요."
                 readOnly
                 {...field}
               />
 
               <Button
-                className="w-[110px] lg:w-[116px] button-size-lg"
+                className="max-w-[100px] lg:max-w-[120px] w-full button-size-lg"
                 type="button"
                 onClick={handleAddressSearch}
               >
@@ -45,7 +45,7 @@ const PartnerAddress = () => {
             <FormHelper message={{ error: errors.detailAddress?.message }}>
               <Input
                 className="input-size-md"
-                placeholder="상세 주소를 입력해주세요"
+                placeholder="상세 주소를 입력해 주세요."
                 {...field}
               />
             </FormHelper>
@@ -56,4 +56,4 @@ const PartnerAddress = () => {
   );
 };
 
-export default PartnerAddress;
+export default CompareQuotesAddress;

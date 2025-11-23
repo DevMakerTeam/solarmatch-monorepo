@@ -1,13 +1,12 @@
 // 견적확인 상세 페이지
 import OrdersLayout from "@/components/Layout/bidding";
-
-import { SolarStructureType } from "@repo/constants";
 import { useTestLoginStore } from "@/stores/testLoginStore";
 import { useRouter } from "next/router";
 import BiddingDetailTop from "./components/BiddingDetailTop";
 import BidDetailInformation from "./components/BidDetailInformation";
 import BidList from "./components/BidList";
 import BidButton from "./components/BidButton";
+import { SolarStructureType } from "@repo/types";
 
 const BiddingDetailPage = () => {
   const { userType } = useTestLoginStore();

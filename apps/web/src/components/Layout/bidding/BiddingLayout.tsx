@@ -1,5 +1,5 @@
 import RootLayout from "@/components/Layout/root";
-import { SolarStructureType } from "@repo/constants";
+import { SolarStructureType } from "@repo/types";
 import { PropsWithChildren } from "react";
 import BiddingNav from "./components/BiddingNav";
 

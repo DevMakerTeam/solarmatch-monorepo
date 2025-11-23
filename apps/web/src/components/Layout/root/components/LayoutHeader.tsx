@@ -8,7 +8,7 @@ import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import { useLoginLink } from "../hooks/useLoginLink";
 import { useAuthStatus } from "@/hooks/useAuthStatus";
 import { useLogout } from "@/hooks/useLogout";
-import { SOLAR_STRUCTURE_TYPES } from "@repo/constants";
+import { SOLAR_STRUCTURE_TYPES } from "@repo/types";
 
 export default function LayoutHeader() {
   const [isOpen, setIsOpen] = useState(false);

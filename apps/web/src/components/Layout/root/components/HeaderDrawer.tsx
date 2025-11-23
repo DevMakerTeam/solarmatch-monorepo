@@ -10,7 +10,7 @@ import { useLoginLink } from "../hooks/useLoginLink";
 import Link from "next/link";
 import { useAuthStatus } from "@/hooks/useAuthStatus";
 import { useLogout } from "@/hooks/useLogout";
-import { SOLAR_STRUCTURE_TYPES } from "@repo/constants";
+import { SOLAR_STRUCTURE_TYPES } from "@repo/types";
 
 interface HeaderDrawerProps {
   isOpen: boolean;

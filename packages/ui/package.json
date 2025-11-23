@@ -18,7 +18,8 @@
     "./accordion": "./src/Accordion/index.tsx",
     "./form-helper": "./src/FormHelper/index.tsx",
     "./toast": "./src/Toast/index.tsx",
-    "./spinner": "./src/Spinner/index.tsx"
+    "./spinner": "./src/Spinner/index.tsx",
+    "./address-search-modal": "./src/AddressSearchModal/index.tsx"
   },
   "dependencies": {
     "@repo/hooks": "workspace:*",
@@ -26,7 +27,8 @@
   },
   "peerDependencies": {
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-daum-postcode": "^3.1.1"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0"

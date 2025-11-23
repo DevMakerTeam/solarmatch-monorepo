@@ -1,50 +1,34 @@
+import { SOLAR_INSTALLATION_TYPES } from "@/constants";
+import {
+  SOLAR_STRUCTURE_TYPE_LABELS,
+  SOLAR_STRUCTURE_TYPES,
+  SolarStructureType,
+} from "@repo/types";
+
 import { Button } from "@repo/ui/button";
 import { Input } from "@repo/ui/input";
 import { BasicOption, Select } from "@repo/ui/select";
-import { cn } from "@repo/utils";
+import { cn, isValidDecimalInput3 } from "@repo/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { PropsWithChildren, useMemo } from "react";
+import { PropsWithChildren, useMemo, useState } from "react";
 
-// 태양광 종류 형태 선택
-const SOLAR_TYPE_LABEL_OPTIONS: BasicOption[] = [
-  {
-    value: "solar_type1",
-    label: "주택용 태양광",
-  },
-  {
-    value: "solar_type2",
-    label: "상업용 태양광",
-  },
-  {
-    value: "solar_type3",
-    label: "산업용 태양광",
-  },
-  {
-    value: "solar_type4",
-    label: "농업용 태양광",
-  },
-];
+const SOLAR_TYPE_LABEL_OPTIONS: BasicOption[] = Object.entries(
+  SOLAR_STRUCTURE_TYPE_LABELS
+).map(([value, label]) => {
+  return {
+    value,
+    label,
+  };
+});
 
-// 설치 방식 선택
-const INSTALL_METHOD_LABEL_OPTIONS: BasicOption[] = [
-  {
-    value: "install_method1",
-    label: "지붕형(기본형)",
-  },
-  {
-    value: "install_method2",
-    label: "지상형(독립형)",
-  },
-  {
-    value: "install_method3",
-    label: "추적형(트래커)",
-  },
-  {
-    value: "install_method4",
-    label: "건물일체형(BIPV)",
-  },
-];
+const INSTALL_METHOD_LABEL_OPTIONS: BasicOption[] =
+  SOLAR_INSTALLATION_TYPES.map(({ title, value }) => {
+    return {
+      label: title,
+      value,
+    };
+  });
 
 const BENEFITS_ITEM_LIST = [
   "숨겨진 비용 없는 진짜 견적",
@@ -54,6 +38,29 @@ const BENEFITS_ITEM_LIST = [
 ];
 
 export default function StickyAsideForm() {
+  // structureType
+  const [solarStructureType, setSolarStructureType] =
+    useState<SolarStructureType>(SOLAR_STRUCTURE_TYPES.RESIDENTIAL_SOLAR);
+
+  // installationType
+  const [installMethod, setInstallMethod] = useState<string>(
+    SOLAR_INSTALLATION_TYPES[0].value
+  );
+
+  // plannedCapacity
+  const [plannedCapacity, setPlannedCapacity] = useState<string>("");
+
+  // query 파라미터 생성 (최적화)
+  const compareQuotesQuery = useMemo(() => {
+    const params = new URLSearchParams();
+    params.set("structureType", solarStructureType);
+    params.set("installationType", installMethod);
+    if (plannedCapacity) {
+      params.set("plannedCapacity", plannedCapacity);
+    }
+    return params.toString();
+  }, [solarStructureType, installMethod, plannedCapacity]);
+
   return (
     <div className="hidden xl:flex flex-col w-full max-w-[396px] border border-border-color rounded-[8px] sticky top-[160px] self-start max-h-[calc(100vh-180px)] overflow-hidden">
       {/* 헤더 - 고정 */}
@@ -69,7 +76,10 @@ export default function StickyAsideForm() {
               <Select
                 type="basic"
                 options={SOLAR_TYPE_LABEL_OPTIONS}
-                value="solar_type1"
+                value={solarStructureType}
+                onChange={value =>
+                  setSolarStructureType(value as SolarStructureType)
+                }
               />
             </Group>
 
@@ -77,6 +87,15 @@ export default function StickyAsideForm() {
               <Input
                 placeholder="설치 예정 용량을 입력해주세요."
                 className="input-size-md"
+                type="number"
+                step="0.001"
+                value={plannedCapacity}
+                onChange={e => {
+                  const value = e.target.value;
+                  if (isValidDecimalInput3(value)) {
+                    setPlannedCapacity(value);
+                  }
+                }}
               />
             </Group>
 
@@ -84,7 +103,8 @@ export default function StickyAsideForm() {
               <Select
                 type="basic"
                 options={INSTALL_METHOD_LABEL_OPTIONS}
-                value="install_method1"
+                value={installMethod}
+                onChange={value => setInstallMethod(value)}
               />
             </Group>
           </div>
@@ -106,7 +126,7 @@ export default function StickyAsideForm() {
 
       {/* 버튼 - 고정 */}
       <div className="p-[25px_20px_30px] flex-shrink-0">
-        <Link href="/compare-quotes">
+        <Link href={`/compare-quotes?${compareQuotesQuery}`} className="block">
           <Button className="w-full button-size-xl">
             실시간 비교 견적 받아보기
           </Button>
