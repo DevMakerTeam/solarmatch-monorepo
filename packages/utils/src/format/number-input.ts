@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from "react";
+import { ChangeEvent, InputHTMLAttributes } from "react";
 import { ControllerRenderProps, FieldPath, FieldValues } from "react-hook-form";
 
 export const formatNumberInput = <
@@ -31,4 +31,13 @@ export const formatNumberInput = <
       field.onChange(e.target.value);
     },
   };
+};
+
+/**
+ * 소수점 3자리까지 입력 가능한 값인지 검증
+ * @param value 입력 값
+ * @returns 유효한 값이면 true, 아니면 false
+ */
+export const isValidDecimalInput3 = (value: string): boolean => {
+  return value === "" || /^\d*\.?\d{0,3}$/.test(value);
 };
