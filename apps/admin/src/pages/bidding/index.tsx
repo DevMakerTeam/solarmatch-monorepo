@@ -1,4 +1,4 @@
-import { SOLAR_STRUCTURE_TYPES } from "@repo/constants";
+import { SOLAR_STRUCTURE_TYPES } from "@repo/types";
 import { GetServerSideProps } from "next";
 
 // 이 페이지는 렌더링되지 않고 바로 리다이렉트됨

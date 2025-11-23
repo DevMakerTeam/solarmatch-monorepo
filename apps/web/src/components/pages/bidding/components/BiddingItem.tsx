@@ -1,4 +1,4 @@
-import { SolarStructureType } from "@repo/constants";
+import { SolarStructureType } from "@repo/types";
 import Link from "next/link";
 
 interface BiddingItemProps {

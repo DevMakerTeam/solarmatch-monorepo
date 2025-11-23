@@ -1,5 +1,5 @@
 import OrdersLayout from "@/components/Layout/bidding";
-import { SolarStructureType } from "@repo/constants";
+import { SolarStructureType } from "@repo/types";
 import { useRouter } from "next/router";
 import BiddingContractTop from "./components/BiddingContractTop";
 import BiddingContractInfo from "./components/BiddingContractInfo";

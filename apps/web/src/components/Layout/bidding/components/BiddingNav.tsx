@@ -1,12 +1,9 @@
-import {
-  SOLAR_STRUCTURE_TYPE_LABELS,
-  SolarStructureType,
-} from "@repo/constants";
 import { SOLAR_INSTALLATION_TYPES } from "@/constants";
 import { cn } from "@repo/utils";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useMemo } from "react";
+import { SOLAR_STRUCTURE_TYPE_LABELS, SolarStructureType } from "@repo/types";
 
 interface BiddingNavProps {
   sideType: SolarStructureType;

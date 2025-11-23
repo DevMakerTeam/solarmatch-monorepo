@@ -1,9 +1,6 @@
 import OrdersLayout from "@/components/Layout/bidding";
 import { SOLAR_INSTALLATION_TYPES } from "@/constants";
-import {
-  SOLAR_STRUCTURE_TYPE_LABELS,
-  SolarStructureType,
-} from "@repo/constants";
+
 import { Button } from "@repo/ui/button";
 import { Pagination } from "@repo/ui/pagination";
 import { BasicOption, Select } from "@repo/ui/select";
@@ -11,6 +8,7 @@ import { useRouter } from "next/router";
 import { useMemo } from "react";
 import BiddingItem from "./components/BiddingItem";
 import { usePageUrl } from "@repo/hooks";
+import { SOLAR_STRUCTURE_TYPE_LABELS, SolarStructureType } from "@repo/types";
 
 const MOBILE_TYPE_SELECT_OPTIONS: BasicOption[] = Object.entries(
   SOLAR_STRUCTURE_TYPE_LABELS

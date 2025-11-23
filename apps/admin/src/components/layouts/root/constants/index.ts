@@ -1,4 +1,4 @@
-import { SOLAR_STRUCTURE_TYPE_LABELS } from "@repo/constants";
+import { SOLAR_STRUCTURE_TYPE_LABELS } from "@repo/types";
 
 export type NavChild = {
   link: string;
