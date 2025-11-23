@@ -4,6 +4,7 @@ import BiddingStatsChart, {
 } from "@/components/pages/main/components/BiddingStatsChart";
 
 import AdminRootLayout from "@/components/layouts/root";
+import { useAdminMain } from "./hooks/useAdminMain";
 
 const CHART_DATA: Record<ChartRange, ChartDatum[]> = {
   daily: [
@@ -31,6 +32,8 @@ const CHART_DATA: Record<ChartRange, ChartDatum[]> = {
 };
 
 const AdminMainPage = () => {
+  const { partner, total } = useAdminMain();
+
   return (
     <AdminRootLayout>
       <div className="py-[25px] lg:py-[18px] px-[25px] border-1 border-primary rounded-[4px] flex flex-col gap-[35px]">
@@ -40,14 +43,14 @@ const AdminMainPage = () => {
 
         <div className="flex flex-col lg:flex-row gap-[14px] lg:gap-[0] lg:justify-between w-full items-center">
           <div className="flex flex-col items-center mx-auto">
-            <span className="bold-heading5 lg:bold-heading3">29명</span>
+            <span className="bold-heading5 lg:bold-heading3">{`${total}명`}</span>
             <span className="bold-body lg:bold-heading5">전체</span>
           </div>
 
           <div className="w-[126px] lg:w-[1px] h-[1px] lg:h-[140px] border-1 border-primary"></div>
 
           <div className="flex flex-col items-center mx-auto">
-            <span className="bold-heading5 lg:bold-heading3">14명</span>
+            <span className="bold-heading5 lg:bold-heading3">{`${partner}명`}</span>
             <span className="bold-body lg:bold-heading5">파트너</span>
           </div>
         </div>

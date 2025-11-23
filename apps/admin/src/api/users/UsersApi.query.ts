@@ -7,6 +7,7 @@ export const USERS_API_QUERY_KEY = {
     ["get-users", params].filter(isNotNullish),
   GET_USER_DETAIL: (params?: Parameter<typeof usersApi.getUserDetail>) =>
     ["get-user-detail", params].filter(isNotNullish),
+  USERS_STATS_TODAY_REGISTRATIONS: () => ["users-stats-today-registrations"],
 };
 
 // 회원 목록 조회
@@ -29,6 +30,18 @@ export const useGetUserDetailQuery = (
   return useQuery({
     queryKey,
     queryFn: () => usersApi.getUserDetail(params.variables),
+    ...params?.options,
+  });
+};
+
+// 오늘 가입 고객 통계 조회
+export const useUsersStatsTodayRegistrationsQuery = (
+  params?: UseQueryParams<typeof usersApi.usersStatsTodayRegistrations>
+) => {
+  const queryKey = USERS_API_QUERY_KEY.USERS_STATS_TODAY_REGISTRATIONS();
+  return useQuery({
+    queryKey,
+    queryFn: () => usersApi.usersStatsTodayRegistrations(),
     ...params?.options,
   });
 };
