@@ -39,9 +39,28 @@ export const useLogin = () => {
     loginMutation({ email, password });
   });
 
+  // 카카오 로그인
+  const handleKakaoLogin = () => {
+    const kakaoClientId = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
+    // 개발환경에서도 프로덕션 URL 사용 (환경변수가 없으면 기본값 사용)
+    const kakaoRedirectUri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
+
+    if (!kakaoClientId || !kakaoRedirectUri) {
+      console.error("Kakao configuration is not set.");
+      return;
+    }
+
+    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoClientId}&redirect_uri=${encodeURIComponent(
+      kakaoRedirectUri
+    )}&response_type=code`;
+
+    window.location.href = kakaoAuthUrl;
+  };
+
   return {
     formMethods,
     handleLoginSubmit,
     isLoginPending,
+    handleKakaoLogin,
   };
 };

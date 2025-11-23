@@ -8,9 +8,25 @@ import Link from "next/link";
 import { useLogin } from "./hooks/useLogin";
 import { Controller, FormProvider } from "react-hook-form";
 import { FormHelper } from "@repo/ui/form-helper";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useToast } from "@repo/hooks";
 
 const LoginPage = () => {
-  const { formMethods, handleLoginSubmit, isLoginPending } = useLogin();
+  const { formMethods, handleLoginSubmit, isLoginPending, handleKakaoLogin } =
+    useLogin();
+  const router = useRouter();
+  const { toast } = useToast();
+
+  // 카카오 로그인 에러 처리
+  useEffect(() => {
+    const { error } = router.query;
+    if (error && typeof error === "string") {
+      toast(decodeURIComponent(error));
+      // 에러 쿼리 파라미터 제거
+      router.replace("/login", undefined, { shallow: true });
+    }
+  }, [router.query, router, toast]);
 
   return (
     <RootLayout>
@@ -34,6 +50,7 @@ const LoginPage = () => {
             icon={<Icon iconName="kakao" className="w-[33px]" />}
             variant="kakao"
             className="button-size-xl"
+            onClick={handleKakaoLogin}
           >
             카카오 로그인
           </Button>
