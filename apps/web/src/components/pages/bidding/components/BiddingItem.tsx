@@ -1,35 +1,63 @@
-import { SolarStructureType } from "@repo/types";
+import { GetQuotesModel } from "@/api/quote/types/model/get-quotes-model";
 import Link from "next/link";
+import dayjs from "dayjs";
+import { useMemo } from "react";
+import { QUOTE_STATUS } from "@repo/types";
+import { cn } from "@repo/utils";
 
 interface BiddingItemProps {
-  type: SolarStructureType;
-  id: number;
+  itemData: GetQuotesModel["data"]["data"][number];
 }
 
-const BiddingItem = ({ type, id }: BiddingItemProps) => {
+const BiddingItem = ({ itemData }: BiddingItemProps) => {
+  const {
+    structureType,
+    structureTypeLabel,
+    createdAt,
+    id,
+    remainingHours,
+    statusLabel,
+    baseAddress,
+    plannedCapacity,
+    status,
+  } = itemData;
+
+  const statusColor = useMemo(() => {
+    if (status === QUOTE_STATUS.WAITING) return "bg-green";
+    if (status === QUOTE_STATUS.COMPLETED) return "bg-secondary";
+
+    return "bg-cancel";
+  }, [status]);
+
   return (
-    <Link href={`/bidding/${type}/${id}`} prefetch={true}>
-      <div className="w-full flex justify-between lg:items-center pb-[20px] lg:pb-[16px] border-b-1 border-border-color">
-        <div className="flex lg:items-center gap-[10px] lg:gap-[16px]">
-          <div className="flex flex-col lg:flex-row gap-[12px] lg:gap-[14px]">
-            <span className="bold-caption lg:bold-body">
-              경상북도 성주군 주택용 3kw
-            </span>
+    <Link href={`/bidding/${structureType}/${id}`} prefetch={true}>
+      <div className="w-full flex justify-between gap-[50px] lg:items-center pt-[20px] lg:pt-[16px] pb-[20px] lg:pb-[16px] border-b-1 border-border-color hover:bg-light-primary">
+        {/* 제목 / 남은시간 */}
+        <div className="flex flex-col lg:flex-row lg:items-center gap-[10px] lg:gap-[16px]">
+          <span className="bold-caption lg:bold-body max-w-[380px]">
+            {`${baseAddress} ${structureTypeLabel} ${plannedCapacity}kw`}
+          </span>
 
-            <div className="p-[3px_11.5px] w-fit text-nowrap rounded-[20px] regular-small text-deep-gray border-1 border-border-color">
-              캐노피형
-            </div>
-          </div>
-
-          <span className="regular-small text-cancel">5시간 남음</span>
+          {remainingHours > 0 && (
+            <span className="regular-small text-cancel font-bold">{`${remainingHours}시간 남음`}</span>
+          )}
         </div>
 
         <div className="flex flex-col lg:flex-row gap-[12px] lg:gap-[16px] items-center">
-          <div className="order-1 lg:order-2 w-[76px] lg:w-[102px] h-[24px] lg:h-[30px] rounded-[4px] bg-green text-white bold-small whitespace-nowrap flex items-center justify-center">
-            <span className="regular-small">입찰대기</span>
+          {/* 입찰상태 */}
+          <div
+            className={cn(
+              "order-1 lg:order-2 w-[76px] lg:w-[102px] h-[24px] lg:h-[30px] rounded-[4px] text-white bold-small whitespace-nowrap flex items-center justify-center",
+              statusColor
+            )}
+          >
+            <span className={cn("regular-small font-bold")}>{statusLabel}</span>
           </div>
 
-          <span className="order-2 lg:order-1 regular-small">2025-09-05</span>
+          {/* 날짜 */}
+          <span className="order-2 lg:order-1 regular-small font-bold">
+            {dayjs(createdAt).format("YYYY-MM-DD")}
+          </span>
         </div>
       </div>
     </Link>
