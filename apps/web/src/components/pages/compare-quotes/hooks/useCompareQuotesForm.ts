@@ -29,8 +29,18 @@ const compareQuotesFormSchema = yup.object().shape({
     .required(HELPER_TEXT.REQUIRED_INPUT),
   // 기타 요청사항 (자유 텍스트)
   otherRequests: yup.string().optional(),
-  // 이미지 ID 배열 (선택)
-  imageIds: yup.array().of(yup.number()).optional(),
+  // 이미지 배열 (선택)
+  imageIds: yup
+    .array()
+    .of(
+      yup.object().shape({
+        id: yup.number().required(),
+        url: yup.string().required(),
+        fileName: yup.string().required(),
+        fileSize: yup.number().required(),
+      })
+    )
+    .optional(),
 });
 
 export type CompareQuotesFormType = yup.InferType<
