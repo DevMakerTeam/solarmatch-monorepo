@@ -1,3 +1,4 @@
+import { cn } from "@repo/utils";
 import { Icon } from "../../Icon";
 import { BasicOption, RichOption, SelectProps } from "../types";
 import { getPaddingClasses } from "../utils";
@@ -9,6 +10,9 @@ interface SelectOptionProps {
   type: SelectProps["type"];
   maxTitleWidth?: number;
   size?: SelectProps["size"];
+  labelClassName?: string;
+  titleClassName?: string;
+  descriptionClassName?: string;
 }
 
 function SelectOption({
@@ -18,6 +22,9 @@ function SelectOption({
   type,
   maxTitleWidth,
   size = "lg",
+  labelClassName,
+  titleClassName,
+  descriptionClassName,
 }: SelectOptionProps) {
   const isSelected = option.value === selectedValue;
   const isDisabled = option.disabled;
@@ -43,7 +50,7 @@ function SelectOption({
     >
       {type === "basic" ? (
         <>
-          <span className="bold-body block truncate">
+          <span className={cn("bold-body block truncate", labelClassName)}>
             {(option as BasicOption).label}
           </span>
           {isSelected && (
@@ -57,14 +64,22 @@ function SelectOption({
           <div className="flex-1 min-w-0 pr-2">
             <div className="flex items-start gap-3">
               <span
-                className="bold-body whitespace-nowrap flex-shrink-0"
+                className={cn(
+                  "bold-body whitespace-nowrap flex-shrink-0",
+                  titleClassName
+                )}
                 style={{
                   width: maxTitleWidth ? `${maxTitleWidth}px` : "auto",
                 }}
               >
                 {(option as RichOption).title}
               </span>
-              <span className="medium-small text-gray-500 leading-relaxed flex-1">
+              <span
+                className={cn(
+                  "medium-small text-gray-500 leading-relaxed flex-1",
+                  descriptionClassName
+                )}
+              >
                 {(option as RichOption).description}
               </span>
             </div>

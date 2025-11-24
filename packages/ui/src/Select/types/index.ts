@@ -26,6 +26,7 @@ export interface BasicSelectProps {
   disabled?: boolean;
   className?: string;
   size?: SelectSize;
+  labelClassName?: string;
 }
 
 // Rich Select Props
@@ -38,6 +39,8 @@ export interface RichSelectProps {
   disabled?: boolean;
   className?: string;
   size?: SelectSize;
+  titleClassName?: string;
+  descriptionClassName?: string;
 }
 
 export type SelectProps = BasicSelectProps | RichSelectProps;

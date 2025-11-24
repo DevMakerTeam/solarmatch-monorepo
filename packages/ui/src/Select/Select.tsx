@@ -10,7 +10,12 @@ import {
 import { Icon } from "../Icon";
 import SelectLabel from "./components/SelectLabel";
 import SelectOption from "./components/SelectOption";
-import { RichOption, SelectProps } from "./types";
+import {
+  BasicSelectProps,
+  RichOption,
+  RichSelectProps,
+  SelectProps,
+} from "./types";
 import { getPaddingClasses, getSizeClasses } from "./utils";
 
 function Select(props: SelectProps, ref: ForwardedRef<HTMLDivElement>) {
@@ -23,6 +28,7 @@ function Select(props: SelectProps, ref: ForwardedRef<HTMLDivElement>) {
     className,
     size = "lg",
     type,
+    ...restProps
   } = props;
 
   const [isOpen, setIsOpen] = useState(false);
@@ -97,6 +103,21 @@ function Select(props: SelectProps, ref: ForwardedRef<HTMLDivElement>) {
       options={options}
       type={type}
       placeholder={placeholder}
+      labelClassName={
+        type === "basic"
+          ? (restProps as BasicSelectProps).labelClassName
+          : undefined
+      }
+      titleClassName={
+        type === "rich"
+          ? (restProps as RichSelectProps).titleClassName
+          : undefined
+      }
+      descriptionClassName={
+        type === "rich"
+          ? (restProps as RichSelectProps).descriptionClassName
+          : undefined
+      }
     />
   );
 
@@ -142,6 +163,21 @@ function Select(props: SelectProps, ref: ForwardedRef<HTMLDivElement>) {
                 type={type}
                 maxTitleWidth={maxTitleWidth}
                 size={size}
+                labelClassName={
+                  type === "basic"
+                    ? (restProps as BasicSelectProps).labelClassName
+                    : undefined
+                }
+                titleClassName={
+                  type === "rich"
+                    ? (restProps as RichSelectProps).titleClassName
+                    : undefined
+                }
+                descriptionClassName={
+                  type === "rich"
+                    ? (restProps as RichSelectProps).descriptionClassName
+                    : undefined
+                }
               />
             ))}
           </div>
