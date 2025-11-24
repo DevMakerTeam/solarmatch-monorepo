@@ -6,14 +6,26 @@ import { FormField } from "@repo/ui/form-field";
 import { Input } from "@repo/ui/input";
 import { Select } from "@repo/ui/select";
 import { Textarea } from "@repo/ui/textarea";
-import { isValidDecimalInput3 } from "@repo/utils";
+import { formatFileSize, isValidDecimalInput3 } from "@repo/utils";
 import { useCompareQuotes } from "./hooks/useCompareQuotes";
 import { Controller, FormProvider } from "react-hook-form";
 import CompareQuotesAddress from "./components/CompareQuotesAddress";
+import Image from "next/image";
 
 const CompareQuotesPage = () => {
-  const { formMethods, handleSubmit } = useCompareQuotes();
-  const { control } = formMethods;
+  const {
+    formMethods,
+    handleSubmit,
+    fileInputRef,
+    openFilePicker,
+    handleFileChange,
+    deleteImage,
+    isUploading,
+    isPostQuotePending,
+    isValid,
+  } = useCompareQuotes();
+  const { control, watch } = formMethods;
+  const imageIds = watch("imageIds");
 
   return (
     <RootLayout>
@@ -208,16 +220,74 @@ const CompareQuotesPage = () => {
                   </span>
                 </div>
 
-                <div className="flex items-center gap-[15px]">
-                  <Button className="button-size-md w-[116px] lg:w-[130px]">
-                    사진 선택
-                  </Button>
-                  <span className="medium-body">선택한 사진.jpg</span>
+                <div className="flex flex-col gap-[12px]">
+                  <div className="flex items-center gap-[15px]">
+                    <Button
+                      className="button-size-md w-[116px] lg:w-[130px]"
+                      type="button"
+                      onClick={openFilePicker}
+                      disabled={isUploading}
+                      isLoading={isUploading}
+                    >
+                      사진 선택
+                    </Button>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept=".jpg,.jpeg,.png,.gif,.webp"
+                      multiple
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                  </div>
                 </div>
+
+                {/* 선택한 사진 리스트 */}
+                {imageIds && imageIds.length > 0 && (
+                  <div className="flex flex-col gap-[12px]">
+                    {imageIds.map(({ id, url, fileName, fileSize }) => (
+                      <div
+                        key={`image-${id}`}
+                        className="flex gap-[15px] pb-[12px] border-b border-border-color"
+                      >
+                        <div className="w-[70px] h-[47px] relative">
+                          <Image
+                            src={url}
+                            alt={`image-${id}`}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+
+                        <div className="flex flex-col justify-between w-full">
+                          <div className="flex items-center justify-between">
+                            <span className="medium-caption">{fileName}</span>
+
+                            <div
+                              onClick={() => deleteImage(id)}
+                              className="rounded-[16px] bg-middle-gray flex items-center justify-center w-[40px] h-[24px] text-white medium-small cursor-pointer hover:bg-deep-gray transition-colors duration-200"
+                            >
+                              삭제
+                            </div>
+                          </div>
+
+                          <span className="medium-small text-middle-gray">
+                            {formatFileSize(fileSize)}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </FormField>
 
-            <Button type="submit" className="button-size-lg lg:button-size-xl">
+            <Button
+              type="submit"
+              className="button-size-lg lg:button-size-xl"
+              isLoading={isPostQuotePending}
+              disabled={!isValid}
+            >
               무료 맞춤 견적 비교받기
             </Button>
           </form>
