@@ -1,13 +1,14 @@
-import { useTestLoginStore } from "@/stores/testLoginStore";
+import { useAuthStatus } from "@/hooks/useAuthStatus";
 import { cn } from "@repo/utils";
 import { useRouter } from "next/router";
 
 const BidList = () => {
   const router = useRouter();
-  const { userType } = useTestLoginStore();
+  const { user } = useAuthStatus();
+  const { partnerStatus } = user || {};
 
   const onClickBidItem = () => {
-    if (userType !== "partner") {
+    if (partnerStatus !== "APPROVED") {
       const currentPath = router.asPath.split("?")[0];
       router.push(`${currentPath}/contract`);
     }
@@ -22,7 +23,7 @@ const BidList = () => {
           <BidItem
             key={`bid-item-${index}`}
             onClickItem={onClickBidItem}
-            userType={userType}
+            userType={partnerStatus === "APPROVED" ? "partner" : "user"}
           />
         ))}
       </div>

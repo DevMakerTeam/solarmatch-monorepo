@@ -1,7 +1,5 @@
 // 회원정보 페이지
-
 import RootLayout from "@/components/Layout/root";
-import { useTestLoginStore } from "@/stores/testLoginStore";
 import { useModals } from "@repo/hooks";
 import { Button } from "@repo/ui/button";
 import { Icon } from "@repo/ui/icon";
@@ -9,9 +7,12 @@ import Link from "next/link";
 import ChangePasswordModal from "./components/ChangePasswordModal";
 import ChangePhoneNumModal from "./components/ChangePhoneNumModal";
 import PartnerInfo from "./components/PartnerInfo";
+import { useAuthStatus } from "@/hooks/useAuthStatus";
 
 const ProfilePage = () => {
-  const { userType } = useTestLoginStore();
+  const { user } = useAuthStatus();
+  const { partnerStatus } = user || {};
+
   const { open: openChangePhoneNumModal, close: closeChangePhoneNumModal } =
     useModals();
   const { open: openChangePasswordModal, close: closeChangePasswordModal } =
@@ -88,7 +89,7 @@ const ProfilePage = () => {
             </Link>
           </div>
 
-          {userType === "partner" && <PartnerInfo />}
+          {partnerStatus === "APPROVED" && <PartnerInfo />}
         </div>
       </div>
     </RootLayout>
