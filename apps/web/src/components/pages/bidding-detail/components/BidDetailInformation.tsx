@@ -2,13 +2,41 @@ import { useModals } from "@repo/hooks";
 import { Icon, IconProps } from "@repo/ui/icon";
 import Image from "next/image";
 import ImagesModal from "./ImagesModal";
+import { QuoteModel } from "@/api/quote/types/model/get-quote-detail-model";
+import { isNotNullish } from "@repo/types";
 
-const BidDetailInformation = () => {
+type BidDetailInformationProps = Partial<
+  Pick<
+    QuoteModel,
+    | "baseAddress"
+    | "detailAddress"
+    | "currentCapacity"
+    | "plannedCapacity"
+    | "monthlyAverageUsage"
+    | "otherRequests"
+    | "imageUrls"
+  >
+>;
+
+const BidDetailInformation = ({
+  baseAddress,
+  detailAddress,
+  currentCapacity,
+  plannedCapacity,
+  monthlyAverageUsage,
+  otherRequests,
+  imageUrls,
+}: BidDetailInformationProps) => {
   const { open, close } = useModals();
 
+  const isImageUrls = isNotNullish(imageUrls) && imageUrls.length > 0;
+
   const onClickOpenImageModal = () => {
+    if (!isImageUrls) return;
+
     open(ImagesModal, {
       onClose: close,
+      imageUrls,
     });
   };
 
@@ -18,13 +46,13 @@ const BidDetailInformation = () => {
         left={{
           iconName: "circleLocation",
           label: "위치",
-          value: "경상북도 성주군",
+          value: `${baseAddress} ${detailAddress}`,
           labelWidth: "short",
         }}
         right={{
           iconName: "bolt",
           label: "현재 한전 용량",
-          value: "99.76kw",
+          value: `${currentCapacity}kw`,
           labelWidth: "long",
         }}
       />
@@ -33,13 +61,13 @@ const BidDetailInformation = () => {
         left={{
           iconName: "bolt",
           label: "용량",
-          value: "99.76kw",
+          value: `${plannedCapacity}kw`,
           labelWidth: "short",
         }}
         right={{
           iconName: "bolt",
           label: "월평균 사용량",
-          value: "99.76kw",
+          value: `${monthlyAverageUsage}kw`,
           labelWidth: "long",
         }}
       />
@@ -50,46 +78,49 @@ const BidDetailInformation = () => {
           label: "기타",
           value: (
             <div className="w-full max-w-[590px] max-h-[80px] h-full overflow-y-auto thin-scrollbar regular-caption lg:regular-body">
-              발전소 대부분은 일반 사업주들의 사업장에 설치되어 있습니다. 상세
-              주소를 공개할 수 없습니다. 발전소 대부분은 일반 사업주들의
-              사업장에 설치되어 있습니다. 상세 주소를 공개할 수 없습니다. 발전소
-              대부분은 일반 사업주들의 사업장에 설치되어 있습니다. 상세 주소를
-              공개할 수 없습니다.
+              {otherRequests}
             </div>
           ),
           labelWidth: "short",
           itemsAlign: "start",
         }}
-        right={{
-          iconName: "photoFile",
-          label: "첨부파일",
-          labelWidth: "long",
-          itemsAlign: "start",
-          value: (
-            <div
-              className="group relative w-[143px] h-[95px] cursor-pointer"
-              onClick={onClickOpenImageModal}
-            >
-              <Image
-                src="/images/orders-detail/image-1.jpg"
-                alt="첨부파일"
-                fill
-                className="object-cover"
-              />
+        right={
+          isImageUrls
+            ? {
+                iconName: "photoFile",
+                label: "첨부파일",
+                labelWidth: "long",
+                itemsAlign: "start",
+                value: (
+                  <div
+                    className="group relative w-[143px] h-[95px] cursor-pointer"
+                    onClick={onClickOpenImageModal}
+                  >
+                    <Image
+                      src={imageUrls[0]}
+                      alt="첨부파일"
+                      fill
+                      className="object-cover"
+                    />
 
-              <div className="absolute right-0 top-0 w-[40px] h-[18px] flex items-center justify-center bg-black/40 text-white medium-small">
-                1/10
-              </div>
+                    <div className="absolute right-0 top-0 w-[40px] h-[18px] flex items-center justify-center bg-black/40 text-white medium-small">
+                      {`1/${imageUrls.length}`}
+                    </div>
 
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <div className="flex flex-col items-center gap-[4px] text-white">
-                  <Icon iconName="magnifyPlus" className="w-[26px] h-[26px]" />
-                  <span className="bold-small">크게보기</span>
-                </div>
-              </div>
-            </div>
-          ),
-        }}
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <div className="flex flex-col items-center gap-[4px] text-white">
+                        <Icon
+                          iconName="magnifyPlus"
+                          className="w-[26px] h-[26px]"
+                        />
+                        <span className="bold-small">크게보기</span>
+                      </div>
+                    </div>
+                  </div>
+                ),
+              }
+            : undefined
+        }
       />
     </div>
   );

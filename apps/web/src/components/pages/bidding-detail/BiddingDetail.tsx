@@ -1,27 +1,61 @@
 // 견적확인 상세 페이지
 import OrdersLayout from "@/components/Layout/bidding";
-import { useRouter } from "next/router";
 import BiddingDetailTop from "./components/BiddingDetailTop";
 import BidDetailInformation from "./components/BidDetailInformation";
 import BidList from "./components/BidList";
 import BidButton from "./components/BidButton";
 import { SolarStructureType } from "@repo/types";
-import { useAuthStatus } from "@/hooks/useAuthStatus";
+import { useBiddingDetail } from "./hooks/useBiddingDetail";
 
 const BiddingDetailPage = () => {
-  const { user } = useAuthStatus();
-  const { partnerStatus } = user || {};
-
-  const router = useRouter();
-  const { type } = router.query;
+  const {
+    type,
+    partnerStatus,
+    quote,
+    bidsList,
+    currentPage,
+    handlePageChange,
+    hasMyBid,
+    isMyQuote,
+    myBidId,
+    totalPages,
+  } = useBiddingDetail();
 
   return (
     <OrdersLayout sideType={type as SolarStructureType}>
       <div className="w-full flex flex-col">
-        <BiddingDetailTop />
-        <BidDetailInformation />
-        <BidList />
-        {partnerStatus === "APPROVED" && <BidButton />}
+        <BiddingDetailTop
+          createdAt={quote?.createdAt}
+          baseAddress={quote?.baseAddress}
+          structureTypeLabel={quote?.structureTypeLabel}
+          plannedCapacity={quote?.plannedCapacity}
+          remainingHours={quote?.remainingHours}
+          status={quote?.status}
+          statusLabel={quote?.statusLabel}
+        />
+        <BidDetailInformation
+          baseAddress={quote?.baseAddress}
+          detailAddress={quote?.detailAddress}
+          currentCapacity={quote?.currentCapacity}
+          plannedCapacity={quote?.plannedCapacity}
+          monthlyAverageUsage={quote?.monthlyAverageUsage}
+          otherRequests={quote?.otherRequests}
+          imageUrls={quote?.imageUrls}
+        />
+        <BidList
+          totalPages={totalPages}
+          bidsList={bidsList}
+          handlePageChange={handlePageChange}
+          currentPage={currentPage}
+        />
+        {partnerStatus === "APPROVED" && (
+          <BidButton
+            hasMyBid={hasMyBid}
+            isMyQuote={isMyQuote}
+            myBidId={myBidId}
+            quoteId={quote?.id}
+          />
+        )}
       </div>
     </OrdersLayout>
   );
