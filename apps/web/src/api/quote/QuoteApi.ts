@@ -4,6 +4,8 @@ import { PostQuoteDto } from "./types/dto/post-quote-dto";
 import { PostQuoteModel } from "./types/model/post-quote-model";
 import { GetQuotesDto } from "./types/dto/get-quotes-dto";
 import { GetQuotesModel } from "./types/model/get-quotes-model";
+import { GetQuoteDetailDto } from "./types/dto/get-quote-detail-dto";
+import { GetQuoteDetailModel } from "./types/model/get-quote-detail-model";
 
 class QuoteApi {
   axios: AxiosInstance = instance;
@@ -28,6 +30,20 @@ class QuoteApi {
       method: "GET",
       url: "/api/quote",
       params: req,
+    });
+
+    return data;
+  };
+
+  // 견적 상세 조회
+  getQuoteDetail = async ({
+    quoteId,
+    ...params
+  }: GetQuoteDetailDto): Promise<GetQuoteDetailModel> => {
+    const { data } = await this.axios({
+      method: "GET",
+      url: `/api/quote/${quoteId}`,
+      params,
     });
 
     return data;

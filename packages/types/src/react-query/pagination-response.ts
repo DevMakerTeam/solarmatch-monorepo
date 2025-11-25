@@ -1,8 +1,8 @@
 import { ApiResponse } from "./api-response";
 
-export type PaginationResponse<
+export type PaginationResponseData<
   T = Record<string, unknown> | string | number | boolean | unknown[],
-> = ApiResponse<{
+> = {
   data: T[];
   total: number;
   page: number;
@@ -10,4 +10,8 @@ export type PaginationResponse<
   totalPages: number;
   hasPrevious: boolean;
   hasNext: boolean;
-}>;
+};
+
+export type PaginationResponse<
+  T = Record<string, unknown> | string | number | boolean | unknown[],
+> = ApiResponse<PaginationResponseData<T>>;
