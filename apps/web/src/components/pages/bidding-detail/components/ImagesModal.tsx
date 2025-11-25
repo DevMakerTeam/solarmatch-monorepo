@@ -5,31 +5,22 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
 
-const ImagesModal = ({ onClose }: Pick<ModalProps, "onClose">) => {
-  const images = [
-    "/images/orders-detail/image-1.jpg",
-    "/images/orders-detail/image-1.jpg",
-    "/images/orders-detail/image-1.jpg",
-    "/images/orders-detail/image-1.jpg",
-    "/images/orders-detail/image-1.jpg",
-    "/images/orders-detail/image-1.jpg",
-    "/images/orders-detail/image-1.jpg",
-    "/images/orders-detail/image-1.jpg",
-    "/images/orders-detail/image-1.jpg",
-    "/images/orders-detail/image-1.jpg",
-  ];
+interface ImagesModalProps extends Pick<ModalProps, "onClose"> {
+  imageUrls: string[];
+}
 
+const ImagesModal = ({ onClose, imageUrls }: ImagesModalProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
   const handlePrev = () => {
     setDirection(-1);
-    setCurrentIndex(prev => (prev === 0 ? images.length - 1 : prev - 1));
+    setCurrentIndex(prev => (prev === 0 ? imageUrls.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
     setDirection(1);
-    setCurrentIndex(prev => (prev === images.length - 1 ? 0 : prev + 1));
+    setCurrentIndex(prev => (prev === imageUrls.length - 1 ? 0 : prev + 1));
   };
 
   const variants = {
@@ -93,7 +84,7 @@ const ImagesModal = ({ onClose }: Pick<ModalProps, "onClose">) => {
                 className="absolute inset-0"
               >
                 <Image
-                  src={images[currentIndex]}
+                  src={imageUrls[currentIndex]}
                   alt="첨부파일"
                   fill
                   className="object-cover"
@@ -103,7 +94,7 @@ const ImagesModal = ({ onClose }: Pick<ModalProps, "onClose">) => {
           </div>
 
           <span className="medium-heading6 text-white text-center">
-            {currentIndex + 1}/{images.length}
+            {currentIndex + 1}/{imageUrls.length}
           </span>
         </div>
 
