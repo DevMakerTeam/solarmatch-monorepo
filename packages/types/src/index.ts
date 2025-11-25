@@ -5,3 +5,4 @@ export * from "./auth";
 export * from "./solar";
 export * from "./quote";
 export * from "./image";
+export * from "./bid";
