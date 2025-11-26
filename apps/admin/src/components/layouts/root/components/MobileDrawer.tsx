@@ -32,6 +32,28 @@ const MobileDrawer = ({ isOpen, onClose }: MobileDrawerProps) => {
     setIsBiddingExpanded(isBiddingRoute);
   }, [isBiddingRoute]);
 
+  // bidding 링크에 쿼리 파라미터 추가
+  const getBiddingLinkWithQuery = (link: string) => {
+    if (!link.startsWith("/bidding/") || !isBiddingRoute) {
+      return link;
+    }
+
+    // page는 제외하고 나머지 쿼리 파라미터 유지
+    const queryParams = new URLSearchParams();
+    Object.entries(router.query).forEach(([key, value]) => {
+      if (key !== "page" && value) {
+        if (Array.isArray(value)) {
+          value.forEach(v => queryParams.append(key, String(v)));
+        } else {
+          queryParams.append(key, String(value));
+        }
+      }
+    });
+
+    const queryString = queryParams.toString();
+    return queryString ? `${link}?${queryString}` : link;
+  };
+
   const isParentActive = (item: NavItem) => {
     if (currentPath === item.link) {
       return true;
@@ -113,7 +135,7 @@ const MobileDrawer = ({ isOpen, onClose }: MobileDrawerProps) => {
           const isActive = isParentActive(item);
           const iconName = ICON_MAP[item.link] ?? "article";
 
-          if (item.link === "/bidding") {
+          if (item.link.startsWith("/bidding/")) {
             return (
               <div
                 key={item.link}
@@ -151,7 +173,7 @@ const MobileDrawer = ({ isOpen, onClose }: MobileDrawerProps) => {
                     {item.links!.map(child => (
                       <li key={child.link} onClick={onClose}>
                         <Link
-                          href={child.link}
+                          href={getBiddingLinkWithQuery(child.link)}
                           className={cn(
                             "transition-colors bold-body",
                             currentPath === child.link
@@ -175,7 +197,7 @@ const MobileDrawer = ({ isOpen, onClose }: MobileDrawerProps) => {
               className="flex flex-col gap-[14px] border-b border-b-white pb-[14px]"
             >
               <Link
-                href={item.link}
+                href={getBiddingLinkWithQuery(item.link)}
                 className="flex items-center gap-[20px] px-[14px] py-[10px]"
               >
                 <Icon
@@ -200,7 +222,7 @@ const MobileDrawer = ({ isOpen, onClose }: MobileDrawerProps) => {
                   {item.links!.map(child => (
                     <li key={child.link} onClick={onClose}>
                       <Link
-                        href={child.link}
+                        href={getBiddingLinkWithQuery(child.link)}
                         className={cn(
                           "transition-colors bold-body",
                           currentPath === child.link
