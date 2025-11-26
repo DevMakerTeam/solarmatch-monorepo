@@ -1,3 +1,10 @@
+import {
+  SolarInstallationType,
+  SolarInstallationTypeLabel,
+  SolarStructureType,
+  SolarStructureTypeLabel,
+} from "../solar";
+
 export const QUOTE_STATUS = {
   WAITING: "WAITING",
   COMPLETED: "COMPLETED",
@@ -15,3 +22,28 @@ export const QUOTE_STATUS_LABELS = {
 } as const satisfies Record<QuoteStatus, string>;
 
 export type QuoteStatusLabel = (typeof QUOTE_STATUS_LABELS)[QuoteStatus];
+
+export type QuoteModel = {
+  id: number;
+  userId: number;
+  userName: string;
+  installationType: SolarInstallationType;
+  installationTypeLabel: SolarInstallationTypeLabel;
+  structureType: SolarStructureType;
+  structureTypeLabel: SolarStructureTypeLabel;
+  baseAddress: string;
+  detailAddress: string;
+  currentCapacity: number;
+  plannedCapacity: number;
+  monthlyAverageUsage: number;
+  otherRequests: string;
+  imageUrls: string[];
+  deadlineHours: number;
+  bidStartDate: string;
+  deadlineDate: string;
+  remainingHours: number;
+  status: QuoteStatus;
+  statusLabel: QuoteStatusLabel;
+  bidCount: number;
+  createdAt: string;
+};

@@ -2,8 +2,7 @@ import { useModals } from "@repo/hooks";
 import { Icon, IconProps } from "@repo/ui/icon";
 import Image from "next/image";
 import ImagesModal from "./ImagesModal";
-import { QuoteModel } from "@/api/quote/types/model/get-quote-detail-model";
-import { isNotNullish } from "@repo/types";
+import { isNotNullish, QuoteModel } from "@repo/types";
 
 type BidDetailInformationProps = Partial<
   Pick<

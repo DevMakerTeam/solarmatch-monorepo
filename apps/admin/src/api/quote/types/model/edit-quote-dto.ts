@@ -1,3 +1,3 @@
 import { ApiResponse, QuoteModel } from "@repo/types";
 
-export type PostQuoteModel = ApiResponse<QuoteModel>;
+export type EditQuoteModel = ApiResponse<QuoteModel>;
