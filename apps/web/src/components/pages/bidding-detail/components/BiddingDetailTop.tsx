@@ -1,5 +1,4 @@
-import { QuoteModel } from "@/api/quote/types/model/get-quote-detail-model";
-import { isNotNullish, QUOTE_STATUS } from "@repo/types";
+import { isNotNullish, QUOTE_STATUS, QuoteModel } from "@repo/types";
 import { cn } from "@repo/utils";
 import dayjs from "dayjs";
 import { useMemo } from "react";
