@@ -11,12 +11,7 @@ import { createPortal } from "react-dom";
 import { Icon } from "../Icon";
 import SelectLabel from "./components/SelectLabel";
 import SelectOption from "./components/SelectOption";
-import {
-  BasicSelectProps,
-  RichOption,
-  RichSelectProps,
-  SelectProps,
-} from "./types";
+import { BasicSelectProps, RichSelectProps, SelectProps } from "./types";
 import { getPaddingClasses, getSizeClasses } from "./utils";
 
 function Select(props: SelectProps, ref: ForwardedRef<HTMLDivElement>) {
@@ -34,19 +29,18 @@ function Select(props: SelectProps, ref: ForwardedRef<HTMLDivElement>) {
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(value || "");
-  const [maxTitleWidth, setMaxTitleWidth] = useState<number | undefined>(
-    undefined
-  );
   const [dropdownPosition, setDropdownPosition] = useState<{
     top: number;
     left: number;
     width: number;
   } | null>(null);
   const selectRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const scrollLockRef = useRef<number | null>(null);
 
   useImperativeHandle(ref, () => selectRef.current as HTMLDivElement, []);
 
-  // 드롭다운 위치 계산 (둘 다 Portal 사용)
+  // 드롭다운 위치 계산 (Radix UI 스타일)
   useEffect(() => {
     if (!isOpen || !selectRef.current) {
       setDropdownPosition(null);
@@ -57,47 +51,116 @@ function Select(props: SelectProps, ref: ForwardedRef<HTMLDivElement>) {
       if (!selectRef.current) return;
 
       const rect = selectRef.current.getBoundingClientRect();
-      // rich 타입일 때는 mt-1 (4px) 간격 유지
-      const marginTop = type === "rich" ? 4 : 4;
-      setDropdownPosition({
-        top: rect.bottom + window.scrollY + marginTop,
-        left: rect.left + window.scrollX,
-        width: rect.width,
-      });
+      const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
+      const spacing = 4;
+      const minTopMargin = 8; // 상단 최소 여백 (뷰포트 경계 방지용)
+
+      // 아래로 열기: 드롭다운 상단 = Select 하단 + spacing (간격: spacing)
+      let top = rect.bottom + window.scrollY + spacing;
+      let left = rect.left + window.scrollX;
+      const width = rect.width;
+
+      // 하단 공간 체크 및 자동 조정
+      const dropdownHeight = contentRef.current?.scrollHeight || 240;
+      const spaceBelow = viewportHeight - rect.bottom;
+
+      if (spaceBelow < dropdownHeight) {
+        // 위로 열기: 드롭다운 하단 = Select 상단 - spacing (간격: spacing)
+        // 드롭다운 상단 = Select 상단 - dropdownHeight - spacing
+        const selectTop = rect.top + window.scrollY;
+        const calculatedTop = selectTop - dropdownHeight - spacing;
+
+        // 뷰포트 상단 경계만 체크 (최소 여백)
+        const minTopAbsolute = window.scrollY + minTopMargin;
+        top = Math.max(minTopAbsolute, calculatedTop);
+      }
+
+      // 좌우 경계 체크
+      if (left + width > viewportWidth) {
+        left = Math.max(0, viewportWidth - width);
+      }
+      if (left < 0) {
+        left = 0;
+      }
+
+      setDropdownPosition({ top, left, width });
     };
 
-    updatePosition();
-    window.addEventListener("scroll", updatePosition, true);
-    window.addEventListener("resize", updatePosition);
+    // 첫 렌더링 후 위치 계산
+    const frameId = requestAnimationFrame(() => {
+      updatePosition();
+      // 드롭다운이 렌더링된 후 한 번 더 업데이트 (실제 높이 반영)
+      setTimeout(updatePosition, 0);
+    });
 
     return () => {
-      window.removeEventListener("scroll", updatePosition, true);
-      window.removeEventListener("resize", updatePosition);
+      cancelAnimationFrame(frameId);
     };
-  }, [isOpen, type]);
+  }, [isOpen]);
 
-  // 외부 클릭 시 Select 닫기 (둘 다 Portal 사용)
+  // 스크롤 잠금 (Radix UI 스타일)
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!selectRef.current) return;
+    if (!isOpen) return;
 
-      const target = event.target as HTMLElement;
-      const dropdown = document.querySelector('[data-select-dropdown="true"]');
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    const scrollY = window.scrollY;
 
-      if (
-        !selectRef.current.contains(target) &&
-        (!dropdown || !dropdown.contains(target))
-      ) {
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+    document.body.style.overflow = "hidden";
+
+    scrollLockRef.current = scrollY;
+
+    return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = originalStyle;
+
+      if (scrollLockRef.current !== null) {
+        window.scrollTo(0, scrollLockRef.current);
+        scrollLockRef.current = null;
+      }
+    };
+  }, [isOpen]);
+
+  // Escape 키로 닫기
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
         setIsOpen(false);
       }
     };
 
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
+    document.addEventListener("keydown", handleEscape);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen]);
+
+  // 외부 클릭 시 Select 닫기 (Radix UI 스타일)
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target as HTMLElement;
+      const content = contentRef.current;
+
+      if (selectRef.current?.contains(target) || content?.contains(target)) {
+        return;
+      }
+
+      setIsOpen(false);
+    };
+
+    // pointerdown을 사용 (Radix UI 스타일)
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
     };
   }, [isOpen]);
 
@@ -105,27 +168,6 @@ function Select(props: SelectProps, ref: ForwardedRef<HTMLDivElement>) {
   useEffect(() => {
     setSelectedValue(value || "");
   }, [value]);
-
-  // rich일 때 title width 계산
-  useEffect(() => {
-    if (type !== "rich") return;
-
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-    if (!context) return;
-
-    context.font = "700 16px Pretendard";
-
-    let maxWidth = 0;
-    options.forEach(option => {
-      const titleWidth = context.measureText(
-        (option as RichOption).title
-      ).width;
-      maxWidth = Math.max(maxWidth, titleWidth);
-    });
-
-    setMaxTitleWidth(Math.ceil(maxWidth) + 8);
-  }, [options, type]);
 
   const handleOptionSelect = (value: string) => {
     setSelectedValue(value);
@@ -197,12 +239,12 @@ function Select(props: SelectProps, ref: ForwardedRef<HTMLDivElement>) {
         />
       </div>
 
-      {/* 둘 다 Portal 사용 (기존 스타일 유지) */}
       {isOpen &&
         dropdownPosition &&
         typeof window !== "undefined" &&
         createPortal(
           <div
+            ref={contentRef}
             data-select-dropdown="true"
             className={cn(
               "fixed bg-white max-h-60 rounded-[12px] text-base border border-border-color focus:outline-none overflow-hidden",
@@ -222,7 +264,6 @@ function Select(props: SelectProps, ref: ForwardedRef<HTMLDivElement>) {
                   selectedValue={selectedValue}
                   onSelect={handleOptionSelect}
                   type={type}
-                  maxTitleWidth={maxTitleWidth}
                   size={size}
                   labelClassName={
                     type === "basic"
