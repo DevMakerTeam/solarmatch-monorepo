@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { createPortal } from "react-dom";
 import { Icon } from "../Icon";
 import SelectLabel from "./components/SelectLabel";
 import SelectOption from "./components/SelectOption";
@@ -36,24 +37,69 @@ function Select(props: SelectProps, ref: ForwardedRef<HTMLDivElement>) {
   const [maxTitleWidth, setMaxTitleWidth] = useState<number | undefined>(
     undefined
   );
+  const [dropdownPosition, setDropdownPosition] = useState<{
+    top: number;
+    left: number;
+    width: number;
+  } | null>(null);
   const selectRef = useRef<HTMLDivElement>(null);
 
   useImperativeHandle(ref, () => selectRef.current as HTMLDivElement, []);
 
-  // 외부 클릭 시 Select 닫기
+  // 드롭다운 위치 계산 (둘 다 Portal 사용)
+  useEffect(() => {
+    if (!isOpen || !selectRef.current) {
+      setDropdownPosition(null);
+      return;
+    }
+
+    const updatePosition = () => {
+      if (!selectRef.current) return;
+
+      const rect = selectRef.current.getBoundingClientRect();
+      // rich 타입일 때는 mt-1 (4px) 간격 유지
+      const marginTop = type === "rich" ? 4 : 4;
+      setDropdownPosition({
+        top: rect.bottom + window.scrollY + marginTop,
+        left: rect.left + window.scrollX,
+        width: rect.width,
+      });
+    };
+
+    updatePosition();
+    window.addEventListener("scroll", updatePosition, true);
+    window.addEventListener("resize", updatePosition);
+
+    return () => {
+      window.removeEventListener("scroll", updatePosition, true);
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [isOpen, type]);
+
+  // 외부 클릭 시 Select 닫기 (둘 다 Portal 사용)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      if (!selectRef.current) return;
+
+      const target = event.target as HTMLElement;
+      const dropdown = document.querySelector('[data-select-dropdown="true"]');
+
       if (
-        selectRef.current &&
-        !selectRef.current.contains(event.target as Node)
+        !selectRef.current.contains(target) &&
+        (!dropdown || !dropdown.contains(target))
       ) {
         setIsOpen(false);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   // value prop 동기화
   useEffect(() => {
@@ -151,38 +197,54 @@ function Select(props: SelectProps, ref: ForwardedRef<HTMLDivElement>) {
         />
       </div>
 
-      {isOpen && (
-        <div className="absolute z-10 mt-1 w-full bg-white max-h-60 rounded-[12px] text-base border border-border-color focus:outline-none overflow-hidden">
-          <div className="py-1 overflow-auto max-h-60">
-            {options.map(option => (
-              <SelectOption
-                key={option.value}
-                option={option}
-                selectedValue={selectedValue}
-                onSelect={handleOptionSelect}
-                type={type}
-                maxTitleWidth={maxTitleWidth}
-                size={size}
-                labelClassName={
-                  type === "basic"
-                    ? (restProps as BasicSelectProps).labelClassName
-                    : undefined
-                }
-                titleClassName={
-                  type === "rich"
-                    ? (restProps as RichSelectProps).titleClassName
-                    : undefined
-                }
-                descriptionClassName={
-                  type === "rich"
-                    ? (restProps as RichSelectProps).descriptionClassName
-                    : undefined
-                }
-              />
-            ))}
-          </div>
-        </div>
-      )}
+      {/* 둘 다 Portal 사용 (기존 스타일 유지) */}
+      {isOpen &&
+        dropdownPosition &&
+        typeof window !== "undefined" &&
+        createPortal(
+          <div
+            data-select-dropdown="true"
+            className={cn(
+              "fixed bg-white max-h-60 rounded-[12px] text-base border border-border-color focus:outline-none overflow-hidden",
+              type === "rich" ? "z-10" : "z-[10] shadow-lg"
+            )}
+            style={{
+              top: `${dropdownPosition.top}px`,
+              left: `${dropdownPosition.left}px`,
+              width: `${dropdownPosition.width}px`,
+            }}
+          >
+            <div className="py-1 overflow-auto max-h-60">
+              {options.map(option => (
+                <SelectOption
+                  key={option.value}
+                  option={option}
+                  selectedValue={selectedValue}
+                  onSelect={handleOptionSelect}
+                  type={type}
+                  maxTitleWidth={maxTitleWidth}
+                  size={size}
+                  labelClassName={
+                    type === "basic"
+                      ? (restProps as BasicSelectProps).labelClassName
+                      : undefined
+                  }
+                  titleClassName={
+                    type === "rich"
+                      ? (restProps as RichSelectProps).titleClassName
+                      : undefined
+                  }
+                  descriptionClassName={
+                    type === "rich"
+                      ? (restProps as RichSelectProps).descriptionClassName
+                      : undefined
+                  }
+                />
+              ))}
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
