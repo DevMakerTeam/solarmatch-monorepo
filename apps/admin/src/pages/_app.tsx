@@ -40,9 +40,8 @@ export default function AdminApp({ Component, pageProps }: CustomAppProps) {
   const authInitialState: AuthState =
     pageProps.authInitialState ?? defaultAuthState;
 
-  const handleAuthStateChange = useCallback((state: AuthState) => {
+  const handleAuthStateChange = useCallback((_: AuthState) => {
     // 필요시 추가 로직 구현
-    console.log(state);
   }, []);
 
   return (

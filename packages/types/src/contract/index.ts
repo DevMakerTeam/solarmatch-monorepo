@@ -1,5 +1,12 @@
 import { SolarInstallationTypeLabel } from "../solar";
 
+export type ConstructionPhotoModel = {
+  contractPhotoId: number;
+  imageId: number;
+  imageUrl: string;
+  isRepresentative: true;
+};
+
 export type ContractModel = {
   contractInfo: {
     contractId: number;
@@ -33,14 +40,7 @@ export type ContractModel = {
     phone: string;
   };
   installationReview: string;
-  constructionPhotos: [
-    {
-      contractPhotoId: number;
-      imageId: number;
-      imageUrl: string;
-      isRepresentative: true;
-    },
-  ];
+  constructionPhotos: ConstructionPhotoModel[];
   createdAt: string;
   updatedAt: string;
 };
