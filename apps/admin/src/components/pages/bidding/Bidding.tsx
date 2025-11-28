@@ -13,7 +13,6 @@ import { Fragment, useMemo } from "react";
 import { useBidding } from "./hooks/useBidding";
 import {
   createColumnHelper,
-  flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -21,6 +20,7 @@ import dayjs from "dayjs";
 import { Select } from "@repo/ui/select";
 import { Pagination } from "@repo/ui/pagination";
 import { Spinner } from "@repo/ui/spinner";
+import AdminTable from "@/components/AdminTable";
 
 interface BiddingPageProps {
   structureType: SolarStructureType;
@@ -206,79 +206,12 @@ const BiddingPage = ({ structureType }: BiddingPageProps) => {
         </div>
       </div>
 
-      <div className="w-full mb-[40px] lg:mb-[54px]">
-        <div className="overflow-x-auto">
-          <table className="w-max min-w-full table-fixed">
-            <colgroup>
-              {table.getHeaderGroups()[0]?.headers.map(header => (
-                <col
-                  key={header.id}
-                  style={{
-                    width: `${100 / table.getHeaderGroups()[0]?.headers.length}%`,
-                  }}
-                />
-              ))}
-            </colgroup>
-            <thead className="bg-primary text-white text-nowrap">
-              {table.getHeaderGroups().map(headerGroup => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header, index) => {
-                    const isFirst = index === 0;
-                    const isLast = index === headerGroup.headers.length - 1;
-                    return (
-                      <th
-                        key={header.id}
-                        className={cn(
-                          "text-left box-border py-[15px] px-4 first:rounded-l-[4px] last:rounded-r-[4px]",
-                          isFirst && "pl-12",
-                          isLast && "pr-12"
-                        )}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </th>
-                    );
-                  })}
-                </tr>
-              ))}
-            </thead>
-            <tbody className="bold-body">
-              {table.getRowModel().rows.map(row => (
-                <tr
-                  key={row.id}
-                  className="border-b border-border-color cursor-pointer hover:bg-light-gray transition-colors"
-                >
-                  {row.getVisibleCells().map((cell, index) => {
-                    const isFirst = index === 0;
-                    const isLast = index === row.getVisibleCells().length - 1;
-                    const isDeadlineHour = cell.column.id === "deadlineHour";
-                    return (
-                      <td
-                        key={cell.id}
-                        className={cn(
-                          "box-border py-[15px] px-4",
-                          isFirst && "pl-12",
-                          isLast && "pr-12",
-                          isDeadlineHour && "relative"
-                        )}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <AdminTable
+        table={table}
+        getCellClassName={cell =>
+          cell.column.id === "deadlineHour" ? "relative" : ""
+        }
+      />
 
       <Pagination
         currentPage={currentPage}
