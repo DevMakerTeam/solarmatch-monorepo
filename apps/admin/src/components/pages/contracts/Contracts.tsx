@@ -21,7 +21,8 @@ const ContractsPage = () => {
     createColumnHelper<GetContractsModel["data"]["data"][number]>();
   const columns = useMemo(() => {
     return [
-      columnHelper.accessor("companyName", {
+      columnHelper.accessor("contractName", {
+        id: "contractName",
         header: "구분",
         cell: info => info.getValue(),
       }),
@@ -42,7 +43,7 @@ const ContractsPage = () => {
         cell: info => dayjs(info.getValue()).format("YYYY-MM-DD"),
       }),
       columnHelper.accessor("contractAmount", {
-        header: "계약 일자",
+        header: "계약 금액(만원)",
         cell: info =>
           info.getValue().toLocaleString("ko-KR", { currency: "KRW" }),
       }),
