@@ -1,142 +1,145 @@
-import { Fragment, useMemo, useState } from "react";
+import { useMemo } from "react";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+import { Spinner } from "@repo/ui/spinner";
 
-export type ChartRange = "daily" | "weekly" | "monthly";
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
-export type ChartDatum = {
+type BiddingStatsChartData = {
   label: string;
-  value: number;
+  date: string;
+  count: number;
 };
 
 type BiddingStatsChartProps = {
-  title: string;
-  data: Record<ChartRange, ChartDatum[]>;
-  initialRange?: ChartRange;
+  chartData?: BiddingStatsChartData[];
+  isLoading?: boolean;
 };
 
-const RANGE_TABS: { label: string; value: ChartRange }[] = [
-  { label: "일간", value: "daily" },
-  { label: "주간", value: "weekly" },
-  { label: "월간", value: "monthly" },
-];
-
-const GRID_LEVELS = 4;
-
 const BiddingStatsChart = ({
-  title,
-  data,
-  initialRange = "daily",
+  chartData,
+  isLoading,
 }: BiddingStatsChartProps) => {
-  const [activeRange, setActiveRange] = useState<ChartRange>(initialRange);
+  // 차트 옵션
+  const chartOptions = useMemo(
+    () => ({
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          enabled: true,
+        },
+      },
+      scales: {
+        x: {
+          grid: {
+            display: false,
+          },
+          ticks: {
+            font: {
+              size: 12,
+            },
+          },
+        },
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: "rgba(0, 0, 0, 0.1)",
+          },
+          ticks: {
+            font: {
+              size: 12,
+            },
+          },
+        },
+      },
+    }),
+    []
+  );
 
-  const activeData = useMemo(() => data[activeRange], [activeRange, data]);
+  // 차트 데이터 구성
+  const chartDataConfig = useMemo(() => {
+    if (!chartData || chartData.length === 0) {
+      return {
+        labels: [] as string[],
+        datasets: [
+          {
+            label: "입찰 건수",
+            data: [] as number[],
+            backgroundColor: "rgba(0, 0, 0, 0.1)",
+          },
+        ],
+        maxY: 1,
+      };
+    }
 
-  const maxValue = useMemo(() => {
-    const highest = Math.max(...activeData.map(item => item.value), 0);
-    return highest === 0 ? 1 : highest;
-  }, [activeData]);
+    const labels = chartData.map(item => item.label);
+    const data = chartData.map(item => item.count);
 
-  const gridLabels = useMemo(() => {
-    return Array.from({ length: GRID_LEVELS + 1 }, (_, index) => {
-      const ratio = 1 - index / GRID_LEVELS;
-      return Math.round(maxValue * ratio);
-    });
-  }, [maxValue]);
+    // 최대값 계산
+    const maxValue = Math.max(...data, 0);
+    const maxY = maxValue === 0 ? 1 : Math.ceil(maxValue * 1.2);
 
-  const zeroLabel = gridLabels[gridLabels.length - 1];
-  const gridTicks = gridLabels.slice(0, -1);
+    return {
+      labels,
+      datasets: [
+        {
+          label: "입찰 건수",
+          data,
+          backgroundColor: data.map((_, index) =>
+            index % 2 === 0 ? "rgba(0, 4, 64, 1)" : "rgba(182, 183, 185, 1)"
+          ),
+          maxBarThickness: 50,
+        },
+      ],
+      maxY,
+    };
+  }, [chartData]);
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-[240px] flex justify-center items-center">
+        <Spinner size="lg" className="text-primary" />
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col">
-      <div className="flex items-center justify-between gap-[12px] mb-[35px] lg:mb-[28px]">
-        <span className="bold-heading6 text-primary">{title}</span>
-        <div className="flex items-center gap-[12px]">
-          {RANGE_TABS.map((range, index) => {
-            const isActive = activeRange === range.value;
-            return (
-              <Fragment key={range.value}>
-                {index > 0 ? (
-                  <hr
-                    role="separator"
-                    aria-hidden="true"
-                    className="h-[16px] w-[1px] bg-primary"
-                  />
-                ) : null}
-                <button
-                  type="button"
-                  aria-pressed={isActive}
-                  onClick={() => setActiveRange(range.value)}
-                  className={`bold-body transition-colors duration-200 cursor-pointer ${
-                    isActive
-                      ? "text-primary"
-                      : "text-primary/40 hover:text-primary"
-                  }`}
-                >
-                  {range.label}
-                </button>
-              </Fragment>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="flex h-[240px] w-full flex-col">
-        <div className="relative flex-1">
-          <div className="absolute inset-0 flex">
-            <div className="flex w-[28px] flex-col justify-between text-center text-xs text-[#0A0A0A]">
-              {gridTicks.map(label => (
-                <span key={label}>{label}</span>
-              ))}
-              <span>{zeroLabel}</span>
-            </div>
-            <div className="flex-1 flex flex-col justify-between">
-              {gridTicks.map(label => (
-                <div
-                  key={label}
-                  className="h-[1px] w-full border-t border-primary/10"
-                />
-              ))}
-              <div className="h-[1px] w-full border-t border-primary" />
-            </div>
-          </div>
-
-          <div className="relative z-[1] flex h-full w-full items-end gap-[8px] pl-[28px] pr-[8px] pb-[1px] lg:gap-[16px] lg:pl-[40px] lg:pr-[12px]">
-            {activeData.map((item, index) => {
-              const normalized = item.value / maxValue;
-              const barHeight = normalized * 100;
-              const isPrimary = index % 2 === 0;
-
-              return (
-                <div
-                  key={item.label}
-                  className="flex h-full flex-1 items-end justify-center"
-                >
-                  <div
-                    className={`w-[20px] transition-all duration-200 lg:w-[50px] ${
-                      item.value === 0
-                        ? "bg-transparent"
-                        : isPrimary
-                          ? "bg-primary"
-                          : "bg-primary/30"
-                    }`}
-                    style={{ height: `${barHeight}%` }}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-[8px] flex w-full gap-[8px] pl-[28px] pr-[8px] lg:gap-[16px] lg:pl-[40px] lg:pr-[12px]">
-        {activeData.map(item => (
-          <span
-            key={item.label}
-            className="flex-1 text-center text-xs font-semibold text-primary/80 lg:text-sm"
-          >
-            {item.label}
-          </span>
-        ))}
-      </div>
+    <div className="w-full h-[240px]">
+      <Bar
+        data={{
+          labels: chartDataConfig.labels,
+          datasets: chartDataConfig.datasets,
+        }}
+        options={{
+          ...chartOptions,
+          scales: {
+            ...chartOptions.scales,
+            y: {
+              ...chartOptions.scales.y,
+              max: chartDataConfig.maxY,
+            },
+          },
+        }}
+      />
     </div>
   );
 };

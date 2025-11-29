@@ -33,3 +33,4 @@ export { default as editNote } from "./editNote.svg";
 export { default as editPencil } from "./editPencil.svg";
 export { default as photo } from "./photo.svg";
 export { default as nonData } from "./nonData.svg";
+export { default as calendar } from "./calendar.svg";

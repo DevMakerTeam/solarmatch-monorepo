@@ -8,6 +8,8 @@ export const USERS_API_QUERY_KEY = {
   GET_USER_DETAIL: (params?: Parameter<typeof usersApi.getUserDetail>) =>
     ["get-user-detail", params].filter(isNotNullish),
   USERS_STATS_TODAY_REGISTRATIONS: () => ["users-stats-today-registrations"],
+  USERS_STATS_BIDS: (params?: Parameter<typeof usersApi.usersStatsBids>) =>
+    ["users-stats-bids", params].filter(isNotNullish),
 };
 
 // 회원 목록 조회
@@ -42,6 +44,18 @@ export const useUsersStatsTodayRegistrationsQuery = (
   return useQuery({
     queryKey,
     queryFn: () => usersApi.usersStatsTodayRegistrations(),
+    ...params?.options,
+  });
+};
+
+// 입찰 건수 통계 조회
+export const useUsersStatsBidsQuery = (
+  params: UseQueryParams<typeof usersApi.usersStatsBids>
+) => {
+  const queryKey = USERS_API_QUERY_KEY.USERS_STATS_BIDS(params?.variables);
+  return useQuery({
+    queryKey,
+    queryFn: () => usersApi.usersStatsBids(params.variables),
     ...params?.options,
   });
 };

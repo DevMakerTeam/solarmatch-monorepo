@@ -10,6 +10,8 @@ import { UsersExcelDownloadDto } from "./types/dto/users-excel-download-dto";
 import { UsersExcelDownloadModel } from "./types/model/users-excel-download-model";
 import { UsersStatsTodayRegistrationsModel } from "./types/model/users-stats-today-registrations-model";
 import { GetUserDetailDto } from "./types/dto/get-user-detail-dto";
+import { UsersStatsBidsDto } from "./types/dto/users-stats-bids-dto";
+import { UsersStatsBidsModel } from "./types/model/users-stats-bids-model";
 
 class UsersApi {
   axios: AxiosInstance = instance;
@@ -93,6 +95,19 @@ class UsersApi {
 
       return data;
     };
+
+  // 입찰 건수 통계 조회
+  usersStatsBids = async (
+    params: UsersStatsBidsDto
+  ): Promise<UsersStatsBidsModel> => {
+    const { data } = await this.axios({
+      method: "GET",
+      url: "/api/admin/users/stats/bids",
+      params,
+    });
+
+    return data;
+  };
 }
 
 const usersApi = new UsersApi();
