@@ -27,19 +27,24 @@ export const useBidding = (structureType: SolarStructureType) => {
     return installationTypeParam || SOLAR_INSTALLATION_TYPES.ROOF;
   }, [installationTypeParam]);
 
-  const { data: quotesData } = useGetQuotesQuery({
-    options: {
-      enabled: !!currentPage,
-    },
-    variables: {
-      structureType,
-      installationType,
-      page: currentPage,
-      size: PAGE_SIZE,
-    },
-  });
+  const { data: quotesData, isLoading: isQuotesListLoading } =
+    useGetQuotesQuery({
+      options: {
+        enabled: !!currentPage,
+      },
+      variables: {
+        structureType,
+        installationType,
+        page: currentPage,
+        size: PAGE_SIZE,
+      },
+    });
   const { data: quotesPagination } = quotesData || {};
-  const { data: quotesList, totalPages } = quotesPagination || {};
+  const {
+    data: quotesList,
+    totalPages,
+    total: totalCount,
+  } = quotesPagination || {};
 
   // installationType 변경 함수
   const handleInstallationTypeChange = useCallback(
@@ -96,5 +101,7 @@ export const useBidding = (structureType: SolarStructureType) => {
     quotesList,
     editQuote,
     isEditQuotePending,
+    isQuotesListLoading,
+    totalCount,
   };
 };

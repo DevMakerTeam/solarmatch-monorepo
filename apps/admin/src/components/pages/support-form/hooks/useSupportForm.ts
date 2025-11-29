@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { useModals } from "@repo/hooks";
 import { ConfirmModal } from "@repo/ui/modal";
 import { useQueryClient } from "@tanstack/react-query";
+import { isNotNullish } from "@repo/types";
 
 export const useSupportForm = () => {
   const queryClient = useQueryClient();
@@ -21,12 +22,13 @@ export const useSupportForm = () => {
   const isRouterReady = router.isReady;
 
   // QnA 상세 조회
-  const { data: qnaDetailData } = useGetQnaDetailQuery({
-    options: {
-      enabled: !!idSlot,
-    },
-    variables: Number(idSlot),
-  });
+  const { data: qnaDetailData, isLoading: isQnaDetailLoading } =
+    useGetQnaDetailQuery({
+      options: {
+        enabled: !!idSlot,
+      },
+      variables: Number(idSlot),
+    });
   const { data: qnaDetail } = qnaDetailData || {};
   const { answer: detailAnswer, question: detailQuestion } = qnaDetail || {};
 
@@ -36,7 +38,7 @@ export const useSupportForm = () => {
     formState: { isValid, isDirty },
     reset,
   } = formMethods;
-  const isEditMode = !!idSlot;
+  const isEditMode = isNotNullish(idSlot);
   const isFormEditDirty = !isEditMode || isDirty;
   const isFormValid = isValid && isRouterReady && isFormEditDirty;
   useEffect(() => {
@@ -108,5 +110,6 @@ export const useSupportForm = () => {
     detailQuestion,
     isFormValid,
     isLoading,
+    isQnaDetailLoading: isEditMode && isQnaDetailLoading,
   };
 };

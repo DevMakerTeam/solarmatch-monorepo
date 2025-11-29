@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSupport } from "./hooks/useSupport";
 import { Pagination } from "@repo/ui/pagination";
+import AdminLoading from "@/components/AdminLoading";
 
 const SupportPage = () => {
   const {
@@ -15,7 +16,12 @@ const SupportPage = () => {
     handlePageChange,
     faqAccordion,
     handleDeleteQna,
+    isQnaListLoading,
   } = useSupport();
+
+  if (isQnaListLoading) {
+    return <AdminLoading />;
+  }
 
   return (
     <AdminRootLayout>
@@ -27,6 +33,7 @@ const SupportPage = () => {
 
           <div className="flex gap-[13px] items-center">
             <span>(대표번호 02-123-4567)</span>
+
             {/* <Button
               variant="ghost"
               icon={

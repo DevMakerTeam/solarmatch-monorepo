@@ -11,11 +11,18 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { Pagination } from "@repo/ui/pagination";
 import AdminTable from "@/components/AdminTable";
+import AdminLoading from "@/components/AdminLoading";
 
 const ContractsPage = () => {
   const router = useRouter();
-  const { contractsList, totalPages, currentPage, handlePageChange } =
-    useContracts();
+  const {
+    contractsList,
+    totalPages,
+    currentPage,
+    handlePageChange,
+    isContractsListLoading,
+    totalCount,
+  } = useContracts();
 
   const columnHelper =
     createColumnHelper<GetContractsModel["data"]["data"][number]>();
@@ -63,6 +70,10 @@ const ContractsPage = () => {
     [router]
   );
 
+  if (isContractsListLoading) {
+    return <AdminLoading />;
+  }
+
   return (
     <AdminRootLayout>
       <h1 className="mb-[16px] lg:mb-[50px] bold-heading6 lg:bold-heading5 text-primary">
@@ -70,14 +81,20 @@ const ContractsPage = () => {
       </h1>
 
       {/* 테이블 */}
-      <AdminTable table={table} onRowClick={handleRowClick} />
+      <AdminTable
+        table={table}
+        onRowClick={handleRowClick}
+        nonDataText="계약 데이터가 없습니다."
+      />
 
       {/* pagination */}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages ?? 1}
-        onPageChange={handlePageChange}
-      />
+      {!!totalCount && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages ?? 1}
+          onPageChange={handlePageChange}
+        />
+      )}
     </AdminRootLayout>
   );
 };

@@ -5,10 +5,21 @@ import { Textarea } from "@repo/ui/textarea";
 import { useSupportForm } from "./hooks/useSupportForm";
 import { Controller } from "react-hook-form";
 import { FormHelper } from "@repo/ui/form-helper";
+import AdminLoading from "@/components/AdminLoading";
 
 export const SupportFormPage = () => {
-  const { control, handleCancel, handleSubmit, isFormValid, isLoading } =
-    useSupportForm();
+  const {
+    control,
+    handleCancel,
+    handleSubmit,
+    isFormValid,
+    isLoading,
+    isQnaDetailLoading,
+  } = useSupportForm();
+
+  if (isQnaDetailLoading) {
+    return <AdminLoading />;
+  }
 
   return (
     <AdminRootLayout>

@@ -11,6 +11,7 @@ import { cn, formatPhoneNumberKR } from "@repo/utils";
 import { Controller, FormProvider } from "react-hook-form";
 import Image from "next/image";
 import { Spinner } from "@repo/ui/spinner";
+import AdminLoading from "@/components/AdminLoading";
 
 const ORIGIN_OPTIONS: BasicOption[] = [
   { value: "국내산", label: "국내산" },
@@ -33,7 +34,13 @@ const ContractDetailPage = () => {
     deleteUploadedPhoto,
     isDirty,
     isEditing,
+    isContractDetailLoading,
   } = useContractDetail();
+
+  if (isContractDetailLoading) {
+    return <AdminLoading />;
+  }
+
   const {
     control,
     register,

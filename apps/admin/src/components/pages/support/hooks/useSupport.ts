@@ -12,7 +12,7 @@ export const useSupport = () => {
   const queryClient = useQueryClient();
 
   // QnA 목록 조회
-  const { data } = useGetQnaListQuery({
+  const { data, isLoading: isQnaListLoading } = useGetQnaListQuery({
     options: {
       enabled: !!currentPage,
     },
@@ -49,5 +49,6 @@ export const useSupport = () => {
     handlePageChange,
     faqAccordion,
     handleDeleteQna,
+    isQnaListLoading,
   };
 };

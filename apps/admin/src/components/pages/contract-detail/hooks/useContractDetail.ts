@@ -22,12 +22,13 @@ export const useContractDetail = () => {
   };
 
   // 계약 상세 조회 (관리자)
-  const { data: contractDetailData } = useGetContractDetailQuery({
-    variables: Number(contractIdSlot),
-    options: {
-      enabled: !!contractId,
-    },
-  });
+  const { data: contractDetailData, isLoading: isContractDetailLoading } =
+    useGetContractDetailQuery({
+      variables: Number(contractIdSlot),
+      options: {
+        enabled: !!contractId,
+      },
+    });
   const { data: contractDetail } = contractDetailData || {};
 
   // 계약 상세 폼
@@ -220,5 +221,6 @@ export const useContractDetail = () => {
     deleteUploadedPhoto,
     isDirty: isFormDirty,
     isEditing,
+    isContractDetailLoading,
   };
 };

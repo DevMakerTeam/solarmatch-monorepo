@@ -89,11 +89,7 @@ const UsersPage = () => {
       </div>
 
       {/* list */}
-      <UserList
-        table={table}
-        handleRowClick={handleRowClick}
-        totalCount={totalCount}
-      />
+      <UserList table={table} handleRowClick={handleRowClick} />
 
       {/* pagination */}
       {!!totalCount && (

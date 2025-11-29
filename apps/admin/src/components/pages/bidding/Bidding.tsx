@@ -21,6 +21,7 @@ import { Select } from "@repo/ui/select";
 import { Pagination } from "@repo/ui/pagination";
 import { Spinner } from "@repo/ui/spinner";
 import AdminTable from "@/components/AdminTable";
+import AdminLoading from "@/components/AdminLoading";
 
 interface BiddingPageProps {
   structureType: SolarStructureType;
@@ -85,6 +86,8 @@ const BiddingPage = ({ structureType }: BiddingPageProps) => {
     handlePageChange,
     editQuote,
     isEditQuotePending,
+    isQuotesListLoading,
+    totalCount,
   } = useBidding(structureType);
 
   const columnHelper = createColumnHelper<QuoteModel>();
@@ -162,6 +165,10 @@ const BiddingPage = ({ structureType }: BiddingPageProps) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  if (isQuotesListLoading) {
+    return <AdminLoading />;
+  }
+
   return (
     <AdminRootLayout>
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-[16px] mb-[36px] lg:mb-[50px]">
@@ -208,16 +215,19 @@ const BiddingPage = ({ structureType }: BiddingPageProps) => {
 
       <AdminTable
         table={table}
+        nonDataText="견적 데이터가 없습니다."
         getCellClassName={cell =>
           cell.column.id === "deadlineHour" ? "relative" : ""
         }
       />
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages ?? 1}
-        onPageChange={handlePageChange}
-      />
+      {!!totalCount && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages ?? 1}
+          onPageChange={handlePageChange}
+        />
+      )}
     </AdminRootLayout>
   );
 };

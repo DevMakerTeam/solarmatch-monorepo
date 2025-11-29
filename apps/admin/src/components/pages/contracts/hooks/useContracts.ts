@@ -7,7 +7,7 @@ export const useContracts = () => {
   const { currentPage, handlePageChange } = usePageUrl();
 
   // 계약 목록 조회 (관리자)
-  const { data } = useGetContractsQuery({
+  const { data, isLoading: isContractsListLoading } = useGetContractsQuery({
     options: {
       enabled: !!currentPage,
     },
@@ -17,12 +17,18 @@ export const useContracts = () => {
     },
   });
   const { data: contractsPagination } = data || {};
-  const { data: contractsList, totalPages } = contractsPagination || {};
+  const {
+    data: contractsList,
+    totalPages,
+    total: totalCount,
+  } = contractsPagination || {};
 
   return {
     contractsList,
     totalPages,
     currentPage,
     handlePageChange,
+    isContractsListLoading,
+    totalCount,
   };
 };
