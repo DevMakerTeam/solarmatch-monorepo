@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { LINKS, NavItem } from "../constants";
+import { useLogout } from "@/hooks/useLogout";
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -25,6 +26,7 @@ const MobileDrawer = ({ isOpen, onClose }: MobileDrawerProps) => {
   const isBiddingRoute =
     currentPath === "/bidding" || currentPath.startsWith("/bidding/");
   const isHomeActive = currentPath === "/";
+  const { logout, isPending: isLogoutPending } = useLogout();
 
   const [isBiddingExpanded, setIsBiddingExpanded] = useState(isBiddingRoute);
 
@@ -56,6 +58,11 @@ const MobileDrawer = ({ isOpen, onClose }: MobileDrawerProps) => {
 
   const isParentActive = (item: NavItem) => {
     if (currentPath === item.link) {
+      return true;
+    }
+
+    // 하위 경로인 경우도 활성화 (예: /users/11 → /users 활성화)
+    if (currentPath.startsWith(item.link + "/")) {
       return true;
     }
 
@@ -239,6 +246,23 @@ const MobileDrawer = ({ isOpen, onClose }: MobileDrawerProps) => {
             </div>
           );
         })}
+
+        <div className="border-b border-b-white pb-[14px]">
+          <button
+            type="button"
+            onClick={logout}
+            disabled={isLogoutPending}
+            className="group flex items-center gap-[20px] px-[14px] py-[10px] w-full text-left disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Icon
+              iconName="logout"
+              className={cn("w-[24px] h-[24px] transition-colors text-white")}
+            />
+            <span className={cn("bold-heading6 transition-colors text-white")}>
+              로그아웃
+            </span>
+          </button>
+        </div>
       </nav>
     </Drawer>
   );
