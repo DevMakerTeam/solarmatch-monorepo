@@ -3,6 +3,7 @@ import {
   useGetContractDetailQuery,
 } from "@/api/contract/ContractApi.query";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { useContractDetailForm } from "./useContractDetailForm";
 import { useImageUploadMutation } from "@/api/image/ImageApi.mutation";
 import { useImageFilePicker } from "@repo/hooks";
@@ -32,17 +33,36 @@ export const useContractDetail = () => {
   // 계약 상세 폼
   const formMethods = useContractDetailForm({
     defaultValues: {
-      solarModule: contractDetail?.bidInfo?.solarModule || "",
-      solarModuleOrigin: contractDetail?.bidInfo?.solarModuleOrigin || "국내산",
-      inverter: contractDetail?.bidInfo?.inverter || "",
-      inverterOrigin: contractDetail?.bidInfo?.inverterOrigin || "국내산",
-      structure: contractDetail?.bidInfo?.structure || "",
-      installationReview: contractDetail?.installationReview || "",
+      solarModule: "",
+      solarModuleOrigin: "국내산",
+      inverter: "",
+      inverterOrigin: "국내산",
+      structure: "",
+      installationReview: "",
       addPhotoImageIds: undefined,
       deletePhotoIds: undefined,
       uploadedPhotos: undefined,
     },
   });
+
+  // contractDetail이 로드되면 폼 초기화
+  useEffect(() => {
+    if (contractDetail) {
+      formMethods.reset({
+        solarModule: contractDetail.bidInfo?.solarModule || "",
+        solarModuleOrigin:
+          contractDetail.bidInfo?.solarModuleOrigin || "국내산",
+        inverter: contractDetail.bidInfo?.inverter || "",
+        inverterOrigin: contractDetail.bidInfo?.inverterOrigin || "국내산",
+        structure: contractDetail.bidInfo?.structure || "",
+        installationReview: contractDetail.installationReview || "",
+        addPhotoImageIds: undefined,
+        deletePhotoIds: undefined,
+        uploadedPhotos: undefined,
+      });
+    }
+  }, [contractDetail, formMethods]);
+
   const {
     setValue,
     getValues,
@@ -62,7 +82,7 @@ export const useContractDetail = () => {
       (uploadedPhotos && uploadedPhotos.length > 0)
   );
 
-  // 최종 dirty 상태 (기본 필드 변경 또는 이미지 변경 시)
+  // 최종 dirty 상태 (디폴트값에서 변경된 경우만)
   const isFormDirty = isDirty || hasImageChanges;
 
   const { mutate: editContractMutation, isPending: isEditing } =
@@ -110,10 +130,19 @@ export const useContractDetail = () => {
 
     editContractMutation(submitData, {
       onSuccess: () => {
-        // 이미지 관련 필드 초기화 (저장된 이미지는 제거)
-        setValue("addPhotoImageIds", undefined, { shouldDirty: true });
-        setValue("deletePhotoIds", undefined, { shouldDirty: true });
-        setValue("uploadedPhotos", undefined, { shouldDirty: true });
+        // 폼을 최신 데이터로 리셋
+        formMethods.reset({
+          solarModule: contractDetail?.bidInfo?.solarModule || "",
+          solarModuleOrigin:
+            contractDetail?.bidInfo?.solarModuleOrigin || "국내산",
+          inverter: contractDetail?.bidInfo?.inverter || "",
+          inverterOrigin: contractDetail?.bidInfo?.inverterOrigin || "국내산",
+          structure: contractDetail?.bidInfo?.structure || "",
+          installationReview: contractDetail?.installationReview || "",
+          addPhotoImageIds: undefined,
+          deletePhotoIds: undefined,
+          uploadedPhotos: undefined,
+        });
       },
     });
   });
