@@ -256,9 +256,15 @@ const MobileDrawer = ({ isOpen, onClose }: MobileDrawerProps) => {
           >
             <Icon
               iconName="logout"
-              className={cn("w-[24px] h-[24px] transition-colors text-white")}
+              className={cn(
+                "w-[24px] h-[24px] transition-colors text-white/60"
+              )}
             />
-            <span className={cn("bold-heading6 transition-colors text-white")}>
+            <span
+              className={cn(
+                "bold-heading6 transition-colors text-white/60 hover:text-white"
+              )}
+            >
               로그아웃
             </span>
           </button>
