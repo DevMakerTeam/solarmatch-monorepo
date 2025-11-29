@@ -84,7 +84,7 @@ const MobileDrawer = ({ isOpen, onClose }: MobileDrawerProps) => {
         tablet: 1,
       }}
       animationDuration={150}
-      className="bg-primary"
+      className="bg-primary overflow-y-auto"
     >
       <div className="w-full h-[64px] flex items-center justify-between px-[16px]">
         <Button
