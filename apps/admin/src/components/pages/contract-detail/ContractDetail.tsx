@@ -14,7 +14,7 @@ import { Spinner } from "@repo/ui/spinner";
 
 const ORIGIN_OPTIONS: BasicOption[] = [
   { value: "국내산", label: "국내산" },
-  { value: "수입산", label: "수입산" },
+  { value: "중국산", label: "중국산" },
 ];
 
 const ContractDetailPage = () => {
