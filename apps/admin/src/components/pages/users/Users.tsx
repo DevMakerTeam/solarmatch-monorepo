@@ -96,11 +96,13 @@ const UsersPage = () => {
       />
 
       {/* pagination */}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
+      {!!totalCount && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
     </AdminRootLayout>
   );
 };
