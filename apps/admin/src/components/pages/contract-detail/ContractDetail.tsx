@@ -80,11 +80,8 @@ const ContractDetailPage = () => {
             </Button>
           </div>
 
-          {/*  */}
           <div className="flex flex-col w-full gap-[32px] lg:gap-[64px]">
-            {/* info */}
             <div className="flex flex-col lg:justify-between  lg:flex-row gap-[32px] lg:gap-[120px] overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] [&_*[data-select-dropdown]]:!overflow-visible">
-              {/* 계약정보 */}
               <div className="lg:min-w-[400px] lg:max-w-[400px]">
                 <InfoSection
                   title="계약 정보"
@@ -131,9 +128,7 @@ const ContractDetailPage = () => {
                 />
               </div>
 
-              {/* 입찰정보 , 고객정보 */}
               <div className="flex flex-col gap-[32px] lg:gap-[64px] lg:min-w-[330px] lg:max-w-[330px]">
-                {/* 입찰 정보 */}
                 <InfoSection
                   title="입찰 정보"
                   items={[
@@ -159,31 +154,6 @@ const ContractDetailPage = () => {
                   ]}
                 />
 
-                {/* 고객정보 */}
-                <InfoSection
-                  title="고객 정보"
-                  items={[
-                    {
-                      field: "이름",
-                      value: contractDetail?.customerInfo?.name,
-                    },
-                    {
-                      field: "이메일",
-                      value: contractDetail?.customerInfo?.email,
-                    },
-                    {
-                      field: "휴대전화 번호",
-                      value: formatPhoneNumberKR(
-                        contractDetail?.customerInfo?.phone ?? ""
-                      ),
-                    },
-                  ]}
-                />
-              </div>
-
-              {/* 시공 자재 , 설치 후기 */}
-              <div className="flex flex-col gap-[32px] lg:gap-[64px] lg:min-w-[400px] lg:max-w-[400px]">
-                {/* 시공 자재 */}
                 <InfoSection
                   title="시공 자재"
                   items={[
@@ -255,8 +225,29 @@ const ContractDetailPage = () => {
                     },
                   ]}
                 />
+              </div>
 
-                {/* 설치후기 */}
+              <div className="flex flex-col gap-[32px] lg:gap-[64px] lg:min-w-[400px] lg:max-w-[400px]">
+                <InfoSection
+                  title="고객 정보"
+                  items={[
+                    {
+                      field: "이름",
+                      value: contractDetail?.customerInfo?.name,
+                    },
+                    {
+                      field: "이메일",
+                      value: contractDetail?.customerInfo?.email,
+                    },
+                    {
+                      field: "휴대전화 번호",
+                      value: formatPhoneNumberKR(
+                        contractDetail?.customerInfo?.phone ?? ""
+                      ),
+                    },
+                  ]}
+                />
+
                 <div className="flex flex-col gap-[24px] lg:gap-[40px]">
                   <SectionHeader title="설치 후기" />
                   <Textarea
