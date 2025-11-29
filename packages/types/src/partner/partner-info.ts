@@ -1,5 +1,24 @@
+import { PaginationResponseData } from "../react-query";
 import { ApplyStatus } from "./apply-status";
 import { PartnerRegion } from "./partner-regions";
+
+/**
+ * 시공 사례 모델
+ * @param contractId 계약 ID
+ * @param title 제목
+ * @param baseAddress 기본 주소
+ * @param detailAddress 상세 주소
+ * @param plannedCapacity 설치 예정 용량
+ * @param representativePhotoUrl 대표 사진
+ */
+export type ContractCasesModel = PaginationResponseData<{
+  contractId: number;
+  title: string;
+  baseAddress: string;
+  detailAddress: string;
+  plannedCapacity: number;
+  representativePhotoUrl: string;
+}>;
 
 /**
  * @param userId 사용자 ID
@@ -16,6 +35,7 @@ import { PartnerRegion } from "./partner-regions";
  * @param status 파트너 신청 상태
  * @param createdAt 신청일
  * @param updatedAt 수정일
+ * @param contractCases 시공 사례 목록 {@link ContractCasesModel}
  */
 export type PartnerInfoType = {
   userId: number;
@@ -32,4 +52,5 @@ export type PartnerInfoType = {
   status: ApplyStatus;
   createdAt: string;
   updatedAt: string;
+  contractCases: ContractCasesModel;
 };

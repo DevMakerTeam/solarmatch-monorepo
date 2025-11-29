@@ -3,9 +3,20 @@ import { PropsWithChildren } from "react";
 import MobileHeader from "./components/MobileHeader";
 import LayoutAside from "./components/LayoutAside";
 
-const AdminRootLayout = ({ children }: PropsWithChildren) => {
+const AdminRootLayout = ({
+  children,
+  className,
+  mainWrapperClassName,
+  childrenWrapperClassName,
+  isLayoutPaddingY = true,
+}: PropsWithChildren<{
+  className?: string;
+  mainWrapperClassName?: string;
+  childrenWrapperClassName?: string;
+  isLayoutPaddingY?: boolean;
+}>) => {
   return (
-    <div className={cn("relative w-full")}>
+    <div className={cn("relative w-full", className)}>
       {/* header */}
       <MobileHeader />
 
@@ -14,9 +25,17 @@ const AdminRootLayout = ({ children }: PropsWithChildren) => {
 
       {/* main */}
       <main
-        className={cn("flex-1 pt-[64px] lg:pt-0 lg:pl-[260px] min-h-screen")}
+        className={cn(
+          "flex-1 pt-[64px] lg:pt-0 lg:pl-[260px] min-h-screen",
+          mainWrapperClassName
+        )}
       >
-        <div className="layout-padding-y px-[16px] lg:px-[140px]">
+        <div
+          className={cn(
+            childrenWrapperClassName,
+            isLayoutPaddingY && "layout-padding-y px-[16px] lg:px-[140px]"
+          )}
+        >
           {children}
         </div>
       </main>

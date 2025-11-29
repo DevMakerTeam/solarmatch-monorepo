@@ -36,7 +36,7 @@ const useUsers = () => {
     return showDeletedOnlyParam === "true";
   }, [showDeletedOnlyParam]);
 
-  const { data } = useGetUsersQuery({
+  const { data, isLoading: isUserLoading } = useGetUsersQuery({
     options: {
       enabled: !!currentPage,
     },
@@ -49,6 +49,7 @@ const useUsers = () => {
   });
   const { data: usersPagination } = data || {};
   const totalPages = usersPagination?.totalPages ?? 0;
+  const totalCount = usersPagination?.total ?? 0;
   const usersList = usersPagination?.data ?? [];
 
   const columnHelper =
@@ -195,6 +196,8 @@ const useUsers = () => {
     handleRowClick,
     handleUsersExcelDownload,
     isUsersExcelDownloadPending,
+    isUserLoading,
+    totalCount,
   };
 };
 

@@ -9,6 +9,7 @@ import { DeleteUserModel } from "./types/model/delete-user-model";
 import { UsersExcelDownloadDto } from "./types/dto/users-excel-download-dto";
 import { UsersExcelDownloadModel } from "./types/model/users-excel-download-model";
 import { UsersStatsTodayRegistrationsModel } from "./types/model/users-stats-today-registrations-model";
+import { GetUserDetailDto } from "./types/dto/get-user-detail-dto";
 
 class UsersApi {
   axios: AxiosInstance = instance;
@@ -28,10 +29,14 @@ class UsersApi {
   };
 
   // 회원 상세 조회
-  getUserDetail = async (id: number): Promise<GetUserDetailModel> => {
+  getUserDetail = async ({
+    id,
+    ...params
+  }: GetUserDetailDto): Promise<GetUserDetailModel> => {
     const { data } = await this.axios({
       method: "GET",
       url: `/api/admin/users/${id}`,
+      params,
     });
 
     return data;

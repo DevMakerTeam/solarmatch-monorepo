@@ -6,6 +6,7 @@ import { Icon } from "@repo/ui/icon";
 import { Button } from "@repo/ui/button";
 import { useUserDetail } from "./hooks/useUserDetail";
 import { FormProvider } from "react-hook-form";
+import AdminLoading from "@/components/AdminLoading";
 
 const UserDetail = () => {
   const {
@@ -19,7 +20,18 @@ const UserDetail = () => {
     url,
     handleSubmit,
     isValid,
+    totalPages,
+    currentPage,
+    handlePageChange,
+    casesList,
+    isUserDetailLoading,
+    isUserDetailFetching,
+    casesTotal,
   } = useUserDetail();
+
+  if (isUserDetailLoading) {
+    return <AdminLoading />;
+  }
 
   return (
     <AdminRootLayout>
@@ -74,7 +86,16 @@ const UserDetail = () => {
                 url={url}
               />
             )}
-            {isPartner && <Cases />}
+            {isPartner && (
+              <Cases
+                totalPages={totalPages ?? 1}
+                currentPage={currentPage}
+                handlePageChange={handlePageChange}
+                casesList={casesList}
+                isUserDetailFetching={isUserDetailFetching}
+                casesTotal={casesTotal}
+              />
+            )}
           </div>
         </form>
       </FormProvider>

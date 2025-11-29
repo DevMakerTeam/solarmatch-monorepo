@@ -6,7 +6,7 @@ import {
   useGetUserDetailQuery,
   USERS_API_QUERY_KEY,
 } from "@/api/users/UsersApi.query";
-import { useModals } from "@repo/hooks";
+import { useModals, usePageUrl } from "@repo/hooks";
 import { isNotNullish } from "@repo/types";
 import { ConfirmModal } from "@repo/ui/modal";
 import { useQueryClient } from "@tanstack/react-query";
@@ -20,19 +20,37 @@ import {
 } from "@/api/image/ImageApi.query";
 import { DEFAULT_LOGO_URL } from "@repo/constants";
 
+const PAGE_SIZE = 5;
+
 export const useUserDetail = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const idSlot = router.query.id;
 
+  const { currentPage, handlePageChange } = usePageUrl();
+
   // 회원 상세 조회
-  const { data } = useGetUserDetailQuery({
-    variables: Number(idSlot),
+  const {
+    data,
+    isLoading: isUserDetailLoading,
+    isFetching: isUserDetailFetching,
+  } = useGetUserDetailQuery({
+    variables: {
+      id: Number(idSlot),
+      casePage: currentPage,
+      caseSize: PAGE_SIZE,
+    },
     options: {
-      enabled: !!idSlot,
+      enabled: !!idSlot || !!currentPage,
     },
   });
   const { data: userDetail } = data || {};
+  const { contractCases } = (userDetail || {}).partnerInfo || {};
+  const {
+    totalPages,
+    data: casesList,
+    total: casesTotal,
+  } = contractCases || {};
 
   // logoImageId 초기값: 기존 이미지가 기본 이미지면 -1, 아니면 undefined
   const initialLogoImageId =
@@ -77,7 +95,11 @@ export const useUserDetail = () => {
             queryKey: USERS_API_QUERY_KEY.GET_USER_DETAIL(),
           });
           queryClient.invalidateQueries({
-            queryKey: USERS_API_QUERY_KEY.GET_USER_DETAIL(Number(idSlot)),
+            queryKey: USERS_API_QUERY_KEY.GET_USER_DETAIL({
+              id: Number(idSlot),
+              casePage: currentPage,
+              caseSize: PAGE_SIZE,
+            }),
           });
         },
       },
@@ -143,7 +165,11 @@ export const useUserDetail = () => {
           queryKey: USERS_API_QUERY_KEY.GET_USER_DETAIL(),
         });
         queryClient.invalidateQueries({
-          queryKey: USERS_API_QUERY_KEY.GET_USER_DETAIL(Number(idSlot)),
+          queryKey: USERS_API_QUERY_KEY.GET_USER_DETAIL({
+            id: Number(idSlot),
+            casePage: currentPage,
+            caseSize: PAGE_SIZE,
+          }),
         });
 
         // imageId 값이 있을 때만 이미지 URL 쿼리 무효화
@@ -187,5 +213,12 @@ export const useUserDetail = () => {
     logoImageId,
     handleSubmit,
     isValid: isValid && isDirty, // 변경사항이 있고 유효할 때만 저장 가능
+    totalPages,
+    currentPage,
+    handlePageChange,
+    casesList,
+    isUserDetailLoading,
+    isUserDetailFetching,
+    casesTotal,
   };
 };

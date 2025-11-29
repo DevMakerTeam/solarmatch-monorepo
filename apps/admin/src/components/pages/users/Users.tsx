@@ -5,6 +5,7 @@ import { cn } from "@repo/utils";
 import { Checkbox } from "@repo/ui/checkbox";
 import { Pagination } from "@repo/ui/pagination";
 import UserList from "./components/UserList";
+import AdminLoading from "@/components/AdminLoading";
 
 const UsersPage = () => {
   const {
@@ -19,7 +20,13 @@ const UsersPage = () => {
     handleRowClick,
     handleUsersExcelDownload,
     isUsersExcelDownloadPending,
+    totalCount,
+    isUserLoading,
   } = useUsers();
+
+  if (isUserLoading) {
+    return <AdminLoading />;
+  }
 
   return (
     <AdminRootLayout>
@@ -82,7 +89,11 @@ const UsersPage = () => {
       </div>
 
       {/* list */}
-      <UserList table={table} handleRowClick={handleRowClick} />
+      <UserList
+        table={table}
+        handleRowClick={handleRowClick}
+        totalCount={totalCount}
+      />
 
       {/* pagination */}
       <Pagination
