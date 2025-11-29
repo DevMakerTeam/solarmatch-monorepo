@@ -111,29 +111,30 @@ const Calendar = ({
     const hasStart = !!currentStart;
     const hasEnd = !!currentEnd;
 
+    const clicked = dayjs(dateStr);
+
     // 둘 다 없으면 시작일만 설정
     if (!hasStart && !hasEnd) {
       onDateRangeSelect(dateStr, "");
       return;
     }
 
-    // 둘 다 있으면 범위 확장/연장 로직
+    // 둘 다 있으면 범위 확장/연장/축소 로직
     if (hasStart && hasEnd) {
       const start = dayjs(currentStart!);
       const end = dayjs(currentEnd!);
-      const clicked = dayjs(dateStr);
 
-      // 클릭한 날짜가 시작일보다 이전이면 시작일 확장
+      // 클릭한 날짜가 시작일보다 이전이면 시작일을 클릭한 날짜로 변경 (종료일 유지)
       if (clicked.isBefore(start, "day")) {
         onDateRangeSelect(dateStr, currentEnd!);
       }
-      // 클릭한 날짜가 종료일보다 이후면 종료일 연장
+      // 클릭한 날짜가 종료일보다 이후면 종료일을 클릭한 날짜로 변경 (시작일 유지)
       else if (clicked.isAfter(end, "day")) {
         onDateRangeSelect(currentStart!, dateStr);
       }
-      // 범위 내에 있으면 새로운 범위 시작
+      // 범위 내에 있으면 클릭한 날짜를 새로운 시작일로 설정 (종료일 유지)
       else {
-        onDateRangeSelect(dateStr, "");
+        onDateRangeSelect(dateStr, currentEnd!);
       }
       return;
     }
@@ -141,7 +142,6 @@ const Calendar = ({
     // 시작일만 있으면 종료일 설정
     if (hasStart && !hasEnd) {
       const start = dayjs(currentStart!);
-      const clicked = dayjs(dateStr);
       if (clicked.isBefore(start, "day")) {
         // 클릭한 날짜가 시작일보다 이전이면 시작일과 종료일 교체
         onDateRangeSelect(dateStr, currentStart!);
