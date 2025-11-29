@@ -7,7 +7,6 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "dependencies": {},
   "peerDependencies": {
     "react": "^18",
     "react-dom": "^18",

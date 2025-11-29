@@ -23,6 +23,8 @@ const CompareQuotesPage = () => {
     isUploading,
     isPostQuotePending,
     isValid,
+    accept,
+    multiple,
   } = useCompareQuotes();
   const { control, watch } = formMethods;
   const imageIds = watch("imageIds");
@@ -234,8 +236,8 @@ const CompareQuotesPage = () => {
                     <input
                       ref={fileInputRef}
                       type="file"
-                      accept=".jpg,.jpeg,.png,.gif,.webp"
-                      multiple
+                      accept={accept}
+                      multiple={multiple}
                       onChange={handleFileChange}
                       className="hidden"
                     />

@@ -8,9 +8,9 @@ import {
   type SolarStructureType,
 } from "@repo/types";
 import { useImageUploadMutation } from "@/api/image/ImageApi.mutation";
-import { useRef } from "react";
-import { toastError } from "@repo/utils";
+import { useImageFilePicker } from "@repo/hooks";
 import { usePostQuoteMutation } from "@/api/quote/QuoteApi.mutation";
+import { useRef } from "react";
 
 export const useCompareQuotes = () => {
   const router = useRouter();
@@ -33,7 +33,6 @@ export const useCompareQuotes = () => {
     },
   });
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const pendingFilesRef = useRef<Array<{ fileName: string; fileSize: number }>>(
     []
   );
@@ -65,55 +64,22 @@ export const useCompareQuotes = () => {
       },
     });
 
-  const openFilePicker = () => {
-    fileInputRef.current?.click();
-  };
+  const { fileInputRef, openFilePicker, handleFileChange, accept, multiple } =
+    useImageFilePicker({
+      onValidFiles: files => {
+        // 파일 정보를 저장 (업로드 후 매칭하기 위해)
+        const fileInfos = files.map(file => ({
+          fileName: file.name,
+          fileSize: file.size,
+        }));
+        pendingFilesRef.current = fileInfos;
 
-  const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = e => {
-    const files = Array.from(e.target.files || []);
-    if (files.length === 0) return;
-
-    // 지원 형식 검증
-    const allowedExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
-    const invalidFiles = files.filter(file => {
-      const extension = file.name
-        .toLowerCase()
-        .substring(file.name.lastIndexOf("."));
-      return !allowedExtensions.includes(extension);
+        imageUploadMutation({
+          files,
+          type: "QUOTE",
+        });
+      },
     });
-
-    if (invalidFiles.length > 0) {
-      toastError(
-        `지원하지 않는 파일 형식입니다. (지원 형식: jpg, jpeg, png, gif, webp)`
-      );
-      e.currentTarget.value = "";
-      return;
-    }
-
-    // 파일 크기 검증 (5MB = 5 * 1024 * 1024 bytes)
-    const maxSize = 5 * 1024 * 1024;
-    const oversizedFiles = files.filter(file => file.size > maxSize);
-
-    if (oversizedFiles.length > 0) {
-      toastError(`파일 크기가 5MB를 초과합니다. (파일당 최대 5MB)`);
-      e.currentTarget.value = "";
-      return;
-    }
-
-    // 파일 정보를 저장 (업로드 후 매칭하기 위해)
-    const fileInfos = files.map(file => ({
-      fileName: file.name,
-      fileSize: file.size,
-    }));
-    pendingFilesRef.current = fileInfos;
-
-    imageUploadMutation({
-      files,
-      type: "QUOTE",
-    });
-    // 같은 파일 재선택 가능하도록 value 초기화
-    e.currentTarget.value = "";
-  };
 
   const deleteImage = (imageId: number) => {
     const currentImages = getValues("imageIds") || [];
@@ -150,5 +116,7 @@ export const useCompareQuotes = () => {
     isUploading,
     isPostQuotePending,
     isValid,
+    accept,
+    multiple,
   };
 };
