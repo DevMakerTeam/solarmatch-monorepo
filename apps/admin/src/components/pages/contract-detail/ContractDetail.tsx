@@ -7,8 +7,10 @@ import { Input } from "@repo/ui/input";
 import { BasicOption, Select } from "@repo/ui/select";
 import { InfoSection, SectionHeader } from "./components";
 import dayjs from "dayjs";
-import { formatPhoneNumberKR } from "@repo/utils";
+import { cn, formatPhoneNumberKR } from "@repo/utils";
 import { Controller, FormProvider } from "react-hook-form";
+import Image from "next/image";
+import { Spinner } from "@repo/ui/spinner";
 
 const ORIGIN_OPTIONS: BasicOption[] = [
   { value: "국내산", label: "국내산" },
@@ -16,12 +18,36 @@ const ORIGIN_OPTIONS: BasicOption[] = [
 ];
 
 const ContractDetailPage = () => {
-  const { contractDetail, formMethods, handleSubmit } = useContractDetail();
+  const {
+    contractDetail,
+    formMethods,
+    handleSubmit,
+    goToList,
+    addConstructionPhoto,
+    fileInputRef,
+    handleFileChange,
+    accept,
+    multiple,
+    isUploading,
+    deleteExistingPhoto,
+    deleteUploadedPhoto,
+    isDirty,
+    isEditing,
+  } = useContractDetail();
   const {
     control,
     register,
+    watch,
     formState: { isValid },
   } = formMethods;
+  const uploadedPhotos = watch("uploadedPhotos");
+  const deletePhotoIds = watch("deletePhotoIds") || [];
+
+  // 삭제되지 않은 기존 이미지만 필터링
+  const visibleConstructionPhotos =
+    contractDetail?.constructionPhotos?.filter(
+      photo => !deletePhotoIds.includes(photo.imageId)
+    ) || [];
 
   return (
     <AdminRootLayout>
@@ -31,7 +57,10 @@ const ContractDetailPage = () => {
           onSubmit={handleSubmit}
         >
           <div className="flex justify-between items-center">
-            <div className="flex items-center gap-[7px] medium-body w-fit cursor-pointer">
+            <div
+              className="flex items-center gap-[7px] medium-body w-fit cursor-pointer"
+              onClick={goToList}
+            >
               <Icon
                 iconName="chevronLeft"
                 className="w-4 h-4 text-black stroke-[1.3]"
@@ -44,7 +73,8 @@ const ContractDetailPage = () => {
               type="submit"
               className="button-size-sm lg:button-size-md w-[76px] lg:w-[122px]"
               variant="outline"
-              disabled={!isValid}
+              disabled={!isValid || !isDirty || isEditing}
+              isLoading={isEditing}
             >
               저장
             </Button>
@@ -238,6 +268,96 @@ const ContractDetailPage = () => {
             </div>
 
             {/* 시공사진 */}
+            <div className="flex flex-col gap-[20px] lg:gap-[50px]">
+              <SectionHeader title="시공 사진" />
+
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-y-[20px] gap-x-[10px]">
+                {/* 기존 시공 사진 */}
+                {visibleConstructionPhotos.map(
+                  ({ imageId, contractPhotoId, imageUrl }) => (
+                    <div
+                      key={`construction-${contractPhotoId}`}
+                      className="flex flex-col gap-[10px]"
+                    >
+                      <div className="relative w-full aspect-[210/115] rounded-[8px] overflow-hidden">
+                        <Image
+                          src={imageUrl}
+                          alt="시공 사진"
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+
+                      <div className="flex justify-end">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          className="w-fit medium-small text-primary"
+                          onClick={() => deleteExistingPhoto(imageId)}
+                        >
+                          삭제
+                        </Button>
+                      </div>
+                    </div>
+                  )
+                )}
+
+                {/* 업로드된 새 사진 미리보기 */}
+                {uploadedPhotos?.map(({ id, url }) => (
+                  <div
+                    key={`uploaded-${id}`}
+                    className="flex flex-col gap-[10px]"
+                  >
+                    <div className="relative w-full aspect-[210/115] rounded-[8px] overflow-hidden">
+                      <Image
+                        src={url}
+                        alt="업로드된 시공 사진"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+
+                    <div className="flex justify-end">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        className="w-fit medium-small text-primary"
+                        onClick={() => deleteUploadedPhoto(id)}
+                      >
+                        삭제
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+
+                <div
+                  className={cn(
+                    isUploading
+                      ? "bg-light-gray cursor-not-allowed"
+                      : "bg-white cursor-pointer",
+                    "w-full aspect-[210/115] rounded-[8px] overflow-hidden border-1 border-border-color bg-white flex justify-center items-center"
+                  )}
+                  onClick={addConstructionPhoto}
+                >
+                  {isUploading ? (
+                    <Spinner size="lg" className="text-border-color" />
+                  ) : (
+                    <Icon
+                      iconName="plus"
+                      className="w-9 h-9 lg:w-12 lg:h-12 text-border-color"
+                    />
+                  )}
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept={accept}
+                  multiple={multiple}
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </div>
+            </div>
           </div>
         </form>
       </FormProvider>

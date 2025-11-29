@@ -11,6 +11,15 @@ export const contractDetailFormSchema = yup.object().shape({
   installationReview: yup.string().optional(),
   addPhotoImageIds: yup.array().of(yup.number()).optional(),
   deletePhotoIds: yup.array().of(yup.number()).optional(),
+  uploadedPhotos: yup
+    .array()
+    .of(
+      yup.object().shape({
+        id: yup.number().required(),
+        url: yup.string().required(),
+      })
+    )
+    .optional(),
 });
 
 export type ContractDetailFormType = yup.InferType<
