@@ -101,7 +101,7 @@ const ContractDetailPage = () => {
                     },
                     {
                       field: "설치 방식",
-                      value: contractDetail?.quoteInfo?.structureType,
+                      value: contractDetail?.quoteInfo?.installationType,
                     },
                     {
                       field: "설치 타입",

@@ -1,4 +1,4 @@
-import { SolarInstallationTypeLabel } from "../solar";
+import { SolarInstallationTypeLabel, SolarStructureTypeLabel } from "../solar";
 
 export type ConstructionPhotoModel = {
   contractPhotoId: number;
@@ -15,7 +15,8 @@ export type ContractModel = {
   };
   quoteInfo: {
     quoteName: string;
-    structureType: SolarInstallationTypeLabel;
+    structureType: SolarStructureTypeLabel;
+    installationType: SolarInstallationTypeLabel;
     baseAddress: string;
     detailAddress: string;
     plannedCapacity: number;
