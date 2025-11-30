@@ -10,8 +10,8 @@ const CasesItem = ({
   title,
 }: ContractCaseItem) => {
   return (
-    <div className="shadow-[0px_0px_9px_2px_rgba(0,0,0,0.1)] hover:ring-2 hover:ring-border-color ring-offset-0 transition-shadow w-full rounded-[8px] flex lg:flex-col">
-      <div className="relative w-full max-w-[107px] aspect-square lg:max-w-none lg:aspect-[254/123] rounded-tl-[8px] rounded-bl-[8px] lg:rounded-br-none lg:rounded-tr-[8px] lg:rounded-bl-none overflow-hidden">
+    <div className="shadow-[0px_0px_9px_2px_rgba(0,0,0,0.1)] hover:ring-2 hover:ring-border-color ring-offset-0 transition-shadow w-full rounded-[8px] flex lg:flex-col min-w-0">
+      <div className="relative w-[120px] aspect-square lg:w-full lg:aspect-[254/123] rounded-tl-[8px] rounded-bl-[8px] lg:rounded-br-none lg:rounded-tr-[8px] lg:rounded-bl-none overflow-hidden flex-shrink-0">
         <Image
           src={representativePhotoUrl}
           alt={title}
@@ -20,7 +20,7 @@ const CasesItem = ({
         />
       </div>
 
-      <div className="py-[10px] lg:py-[20px] px-[16px] lg:px-[20px]">
+      <div className="py-[10px] lg:py-[20px] px-[16px] lg:px-[20px] min-w-0 flex-1">
         <span className="bold-caption lg:bold-body line-clamp-2">{title}</span>
 
         <div className="flex items-center mt-[13px]">
