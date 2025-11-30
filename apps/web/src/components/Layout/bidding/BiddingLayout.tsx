@@ -5,14 +5,16 @@ import BiddingNav from "./components/BiddingNav";
 
 interface BiddingLayoutProps {
   sideType: SolarStructureType;
+  isLoading?: boolean;
 }
 
 const BiddingLayout = ({
   children,
   sideType,
+  isLoading = false,
 }: PropsWithChildren<BiddingLayoutProps>) => {
   return (
-    <RootLayout>
+    <RootLayout isLoading={isLoading}>
       <div className="layout-padding-y flex flex-col lg:flex-row gap-[40px] lg:gap-[120px]">
         <div className="flex flex-col gap-[45px]">
           <span className="bold-heading4 lg:bold-heading3 text-center lg:text-left whitespace-nowrap">

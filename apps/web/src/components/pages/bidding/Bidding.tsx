@@ -8,6 +8,7 @@ import BiddingItem from "./components/BiddingItem";
 import { SOLAR_STRUCTURE_TYPE_LABELS } from "@repo/types";
 import { useBidding } from "./hooks/useBidding";
 import { Checkbox } from "@repo/ui/checkbox";
+import { NonData } from "@repo/ui";
 
 const MOBILE_TYPE_SELECT_OPTIONS: BasicOption[] = Object.entries(
   SOLAR_STRUCTURE_TYPE_LABELS
@@ -39,10 +40,12 @@ const BiddingPage = () => {
     type,
     quotesList,
     totalPages,
+    isQuotesListLoading,
+    totalCount,
   } = useBidding();
 
   return (
-    <OrdersLayout sideType={type}>
+    <OrdersLayout sideType={type} isLoading={isQuotesListLoading}>
       <div className="flex flex-col gap-[35px] lg:gap-[55px] w-full">
         <div className="w-full">
           {/* mobile */}
@@ -115,17 +118,23 @@ const BiddingPage = () => {
 
         <div className="flex flex-col gap-[40px] lg:gap-[64px]">
           {/* Items */}
-          <div className="flex flex-col">
-            {quotesList.map(item => (
-              <BiddingItem key={`bidding-item-${item.id}`} itemData={item} />
-            ))}
-          </div>
+          {!!totalCount ? (
+            <div className="flex flex-col">
+              {quotesList.map(item => (
+                <BiddingItem key={`bidding-item-${item.id}`} itemData={item} />
+              ))}
+            </div>
+          ) : (
+            <NonData nonDataText="견적 목록이 없습니다." />
+          )}
 
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
+          {!!totalCount && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
       </div>
     </OrdersLayout>

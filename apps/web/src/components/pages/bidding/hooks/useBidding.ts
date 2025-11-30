@@ -62,7 +62,8 @@ export const useBidding = () => {
     router.push(`/bidding/${type}?${params.toString()}`);
   };
 
-  const { data } = useGetQuotesQuery({
+  // 견적 목록 조회
+  const { data, isLoading: isQuotesListLoading } = useGetQuotesQuery({
     variables: {
       structureType: type,
       installationType: install,
@@ -73,6 +74,7 @@ export const useBidding = () => {
   });
   const { data: quotesPagination } = data ?? {};
   const totalPages = quotesPagination?.totalPages ?? 0;
+  const totalCount = quotesPagination?.total ?? 0;
   const quotesList = quotesPagination?.data ?? [];
 
   return {
@@ -86,5 +88,7 @@ export const useBidding = () => {
     handleMyApplicationChange,
     quotesList,
     totalPages,
+    isQuotesListLoading,
+    totalCount,
   };
 };

@@ -1,6 +1,6 @@
 import { cn } from "@repo/utils";
 import { flexRender, Table } from "@tanstack/react-table";
-import AdminNonData from "./AdminNonData";
+import { NonData } from "@repo/ui";
 
 interface AdminTableProps<TData> {
   table: Table<TData>;
@@ -94,9 +94,7 @@ function AdminTable<TData>({
           </tbody>
         )}
       </table>
-      {!hasData && (
-        <AdminNonData nonDataText={nonDataText} className="w-full" />
-      )}
+      {!hasData && <NonData nonDataText={nonDataText} className="w-full" />}
     </div>
   );
 }

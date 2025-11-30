@@ -19,10 +19,15 @@ const BiddingDetailPage = () => {
     isMyQuote,
     myBidId,
     totalPages,
+    isQuoteDetailLoading,
+    totalCount,
   } = useBiddingDetail();
 
   return (
-    <OrdersLayout sideType={type as SolarStructureType}>
+    <OrdersLayout
+      sideType={type as SolarStructureType}
+      isLoading={isQuoteDetailLoading}
+    >
       <div className="w-full flex flex-col">
         <BiddingDetailTop
           createdAt={quote?.createdAt}
@@ -47,6 +52,7 @@ const BiddingDetailPage = () => {
           bidsList={bidsList}
           handlePageChange={handlePageChange}
           currentPage={currentPage}
+          totalCount={totalCount}
         />
         {partnerStatus === "APPROVED" && (
           <BidButton

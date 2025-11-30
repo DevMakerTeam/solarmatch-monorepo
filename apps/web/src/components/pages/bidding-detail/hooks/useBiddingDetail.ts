@@ -14,20 +14,22 @@ export const useBiddingDetail = () => {
   const router = useRouter();
   const { type, id } = router.query;
 
-  const { data: quoteDetaildata } = useGetQuoteDetailQuery({
-    variables: {
-      quoteId: Number(id),
-      page: currentPage,
-      size: PAGE_SIZE,
-    },
-    options: {
-      enabled: !!id,
-    },
-  });
+  // 견적 상세 조회
+  const { data: quoteDetaildata, isLoading: isQuoteDetailLoading } =
+    useGetQuoteDetailQuery({
+      variables: {
+        quoteId: Number(id),
+        page: currentPage,
+        size: PAGE_SIZE,
+      },
+      options: {
+        enabled: !!id,
+      },
+    });
   const { data: quoteDetail } = quoteDetaildata || {};
   const { quote, bids, hasMyBid, isMyQuote, myBidId } = quoteDetail || {};
 
-  const { data: bidsList = [], totalPages } = bids || {};
+  const { data: bidsList = [], totalPages, total: totalCount } = bids || {};
 
   return {
     partnerStatus,
@@ -40,5 +42,7 @@ export const useBiddingDetail = () => {
     hasMyBid,
     isMyQuote,
     myBidId,
+    isQuoteDetailLoading,
+    totalCount: totalCount ?? 0,
   };
 };
