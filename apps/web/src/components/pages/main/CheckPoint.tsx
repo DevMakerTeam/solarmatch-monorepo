@@ -21,7 +21,7 @@ export default function CheckPoint({
         isRight && "md:items-end md:text-end"
       )}
     >
-      <div className="p-[9px_20px] bg-primary w-fit bold-heading6 text-white rounded-[30px] mb-[12px]">{`체크 포인트${index}`}</div>
+      <div className="w-[108px] h-[32px] flex items-center justify-center bg-primary bold-caption md:bold-body text-white rounded-[30px] mb-[12px]">{`체크 포인트${index}`}</div>
       {contents}
     </div>
   );

@@ -16,7 +16,7 @@ export default function CheckPoint2() {
           <div className="flex flex-col md:items-end md:gap-[65px] gap-[32px]">
             <div className="flex flex-col gap-[9px]">
               <div className="heavy-heading4 md:heavy-heading3 text-primary">
-                <p>시공업체별 견적을</p>
+                <p>여러 시공업체 견적을</p>
                 <span>
                   <span className="text-secondary">한눈에 </span>
                   <span>비교해요</span>
@@ -24,8 +24,8 @@ export default function CheckPoint2() {
               </div>
 
               <div className="bold-body md:bold-heading6 text-black">
-                <p>솔라매치에서만 가능한 투명한</p>
-                <p>입찰방식의 견적시스템이에요</p>
+                <p>솔라매치에서만 가능한</p>
+                <p>투명한 입찰 시스템이에요</p>
               </div>
             </div>
 

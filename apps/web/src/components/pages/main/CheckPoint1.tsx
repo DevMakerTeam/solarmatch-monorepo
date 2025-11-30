@@ -14,7 +14,7 @@ export default function CheckPoint1() {
         contents={
           <div className="flex flex-col gap-[9px]">
             <div className="flex flex-col heavy-heading4 md:heavy-heading3 text-primary">
-              <p className="">시공자재를 숨김없이</p>
+              <p className="">시공자재, 숨김없이</p>
               <span>
                 <span className="text-secondary">투명 공개</span>
                 <span>해요</span>
@@ -22,8 +22,8 @@ export default function CheckPoint1() {
             </div>
 
             <div className="flex flex-col bold-body md:bold-heading6 text-black">
-              <p>솔라매치는 시공사가 어떤 자재를 쓰는지</p>
-              <p>고객에게 100% 공개해요</p>
+              <p>솔라매치는 모듈·인버터·구조물 등</p>
+              <p>모든 사용 자재 정보를 입찰부터 100% 공개해요</p>
             </div>
           </div>
         }

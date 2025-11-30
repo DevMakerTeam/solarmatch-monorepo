@@ -11,28 +11,30 @@ export default function LeftTop() {
       </div>
 
       <p className="bold-heading6 md:bold-heading5 text-deep-gray mt-[33px]">
-        태양광 사기는 이제 그만
+        태양광 설치, 이제는 안심 비교
       </p>
 
       <div className="relative w-full mt-[15px]">
         <ScrollGuide />
 
-        <div className="absolute top-0 left-0 w-full">
+        <div className="absolute top-0 left-0 w-full z-10">
           <p className="heavy-heading4 md:heavy-heading3 text-primary text-center">
-            투명한 견적
+            믿을 수 있는
           </p>
 
-          <div className="heavy-heading4 md:heavy-heading3 text-primary text-center">
-            <span className="text-secondary">솔라매치</span>
-            <span>에서 비교하세요</span>
+          <div className="heavy-heading4 md:heavy-heading3 text-center">
+            <span className="text-secondary">솔라매치 투명 견적</span>
           </div>
         </div>
 
-        <img
-          src="/images/main/main-1.png"
-          alt="main-1"
-          className="aspect-[7/6] w-full object-cover mt-[30px]"
-        />
+        <div className="relative mt-[30px]">
+          <img
+            src="/images/main/main-1.png"
+            alt="main-1"
+            className="aspect-[7/6] w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent" />
+        </div>
       </div>
     </MotionSection>
   );

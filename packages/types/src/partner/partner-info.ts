@@ -2,6 +2,15 @@ import { PaginationResponseData } from "../react-query";
 import { ApplyStatus } from "./apply-status";
 import { PartnerRegion } from "./partner-regions";
 
+export type ContractCaseItem = {
+  contractId: number;
+  title: string;
+  baseAddress: string;
+  detailAddress: string;
+  plannedCapacity: number;
+  representativePhotoUrl: string;
+};
+
 /**
  * 시공 사례 모델
  * @param contractId 계약 ID
@@ -11,14 +20,7 @@ import { PartnerRegion } from "./partner-regions";
  * @param plannedCapacity 설치 예정 용량
  * @param representativePhotoUrl 대표 사진
  */
-export type ContractCasesModel = PaginationResponseData<{
-  contractId: number;
-  title: string;
-  baseAddress: string;
-  detailAddress: string;
-  plannedCapacity: number;
-  representativePhotoUrl: string;
-}>;
+export type ContractCasesModel = PaginationResponseData<ContractCaseItem>;
 
 /**
  * @param userId 사용자 ID

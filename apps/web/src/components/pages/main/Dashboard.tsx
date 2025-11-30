@@ -80,16 +80,14 @@ function DashboardContents({ isAnimationComplete }: DashboardContentsProps) {
       <DashboardItem
         title={
           <div className="flex flex-col md:flex-row bold-heading5">
-            <p>솔라매치 평균 견적가&nbsp;</p>
-            <p>시중대비 최대</p>
+            <p>솔라매치를 통한 견적가&nbsp;</p>
+            <p>시중대비 평균</p>
           </div>
         }
         animation={
           <div className="flex items-center">
-            <span className="heavy-heading4 md:heavy-heading3">
-              {`${percentage}%`}&nbsp;
-            </span>
-            <span className="bold-heading5 md:bold-heading4">절감</span>
+            <span className="heavy-heading3">{`${percentage}%`}&nbsp;</span>
+            <span className="bold-heading4">절감</span>
           </div>
         }
         image={"/images/main/main-dashboard-1.png"}
@@ -97,15 +95,12 @@ function DashboardContents({ isAnimationComplete }: DashboardContentsProps) {
 
       <div className="flex flex-col md:flex-row gap-[12px]">
         <DashboardItem
-          title={<p className="bold-heading5">솔라매치의 검증된 시공사</p>}
+          title={<p className="bold-heading5">검증된 파트너</p>}
           animation={
             <div className="flex items-center">
-              <span className="heavy-heading4 md:heavy-heading3">
-                {`${companies}`}&nbsp;
-              </span>
-              <span className="bold-heading5 md:bold-heading4">
-                개소(지속 확대 중)
-              </span>
+              <span className="heavy-heading3">{`${companies}`}&nbsp;</span>
+              <span className="bold-heading4">개소</span>
+              <span className="bold-heading6 mt-1.5">(지속 확대 중)</span>
             </div>
           }
           image={"/images/main/main-dashboard-2.png"}
@@ -115,10 +110,10 @@ function DashboardContents({ isAnimationComplete }: DashboardContentsProps) {
           title={<p className="bold-heading5">전체 파트너 시공 이력</p>}
           animation={
             <div className="flex items-center">
-              <span className="heavy-heading4 md:heavy-heading3">
+              <span className="heavy-heading3">
                 {`${projects.toLocaleString()}`}&nbsp;
               </span>
-              <span className="bold-heading5 md:bold-heading4">건 이상</span>
+              <span className="bold-heading4">건 이상</span>
             </div>
           }
           image={"/images/main/main-dashboard-3.png"}

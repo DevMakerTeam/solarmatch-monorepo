@@ -1,55 +1,21 @@
+import { useGetContractCasesQuery } from "@/api/contract/ContractApi.query";
 import MotionSection from "@/components/pages/main/MotionSection";
 import { Icon } from "@repo/ui/icon";
+import { Spinner } from "@repo/ui/spinner";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const SLIDE_INTERVAL_MS = 2000; // 슬라이드 전환 간격 (밀리초)
+type ContractCaseItem = {
+  contractId: number;
+  title: string;
+  baseAddress: string;
+  detailAddress: string;
+  plannedCapacity: number;
+  representativePhotoUrl: string;
+};
 
-const dummyData = [
-  {
-    id: 1,
-    name: "서울시 강남구 주택용 5kW",
-    location: "서울시 강남구",
-    capacity: 124.5,
-    thumbnail: "/images/main/main-portfolio-1.png",
-  },
-  {
-    id: 2,
-    name: "부산시 해운대구 상업용 10kW",
-    location: "부산시 해운대구",
-    capacity: 248.9,
-    thumbnail: "/images/main/main-portfolio-1.png",
-  },
-  {
-    id: 3,
-    name: "대구시 수성구 주택용 7kW",
-    location: "대구시 수성구",
-    capacity: 173.25,
-    thumbnail: "/images/main/main-portfolio-1.png",
-  },
-  {
-    id: 4,
-    name: "인천시 연수구 아파트 단지 15kW",
-    location: "인천시 연수구",
-    capacity: 372.8,
-    thumbnail: "/images/main/main-portfolio-1.png",
-  },
-  {
-    id: 5,
-    name: "경기도 성남시 주택용 6kW",
-    location: "경기도 성남시",
-    capacity: 148.75,
-    thumbnail: "/images/main/main-portfolio-1.png",
-  },
-  {
-    id: 6,
-    name: "전라남도 여수시 공장용 20kW",
-    location: "전라남도 여수시",
-    capacity: 496.2,
-    thumbnail: "/images/main/main-portfolio-1.png",
-  },
-];
+const SLIDE_INTERVAL_MS = 2000;
 
 export default function Portfolio() {
   return (
@@ -70,13 +36,35 @@ interface PortfolioContentsProps {
 function PortfolioContents({ isAnimationComplete }: PortfolioContentsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const { data, isLoading } = useGetContractCasesQuery({
+    variables: {
+      page: 1,
+      pageSize: 6,
+    },
+    options: {
+      enabled: !!isAnimationComplete,
+    },
+  });
+
+  const { data: contractCasesData } = data || {};
+  const { data: contractCasesList = [] } = contractCasesData || {};
+
+  // API 데이터를 포트폴리오 형식으로 변환
+  const portfolioData = contractCasesList.map((item: ContractCaseItem) => ({
+    id: item.contractId,
+    name: item.title,
+    location: item.baseAddress,
+    capacity: item.plannedCapacity,
+    thumbnail: item.representativePhotoUrl || "",
+  }));
+
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
     const startInterval = () => {
       interval = setInterval(() => {
-        setCurrentIndex(
-          (prevIndex: number) => (prevIndex + 1) % dummyData.length
+        setCurrentIndex((prevIndex: number) =>
+          portfolioData.length > 0 ? (prevIndex + 1) % portfolioData.length : 0
         );
       }, SLIDE_INTERVAL_MS); // 슬라이드 전환 간격
     };
@@ -106,54 +94,72 @@ function PortfolioContents({ isAnimationComplete }: PortfolioContentsProps) {
     };
   }, [isAnimationComplete]);
 
-  const currentItem = dummyData[currentIndex];
+  const currentItem =
+    portfolioData.length > 0
+      ? portfolioData[currentIndex % portfolioData.length]
+      : null;
 
   return (
     <div className="max-w-[235px] w-full mx-auto rounded-tl-[20px] rounded-tr-[20px] border-t-8 border-l-8 border-r-8 border-deep-gray pt-[24px] pl-[13px] pr-[19px] bg-white pb-[26px]">
       <p className="bold-body">시공사례</p>
 
       <div className="overflow-hidden mt-[20px]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentItem.id}
-            initial={{ x: 300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -300, opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="flex flex-col gap-[20px] w-full"
-          >
-            <div className="relative w-full aspect-[2/1] rounded-[7px] overflow-hidden">
-              <Image
-                src={currentItem.thumbnail}
-                alt={currentItem.name}
-                fill
-                className="object-cover"
-              />
-            </div>
-            <p className="bold-body truncate">{currentItem.name}</p>
-
-            <div className="flex flex-col gap-[13px]">
-              <div className="flex gap-[4px] items-center medium-caption">
-                <Icon
-                  iconName="circleLocation"
-                  className="w-[15.6px] h-[15.6px] text-middle-gray"
+        {!isAnimationComplete || isLoading ? (
+          <div className="w-full h-[210px] flex justify-center items-center">
+            <Spinner size="lg" className="text-primary" />
+          </div>
+        ) : portfolioData.length > 0 ? (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentItem?.id || "empty"}
+              initial={{ x: 300, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -300, opacity: 0 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="flex flex-col gap-[20px] w-full"
+            >
+              <div className="relative w-full aspect-[2/1] rounded-[7px] overflow-hidden">
+                <Image
+                  src={currentItem?.thumbnail || ""}
+                  alt={currentItem?.name || ""}
+                  fill
+                  className="object-cover"
                 />
-
-                <span className="bold-caption">위치</span>
-                <span>{currentItem.location}</span>
               </div>
-              <div className="flex gap-[4px] items-center medium-caption">
-                <Icon
-                  iconName="bolt"
-                  className="w-[15.6px] h-[15.6px] text-middle-gray"
-                />
+              <p className="bold-body truncate">{currentItem?.name || ""}</p>
 
-                <span className="bold-caption">용량</span>
-                <span>{`${currentItem.capacity}kw`}</span>
+              <div className="flex flex-col gap-[13px]">
+                <div className="flex gap-[10px] items-center medium-caption">
+                  <Icon
+                    iconName="circleLocation"
+                    className="w-[15.6px] h-[15.6px] text-middle-gray"
+                  />
+
+                  <span className="bold-caption text-nowrap">위치</span>
+                  <span className="truncate">
+                    {currentItem?.location || ""}
+                  </span>
+                </div>
+
+                <div className="flex gap-[10px] items-center medium-caption">
+                  <Icon
+                    iconName="bolt"
+                    className="w-[15.6px] h-[15.6px] text-middle-gray"
+                  />
+
+                  <span className="bold-caption">용량</span>
+                  <span className="truncate">
+                    {currentItem?.capacity ? `${currentItem.capacity}kw` : ""}
+                  </span>
+                </div>
               </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
+            </motion.div>
+          </AnimatePresence>
+        ) : (
+          <div className="w-full h-[210px] flex justify-center items-center">
+            <p className="text-middle-gray">표시할 데이터가 없습니다.</p>
+          </div>
+        )}
       </div>
     </div>
   );
