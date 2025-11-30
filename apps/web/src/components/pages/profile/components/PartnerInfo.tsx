@@ -1,8 +1,12 @@
+import { PartnerInfoType } from "@repo/types";
 import { Icon } from "@repo/ui/icon";
 import { Input } from "@repo/ui/input";
 import { Textarea } from "@repo/ui/textarea";
 
-const PartnerInfo = () => {
+const PartnerInfo = ({
+  companyName,
+  companyIntroduction,
+}: Partial<PartnerInfoType>) => {
   return (
     <>
       <div className="flex items-center gap-[20px] w-full mb-[30px] lg:mb-[60px] mt-[30px] lg:mt-[60px]">
@@ -22,6 +26,7 @@ const PartnerInfo = () => {
           <Input
             className="input-size-sm lg:input-size-md"
             placeholder="업체명을 입력해 주세요."
+            defaultValue={companyName}
             readOnly
           />
         </div>
@@ -35,6 +40,7 @@ const PartnerInfo = () => {
           <Textarea
             className="w-full h-[165px]"
             placeholder="업체 소개를 입력해 주세요."
+            defaultValue={companyIntroduction}
             readOnly
           />
         </div>

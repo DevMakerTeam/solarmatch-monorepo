@@ -1,36 +1,23 @@
 // 회원정보 페이지
 import RootLayout from "@/components/Layout/root";
-import { useModals } from "@repo/hooks";
 import { Button } from "@repo/ui/button";
 import { Icon } from "@repo/ui/icon";
 import Link from "next/link";
-import ChangePasswordModal from "./components/ChangePasswordModal";
-import ChangePhoneNumModal from "./components/ChangePhoneNumModal";
 import PartnerInfo from "./components/PartnerInfo";
-import { useAuthStatus } from "@/hooks/useAuthStatus";
+import { useProfile } from "./hooks/useProfile";
+import { formatPhoneNumberKR } from "@repo/utils";
 
 const ProfilePage = () => {
-  const { user } = useAuthStatus();
-  const { partnerStatus } = user || {};
-
-  const { open: openChangePhoneNumModal, close: closeChangePhoneNumModal } =
-    useModals();
-  const { open: openChangePasswordModal, close: closeChangePasswordModal } =
-    useModals();
-
-  const handleChangePhoneNum = () => {
-    openChangePhoneNumModal(ChangePhoneNumModal, {
-      onClose: closeChangePhoneNumModal,
-    });
-  };
-  const handleChangePassword = () => {
-    openChangePasswordModal(ChangePasswordModal, {
-      onClose: closeChangePasswordModal,
-    });
-  };
+  const {
+    user,
+    partnerStatus,
+    handleChangePassword,
+    handleChangePhoneNum,
+    isLoadingUser,
+  } = useProfile();
 
   return (
-    <RootLayout>
+    <RootLayout isLoading={isLoadingUser}>
       <div className="flex flex-col lg:flex-row lg:justify-between layout-padding-y">
         <span className="bold-heading4 lg:bold-heading3 mb-[65px] lg:mb-0">
           회원정보
@@ -48,19 +35,19 @@ const ProfilePage = () => {
           <div className="grid grid-cols-[auto_1fr] gap-x-[32px] gap-y-[30px] mb-[50px] lg:mb-[35px]">
             {/* 이름 */}
             <span className="bold-body lg:bold-heading5">이름</span>
-            <span className="medium-body lg:medium-heading5">홍길동</span>
+            <span className="medium-body lg:medium-heading5">{user?.name}</span>
 
             {/* 이메일 */}
             <span className="bold-body lg:bold-heading5">이메일</span>
             <span className="medium-body lg:medium-heading5">
-              email@mail.com
+              {user?.email}
             </span>
 
             {/* 휴대전화 번호 */}
             <span className="bold-body lg:bold-heading5">휴대전화 번호</span>
             <div className="flex items-center gap-[10px]">
               <span className="medium-body lg:medium-heading5">
-                010-1234-5678
+                {formatPhoneNumberKR(user?.phone ?? "")}
               </span>
               <Button variant="ghost" onClick={handleChangePhoneNum}>
                 <Icon
@@ -89,7 +76,7 @@ const ProfilePage = () => {
             </Link>
           </div>
 
-          {partnerStatus === "APPROVED" && <PartnerInfo />}
+          {partnerStatus === "APPROVED" && <PartnerInfo {...user?.partner} />}
         </div>
       </div>
     </RootLayout>
