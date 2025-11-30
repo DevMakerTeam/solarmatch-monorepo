@@ -71,7 +71,7 @@ const Cases = ({
                         <div className="flex items-center mt-[13px]">
                           <Icon
                             iconName="circleLocation"
-                            className="w-[15.6px] h-[15.6px] text-middle-gray"
+                            className="w-[15.6px] h-[15.6px] min-w-[15.6px] min-h-[15.6px] text-middle-gray"
                           />
                           <span className="medium-caption ml-[6px]">
                             <span className="bold-caption">
@@ -84,7 +84,7 @@ const Cases = ({
                         <div className="flex items-center mt-[7px]">
                           <Icon
                             iconName="bolt"
-                            className="w-[15.6px] h-[15.6px] text-middle-gray"
+                            className="w-[15.6px] h-[15.6px] min-w-[15.6px] min-h-[15.6px] text-middle-gray"
                           />
                           <span className="medium-caption ml-[6px]">
                             <span className="bold-caption">
