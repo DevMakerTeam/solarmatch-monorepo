@@ -1,5 +1,5 @@
-import AdminNonData from "@/components/AdminNonData";
 import { ContractCasesModel } from "@repo/types";
+import { NonData } from "@repo/ui";
 import { Icon } from "@repo/ui/icon";
 import { Pagination } from "@repo/ui/pagination";
 import { Spinner } from "@repo/ui/spinner";
@@ -100,7 +100,7 @@ const Cases = ({
               )}
             </>
           ) : (
-            <AdminNonData nonDataText="시공 사례가 없습니다." />
+            <NonData nonDataText="시공 사례가 없습니다." />
           )}
         </div>
 

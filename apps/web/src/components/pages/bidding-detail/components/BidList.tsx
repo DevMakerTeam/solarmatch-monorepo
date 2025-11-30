@@ -1,5 +1,6 @@
 import { BidsModel } from "@/api/quote/types/model/get-quote-detail-model";
 import { useAuthStatus } from "@/hooks/useAuthStatus";
+import { NonData } from "@repo/ui";
 import { Pagination } from "@repo/ui/pagination";
 import { cn } from "@repo/utils";
 import Image from "next/image";
@@ -10,6 +11,7 @@ interface BidListProps {
   bidsList?: BidsModel[];
   handlePageChange: (page: number) => void;
   currentPage: number;
+  totalCount: number;
 }
 
 const BidList = ({
@@ -17,6 +19,7 @@ const BidList = ({
   bidsList,
   currentPage,
   handlePageChange,
+  totalCount,
 }: BidListProps) => {
   const router = useRouter();
   const { user } = useAuthStatus();
@@ -33,21 +36,27 @@ const BidList = ({
     <div className="w-full flex flex-col gap-[11px]">
       <span className="bold-body text-deep-gray">업체 목록</span>
 
-      <div className="grid gird-cols-1 lg:grid-cols-3 lg:gap-[15px] gap-[19px] mb-[50px] lg:mb-[60px]">
-        {bidsList?.map(item => (
-          <BidItem
-            key={`bid-item-${item.bidId}`}
-            onClickItem={onClickBidItem}
-            bidItem={item}
-          />
-        ))}
-      </div>
+      {!!totalCount ? (
+        <div className="grid gird-cols-1 lg:grid-cols-3 lg:gap-[15px] gap-[19px] mb-[50px] lg:mb-[60px]">
+          {bidsList?.map(item => (
+            <BidItem
+              key={`bid-item-${item.bidId}`}
+              onClickItem={onClickBidItem}
+              bidItem={item}
+            />
+          ))}
+        </div>
+      ) : (
+        <NonData nonDataText="업체 목록이 없습니다." />
+      )}
 
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages ?? 1}
-        onPageChange={handlePageChange}
-      />
+      {!!totalCount && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages ?? 1}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

@@ -7,7 +7,7 @@ export const useSupport = () => {
   const { currentPage, handlePageChange } = usePageUrl();
   const qnaAccordion = useAccordion<number>();
 
-  const { data } = useGetQnaListQuery({
+  const { data, isLoading: isQnaListLoading } = useGetQnaListQuery({
     options: {
       enabled: !!currentPage,
     },
@@ -18,6 +18,7 @@ export const useSupport = () => {
   });
   const { data: qnaPagination } = data ?? {};
   const totalPages = qnaPagination?.totalPages ?? 0;
+  const totalCount = qnaPagination?.total ?? 0;
   const qnaList = qnaPagination?.data ?? [];
 
   return {
@@ -26,5 +27,7 @@ export const useSupport = () => {
     currentPage,
     handlePageChange,
     qnaAccordion,
+    isQnaListLoading,
+    totalCount,
   };
 };

@@ -1,12 +1,12 @@
-import { Icon } from "@repo/ui/icon";
 import { cn } from "@repo/utils";
+import { Icon } from "../Icon";
 
-interface AdminNonDataProps {
+interface NonDataProps {
   nonDataText: string;
   className?: string;
 }
 
-const AdminNonData = ({ nonDataText, className }: AdminNonDataProps) => {
+const NonData = ({ nonDataText, className }: NonDataProps) => {
   return (
     <div
       className={cn(
@@ -23,4 +23,4 @@ const AdminNonData = ({ nonDataText, className }: AdminNonDataProps) => {
   );
 };
 
-export default AdminNonData;
+export default NonData;
