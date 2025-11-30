@@ -32,7 +32,7 @@ const SupportPage = () => {
           </h1>
 
           <div className="flex gap-[13px] items-center">
-            <span>(대표번호 02-123-4567)</span>
+            {/* <span>(대표번호 02-123-4567)</span> */}
 
             {/* <Button
               variant="ghost"

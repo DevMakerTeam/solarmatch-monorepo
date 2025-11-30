@@ -1,4 +1,9 @@
-import { PaginationResponse, PartnerInfoType, Role } from "@repo/types";
+import {
+  ApplyStatus,
+  PaginationResponse,
+  PartnerInfoType,
+  Role,
+} from "@repo/types";
 
 export type UserInfoType = {
   id: number;
@@ -7,6 +12,7 @@ export type UserInfoType = {
   phone: string;
   isActive: boolean;
   createdAt: string;
+  partnerStatus: ApplyStatus;
 };
 
 export type GetUsersModel = PaginationResponse<{

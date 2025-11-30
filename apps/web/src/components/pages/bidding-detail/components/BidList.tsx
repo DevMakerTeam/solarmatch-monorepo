@@ -12,6 +12,7 @@ interface BidListProps {
   handlePageChange: (page: number) => void;
   currentPage: number;
   totalCount: number;
+  type?: string;
 }
 
 const BidList = ({
@@ -20,15 +21,15 @@ const BidList = ({
   currentPage,
   handlePageChange,
   totalCount,
+  type,
 }: BidListProps) => {
   const router = useRouter();
   const { user } = useAuthStatus();
   const { partnerStatus } = user || {};
 
-  const onClickBidItem = () => {
+  const onClickBidItem = (bidId: number) => {
     if (partnerStatus !== "APPROVED") {
-      const currentPath = router.asPath.split("?")[0];
-      router.push(`${currentPath}/contract`);
+      router.push(`/bidding/${type}/${bidId}/contract`);
     }
   };
 
@@ -41,7 +42,7 @@ const BidList = ({
           {bidsList?.map(item => (
             <BidItem
               key={`bid-item-${item.bidId}`}
-              onClickItem={onClickBidItem}
+              onClickItem={() => onClickBidItem(item.bidId)}
               bidItem={item}
             />
           ))}

@@ -132,7 +132,7 @@ function PortfolioContents({ isAnimationComplete }: PortfolioContentsProps) {
                 <div className="flex gap-[10px] items-center medium-caption">
                   <Icon
                     iconName="circleLocation"
-                    className="w-[15.6px] h-[15.6px] text-middle-gray"
+                    className="w-[15.6px] h-[15.6px] min-w-[15.6px] min-h-[15.6px] text-middle-gray"
                   />
 
                   <span className="bold-caption text-nowrap">위치</span>
@@ -144,7 +144,7 @@ function PortfolioContents({ isAnimationComplete }: PortfolioContentsProps) {
                 <div className="flex gap-[10px] items-center medium-caption">
                   <Icon
                     iconName="bolt"
-                    className="w-[15.6px] h-[15.6px] text-middle-gray"
+                    className="w-[15.6px] h-[15.6px] min-w-[15.6px] min-h-[15.6px] text-middle-gray"
                   />
 
                   <span className="bold-caption">용량</span>

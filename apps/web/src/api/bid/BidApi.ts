@@ -5,6 +5,7 @@ import { AcceptBidModel } from "./types/model/accept-bid-model";
 import { CancelBidModel } from "./types/model/cancel-bid-model";
 import { RequestBidDto } from "./types/dto/request-bid-dto";
 import { RequestBidModel } from "./types/model/request-bid-model";
+import { GetBidDetailDto } from "./types/dto/get-bid-detail-dto";
 
 export class BidApi {
   axios: AxiosInstance = instance;
@@ -13,10 +14,14 @@ export class BidApi {
   }
 
   // 입찰 상세 조회 (사용자)
-  getBidDetail = async (bidId: number): Promise<GetBidDetailModel> => {
+  getBidDetail = async ({
+    bidId,
+    ...params
+  }: GetBidDetailDto): Promise<GetBidDetailModel> => {
     const { data } = await this.axios({
       method: "GET",
       url: `/api/bid/${bidId}`,
+      params,
     });
 
     return data;

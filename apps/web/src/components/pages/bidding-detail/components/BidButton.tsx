@@ -28,7 +28,7 @@ const BidButton = ({
   // hasMyBid가 false일때
 
   // 입찰취소 버튼이 보이는 조건
-  // hasMyBid가 true일때
+  // hasMyBid가 true이고 status가 COMPLETED가 아닐때
 
   const { mutate: cancelBidMutation, isPending: isCancelBidPending } =
     useCancelBidMutation({

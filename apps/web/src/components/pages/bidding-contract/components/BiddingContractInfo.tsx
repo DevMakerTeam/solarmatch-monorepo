@@ -1,38 +1,48 @@
-const BiddingContractInfo = () => {
+import { BidResponse } from "@repo/types";
+
+interface BiddingContractInfoProps {
+  data?: BidResponse;
+}
+
+const BiddingContractInfo = ({ data }: BiddingContractInfoProps) => {
+  if (!data) return null;
+
+  const {
+    memo,
+    bidPrice,
+    solarModule,
+    solarModuleOrigin,
+    inverter,
+    inverterOrigin,
+    structure,
+    asInfo,
+    companyIntroduction,
+  } = data;
+
   return (
     <div className="flex flex-col lg:flex-row gap-[40px] lg:gap-0 w-full lg:justify-between mb-[30px] lg:mb-[90px]">
       <div className="flex flex-col gap-[20px] lg:gap-[30px] max-w-[250px] lg:max-w-[350px]">
-        <p>
-          안녕하세요~ 경북 구미에서 활동하는 솔라에너지입니다. 저희는 5년의
-          경력이 있고, 열심히 활동합니다. 신뢰있는 시공 건수와 다양한 경력으로
-          승부합니다.
-        </p>
+        <p>{companyIntroduction}</p>
 
         <div className="flex justify-center items-center p-[8px_19px] lg:p-[9px_40px] bg-light-gray rounded-[8px] w-fit bold-body lg:bold-heading6">
-          견적 : 350만원
+          {`견적 : ${bidPrice.toLocaleString("ko-KR", { currency: "KRW" })}만원`}
         </div>
       </div>
 
       <div className="flex flex-col gap-[15px]">
         <ContractInfoItem
           title="태양광 모듈"
-          description="현대에너지 무등급 650 W양면패널"
-          structureOrigin="국내산"
+          description={solarModule}
+          structureOrigin={solarModuleOrigin}
         />
         <ContractInfoItem
           title="인버터"
-          description="금비전자 3.5W 모델명[AFKOWKOF]"
-          structureOrigin="중국산"
+          description={inverter}
+          structureOrigin={inverterOrigin}
         />
-        <ContractInfoItem title="구조물" description="포스맥각관" />
-        <ContractInfoItem
-          title="A/S"
-          description="모듈 20년 제조사보증, 인버터 5년 업체 하자보수 : 3년"
-        />
-        <ContractInfoItem
-          title="구조물"
-          description="안녕하세요~ 경북 구미에서 활동하는 솔라에너지입니다. 저희는 5년의 경력이 있고, 열심히 활동합니다. 잘 부탁드립니다."
-        />
+        <ContractInfoItem title="구조물" description={structure} />
+        <ContractInfoItem title="A/S" description={asInfo} />
+        <ContractInfoItem title="메시지" description={memo} />
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { GetUsersModel } from "@/api/users/types/model/get-users-model";
 import { useGetUsersQuery } from "@/api/users/UsersApi.query";
 import { usePageUrl } from "@repo/hooks";
 import { useRouter } from "next/router";
-import { Role } from "@repo/types";
+import { isNotNullish, Role } from "@repo/types";
 
 import {
   createColumnHelper,
@@ -95,6 +95,15 @@ const useUsers = () => {
         columnHelper.accessor("userInfo.phone", {
           cell: info => info.getValue(),
           header: "휴대전화 번호",
+        }),
+        columnHelper.accessor("userInfo.partnerStatus", {
+          cell: info =>
+            isNotNullish(info.getValue()) ? (
+              <ApplyStatus value={info.getValue()} />
+            ) : (
+              "-"
+            ),
+          header: "가입승인여부",
         }),
       ];
     }

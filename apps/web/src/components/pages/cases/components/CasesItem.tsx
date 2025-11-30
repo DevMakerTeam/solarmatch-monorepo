@@ -21,20 +21,20 @@ const CasesItem = ({
       </div>
 
       <div className="py-[10px] lg:py-[20px] px-[16px] lg:px-[20px]">
-        <span className="bold-caption lg:bold-body">{title}</span>
+        <span className="bold-caption lg:bold-body line-clamp-2">{title}</span>
 
         <div className="flex items-center mt-[13px]">
           <Icon
             iconName="circleLocation"
-            className="w-[15.6px] h-[15.6px] text-middle-gray"
+            className="w-[15.6px] h-[15.6px] min-w-[15.6px] min-h-[15.6px] text-middle-gray"
           />
-          <span className="medium-caption ml-[6px]">{`위치 ${baseAddress} ${detailAddress}`}</span>
+          <span className="medium-caption ml-[6px] truncate">{`위치 ${baseAddress} ${detailAddress}`}</span>
         </div>
 
         <div className="flex items-center mt-[7px]">
           <Icon
             iconName="bolt"
-            className="w-[15.6px] h-[15.6px] text-middle-gray"
+            className="w-[15.6px] h-[15.6px] min-w-[15.6px] min-h-[15.6px] text-middle-gray"
           />
           <span className="medium-caption ml-[6px]">{`용량 ${plannedCapacity}kw`}</span>
         </div>

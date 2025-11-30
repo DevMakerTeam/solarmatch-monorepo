@@ -53,6 +53,7 @@ const BiddingDetailPage = () => {
           handlePageChange={handlePageChange}
           currentPage={currentPage}
           totalCount={totalCount}
+          type={type as string}
         />
         {partnerStatus === "APPROVED" && (
           <BidButton

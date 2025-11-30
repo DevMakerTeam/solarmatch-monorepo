@@ -179,13 +179,38 @@ function LinkItem({
   isRender = true,
   ...props
 }: PropsWithChildren<LinkItemProps>) {
+  const router = useRouter();
+  const currentPath = router.asPath.split("?")[0];
+  const hrefString = typeof href === "string" ? href : href.pathname || "";
+
+  const isActive = () => {
+    // 정확히 일치하는 경우
+    if (currentPath === hrefString) {
+      return true;
+    }
+
+    // 홈페이지("/")는 정확히 일치할 때만 active
+    if (hrefString === "/") {
+      return false;
+    }
+
+    // 하위 경로인 경우도 활성화 (예: /cases/1 → /cases 활성화)
+    if (hrefString && currentPath.startsWith(hrefString + "/")) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const active = isActive();
+
   return (
     <Link
       href={isRender ? href : "/login"}
       role="link"
       {...props}
       className={cn(
-        isNav ? "text-black" : "text-deep-gray",
+        isNav ? (active ? "text-secondary" : "text-black") : "text-deep-gray",
         "bold-body hover:text-secondary"
       )}
     >

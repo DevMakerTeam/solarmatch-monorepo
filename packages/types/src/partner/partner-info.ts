@@ -1,15 +1,7 @@
+import { ContractCaseItem } from "../bid";
 import { PaginationResponseData } from "../react-query";
 import { ApplyStatus } from "./apply-status";
 import { PartnerRegion } from "./partner-regions";
-
-export type ContractCaseItem = {
-  contractId: number;
-  title: string;
-  baseAddress: string;
-  detailAddress: string;
-  plannedCapacity: number;
-  representativePhotoUrl: string;
-};
 
 /**
  * 시공 사례 모델

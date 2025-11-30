@@ -11,9 +11,9 @@ const ApplyStatus = ({ value }: ApplyStatusProps) => {
       className={cn(
         "w-full h-[32px] rounded-[8px] text-white flex items-center justify-center max-w-[82px]",
         value === "APPROVED"
-          ? "bg-secondary"
+          ? "bg-border-color"
           : value === "PENDING"
-            ? "bg-border-color"
+            ? "bg-secondary"
             : "bg-cancel"
       )}
     >

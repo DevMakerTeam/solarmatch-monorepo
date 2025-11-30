@@ -29,6 +29,9 @@ const BiddingItem = ({ itemData }: BiddingItemProps) => {
     return "bg-cancel";
   }, [status]);
 
+  const isRemainingHours =
+    remainingHours > 0 && status !== QUOTE_STATUS.COMPLETED;
+
   return (
     <Link href={`/bidding/${structureType}/${id}`} prefetch={true}>
       <div className="w-full flex justify-between gap-[50px] lg:items-center pt-[20px] lg:pt-[16px] pb-[20px] lg:pb-[16px] border-b-1 border-border-color hover:bg-light-primary">
@@ -38,7 +41,7 @@ const BiddingItem = ({ itemData }: BiddingItemProps) => {
             {`${baseAddress} ${structureTypeLabel} ${plannedCapacity}kw`}
           </span>
 
-          {remainingHours > 0 && (
+          {isRemainingHours && (
             <span className="regular-small text-cancel font-bold">{`${remainingHours}시간 남음`}</span>
           )}
         </div>
