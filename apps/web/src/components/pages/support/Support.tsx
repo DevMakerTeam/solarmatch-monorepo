@@ -40,9 +40,9 @@ const SupportPage = () => {
               </p>
             </div>
             <div className="flex lg:flex-col justify-between lg:justify-start lg:gap-[25px]">
-              <span className="bold-heading6 lg:bold-heading4 text-primary">
+              {/* <span className="bold-heading6 lg:bold-heading4 text-primary">
                 02-123-4567
-              </span>
+              </span> */}
 
               <div className="flex items-center lg:justify-center gap-[6px] lg:gap-[10px]">
                 <Icon
