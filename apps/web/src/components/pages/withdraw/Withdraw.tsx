@@ -1,23 +1,16 @@
 // 회원탈퇴 페이지
 import RootLayout from "@/components/Layout/root";
-import { useModals } from "@repo/hooks";
 import { Button } from "@repo/ui/button";
 import { Checkbox } from "@repo/ui/checkbox";
-import { ConfirmModal } from "@repo/ui/modal";
+import { useWithdraw } from "./hooks/useWithdraw";
 
 const WithdrawPage = () => {
-  const { open: openWithdrawModal, close: closeWithdrawModal } = useModals();
-
-  const handleWithdrawConfirm = () => {
-    openWithdrawModal(ConfirmModal, {
-      onConfirm: () => {
-        console.log("탈퇴하기");
-        closeWithdrawModal();
-      },
-      onClose: closeWithdrawModal,
-      text: "정말 탈퇴하시겠습니까?",
-    });
-  };
+  const {
+    handleWithdrawConfirm,
+    isAgree,
+    handleToggleAgree,
+    isWithdrawPending,
+  } = useWithdraw();
 
   return (
     <RootLayout>
@@ -42,13 +35,18 @@ const WithdrawPage = () => {
         <hr className="w-full h-[1px] my-[45px] border-border-color" />
 
         <div className="flex items-center gap-[16px] mb-[45px]">
-          <Checkbox id="agree" />
+          <Checkbox id="agree" checked={isAgree} onChange={handleToggleAgree} />
           <label htmlFor="agree" className="medium-heading6 cursor-pointer">
             <span>위 내용을 이해하였으며 동의합니다.</span>
           </label>
         </div>
 
-        <Button className="button-size-xl" onClick={handleWithdrawConfirm}>
+        <Button
+          className="button-size-xl"
+          onClick={handleWithdrawConfirm}
+          disabled={!isAgree}
+          isLoading={isWithdrawPending}
+        >
           탈퇴하기
         </Button>
       </div>

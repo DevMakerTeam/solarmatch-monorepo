@@ -90,3 +90,13 @@ export const usePasswordResetRequestMutation = (
     ...params?.options,
   });
 };
+
+// 회원탈퇴
+export const useWithdrawMutation = (
+  params?: UseMutationParams<typeof authApi.withdraw>
+) => {
+  return useMutation({
+    mutationFn: authApi.withdraw,
+    ...params?.options,
+  });
+};

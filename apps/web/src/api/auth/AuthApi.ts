@@ -16,6 +16,7 @@ import { PasswordResetRequestDto } from "./types/dto/password-reset-request-dto"
 import { PasswordResetRequestModel } from "./types/model/password-reset-request-model";
 import { KakaoAuthDto } from "./types/dto/kakao-auto-dto";
 import { KakaoAuthModel } from "./types/model/kakao-auto-model";
+import { WithdrawModel } from "./types/model/withdraw-model";
 
 export class AuthApi {
   axios: AxiosInstance = instance;
@@ -119,6 +120,16 @@ export class AuthApi {
       method: "POST",
       url: "/api/auth/kakao/auth",
       data: req,
+    });
+
+    return data;
+  };
+
+  // 회원탈퇴
+  withdraw = async (): Promise<WithdrawModel> => {
+    const { data } = await this.axios({
+      method: "DELETE",
+      url: "/api/auth/withdraw",
     });
 
     return data;

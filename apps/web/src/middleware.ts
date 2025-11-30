@@ -19,6 +19,7 @@ export async function middleware(request: NextRequest) {
     "/api/auth/me",
     "/api/auth/refresh",
     "/api/auth/logout",
+    "/api/auth/withdraw",
   ];
 
   if (pathname.startsWith("/api/") && !nextjsApiRoutes.includes(pathname)) {
