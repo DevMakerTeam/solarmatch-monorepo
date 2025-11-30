@@ -4,9 +4,10 @@ import { Icon } from "../Icon";
 interface NonDataProps {
   nonDataText: string;
   className?: string;
+  iconClassName?: string;
 }
 
-const NonData = ({ nonDataText, className }: NonDataProps) => {
+const NonData = ({ nonDataText, className, iconClassName }: NonDataProps) => {
   return (
     <div
       className={cn(
@@ -15,7 +16,10 @@ const NonData = ({ nonDataText, className }: NonDataProps) => {
       )}
     >
       <div className="flex flex-col items-center gap-[10px]">
-        <Icon iconName="nonData" className="w-25 h-25 text-middle-gray" />
+        <Icon
+          iconName="nonData"
+          className={cn("w-25 h-25 text-middle-gray", iconClassName)}
+        />
 
         <span className="bold-body">{nonDataText}</span>
       </div>

@@ -1,13 +1,30 @@
 // 설치 후기
-const CasesDetailReview = () => {
+
+import { GetContractCaseDetailModel } from "@/api/contract/types/model/get-contract-case-detail";
+import { NonData } from "@repo/ui";
+
+interface CasesDetailReviewProps {
+  data?: GetContractCaseDetailModel["data"];
+}
+const CasesDetailReview = ({ data }: CasesDetailReviewProps) => {
+  if (!data) return null;
+
+  const { installationReview } = data;
+
   return (
     <div className="w-full flex flex-col gap-[17px] h-full">
       <span className="bold-body">설치 후기</span>
 
       <div className="p-[11px_20px] w-full rounded-[8px] border-1 border-border-color h-full whitespace-pre-line">
-        {
-          "처음부터 상세한 설명을 주시고\n믿고 맡길 수 있고 끝까지 원활한 의사소통으로\n정리해주셨습니다."
-        }
+        {!!installationReview ? (
+          installationReview
+        ) : (
+          <NonData
+            nonDataText="설치 후기가 없습니다."
+            className="h-[92px]"
+            iconClassName="w-10 h-10"
+          />
+        )}
       </div>
     </div>
   );
