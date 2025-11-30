@@ -1,12 +1,19 @@
-import { PartnerInfoType } from "@repo/types";
+import { ContractCaseItem, PartnerInfoType } from "@repo/types";
+import { NonData } from "@repo/ui";
 import { Icon } from "@repo/ui/icon";
 import { Input } from "@repo/ui/input";
 import { Textarea } from "@repo/ui/textarea";
+import Image from "next/image";
+
+interface PartnerInfoProps extends Partial<PartnerInfoType> {
+  recentContractCases: ContractCaseItem[];
+}
 
 const PartnerInfo = ({
   companyName,
   companyIntroduction,
-}: Partial<PartnerInfoType>) => {
+  recentContractCases,
+}: PartnerInfoProps) => {
   return (
     <>
       <div className="flex items-center gap-[20px] w-full mb-[30px] lg:mb-[60px] mt-[30px] lg:mt-[60px]">
@@ -52,12 +59,15 @@ const PartnerInfo = ({
           시공 사례
         </span>
 
-        <div className="flex flex-col gap-[22px] w-full">
-          {/* Item1 */}
-          <PartnerInfoItem />
-          <PartnerInfoItem />
-          <PartnerInfoItem />
-        </div>
+        {!!recentContractCases.length ? (
+          <div className="flex flex-col gap-[22px] w-full">
+            {recentContractCases.map(item => (
+              <PartnerInfoItem key={item.contractId} {...item} />
+            ))}
+          </div>
+        ) : (
+          <NonData nonDataText="시공 사례가 없습니다." />
+        )}
       </div>
     </>
   );
@@ -65,23 +75,34 @@ const PartnerInfo = ({
 
 export default PartnerInfo;
 
-const PartnerInfoItem = () => {
+const PartnerInfoItem = ({
+  baseAddress,
+  detailAddress,
+  plannedCapacity,
+  representativePhotoUrl,
+  title,
+}: ContractCaseItem) => {
   return (
     <div className="flex gap-[20px] w-full pb-[20px] border-b border-border-color">
       {/* TODO: Image로 교체 */}
-      <div className="w-[135px] self-stretch bg-light-gray"></div>
+      <div className="w-[135px] self-stretch relative">
+        <Image
+          src={representativePhotoUrl}
+          alt={title}
+          fill
+          className="object-cover"
+        />
+      </div>
 
       <div className="flex flex-col">
-        <span className="bold-caption lg:bold-body mb-[16px]">
-          경상북도 성주군 주택용 3kw
-        </span>
+        <span className="bold-caption lg:bold-body mb-[16px]">{title}</span>
 
         <div className="flex items-center mb-[5px]">
           <Icon
             iconName="circleLocation"
             className="w-[15.6px] h-[15.6px] text-middle-gray"
           />
-          <span className="medium-caption ml-[6px]">{`위치 ${"경상북도 성주군"}`}</span>
+          <span className="medium-caption ml-[6px]">{`위치 ${baseAddress} ${detailAddress}`}</span>
         </div>
 
         <div className="flex items-center">
@@ -89,7 +110,7 @@ const PartnerInfoItem = () => {
             iconName="bolt"
             className="w-[15.6px] h-[15.6px] text-middle-gray"
           />
-          <span className="medium-caption ml-[6px]">{`용량 ${"99.76kw"}`}</span>
+          <span className="medium-caption ml-[6px]">{`용량 ${plannedCapacity}kw`}</span>
         </div>
       </div>
     </div>

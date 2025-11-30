@@ -5,7 +5,7 @@ import ChangePasswordModal from "../components/ChangePasswordModal";
 
 export const useProfile = () => {
   const { user, isLoading: isLoadingUser } = useAuthStatus();
-  const { partnerStatus } = user || {};
+  const { partnerStatus, recentContractCases = [] } = user || {};
 
   const { open: openChangePhoneNumModal, close: closeChangePhoneNumModal } =
     useModals();
@@ -23,13 +23,12 @@ export const useProfile = () => {
     });
   };
 
-  console.log({ isLoadingUser });
-
   return {
     user,
     partnerStatus,
     handleChangePhoneNum,
     handleChangePassword,
     isLoadingUser,
+    recentContractCases,
   };
 };

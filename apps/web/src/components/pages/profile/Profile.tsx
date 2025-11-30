@@ -14,6 +14,7 @@ const ProfilePage = () => {
     handleChangePassword,
     handleChangePhoneNum,
     isLoadingUser,
+    recentContractCases,
   } = useProfile();
 
   return (
@@ -58,14 +59,18 @@ const ProfilePage = () => {
             </div>
 
             {/* 비밀번호 */}
-            <span className="bold-body lg:bold-heading5">비밀번호</span>
-            <Button
-              variant="outline"
-              className="button-size-sm lg:button-size-md w-[120px] lg:w-[130px]"
-              onClick={handleChangePassword}
-            >
-              변경하기
-            </Button>
+            {user?.provider === "LOCAL" && (
+              <>
+                <span className="bold-body lg:bold-heading5">비밀번호</span>
+                <Button
+                  variant="outline"
+                  className="button-size-sm lg:button-size-md w-[120px] lg:w-[130px]"
+                  onClick={handleChangePassword}
+                >
+                  변경하기
+                </Button>
+              </>
+            )}
           </div>
 
           <div className="flex justify-end w-full">
@@ -76,7 +81,12 @@ const ProfilePage = () => {
             </Link>
           </div>
 
-          {partnerStatus === "APPROVED" && <PartnerInfo {...user?.partner} />}
+          {partnerStatus === "APPROVED" && (
+            <PartnerInfo
+              recentContractCases={recentContractCases}
+              {...user?.partner}
+            />
+          )}
         </div>
       </div>
     </RootLayout>
