@@ -2,6 +2,7 @@ import instance from "@/utils/instance";
 import { AxiosInstance } from "axios";
 import { GetContractCasesDto } from "./types/dto/get-contract-cases-dto";
 import { GetContractCasesModel } from "./types/model/get-contract-cases-model";
+import { GetContractCaseDetailModel } from "./types/model/get-contract-case-detail";
 
 export class ContractApi {
   axios: AxiosInstance = instance;
@@ -17,6 +18,18 @@ export class ContractApi {
       method: "GET",
       url: "/api/contract/cases",
       params,
+    });
+
+    return data;
+  };
+
+  // 시공사례 상세 조회
+  getContractCaseDetail = async (
+    contractId: number
+  ): Promise<GetContractCaseDetailModel> => {
+    const { data } = await this.axios({
+      method: "GET",
+      url: `/api/contract/cases/${contractId}`,
     });
 
     return data;

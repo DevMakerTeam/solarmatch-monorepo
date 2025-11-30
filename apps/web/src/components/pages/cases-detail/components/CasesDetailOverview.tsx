@@ -1,13 +1,27 @@
 // CasesDetailOverview
+import { GetContractCaseDetailModel } from "@/api/contract/types/model/get-contract-case-detail";
+import { DEFAULT_LOGO_URL } from "@repo/constants";
 import { Icon } from "@repo/ui/icon";
 import Image from "next/image";
 
-const CasesDetailOverview = () => {
+interface CasesDetailOverviewProps {
+  data?: GetContractCaseDetailModel["data"];
+}
+
+const CasesDetailOverview = ({ data }: CasesDetailOverviewProps) => {
+  if (!data) return null;
+
+  const { constructionPhotos, quoteInfo, bidInfo } = data;
+
   return (
     <div className="w-full flex flex-col lg:flex-row gap-[35px] lg:gap-[80px]">
       <div className="aspect-[350/167] w-full lg:max-w-[311px] max-h-[188px] lg:aspect-none relative rounded-[8px] overflow-hidden">
         <Image
-          src="/images/main/main-portfolio-1.png"
+          src={
+            !!constructionPhotos.length
+              ? constructionPhotos[0].imageUrl
+              : DEFAULT_LOGO_URL
+          }
           alt="cases"
           fill
           className="object-cover"
@@ -16,7 +30,7 @@ const CasesDetailOverview = () => {
 
       <div className="w-full flex flex-col gap-[14px]">
         <div className="p-[6px_15px] rounded-[30px] border-1 border-border-color w-fit text-deep-gray medium-caption">
-          지붕형(기본형)
+          {quoteInfo.installationType}
         </div>
 
         <div className="flex flex-col gap-[10px]">
@@ -30,7 +44,9 @@ const CasesDetailOverview = () => {
               <span className="bold-body">위치</span>
             </div>
 
-            <span>경상북도 성주군</span>
+            <span>
+              {quoteInfo.baseAddress} {quoteInfo.detailAddress}
+            </span>
           </div>
 
           <div className="flex gap-[20px] items-center">
@@ -43,7 +59,7 @@ const CasesDetailOverview = () => {
               <span className="bold-body">용량</span>
             </div>
 
-            <span>99.76kw</span>
+            <span>{`${quoteInfo.plannedCapacity}kw`}</span>
           </div>
 
           <div className="flex gap-[20px] items-center">
@@ -56,7 +72,7 @@ const CasesDetailOverview = () => {
               <span className="bold-body">설치 회사</span>
             </div>
 
-            <span>(주)선라이즈</span>
+            <span>{bidInfo.companyName}</span>
           </div>
         </div>
       </div>

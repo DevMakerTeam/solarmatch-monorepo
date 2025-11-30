@@ -6,10 +6,13 @@ import CasesDetailOverview from "./components/CasesDetailOverview";
 import CasesDetailMaterials from "./components/CasesDetailMaterials";
 import CasesDetailReview from "./components/CasesDetailReview";
 import CasesDetailGallery from "./components/CasesDetailGallery";
+import { useCasesDetail } from "./hooks/useCasesDetail";
 
 const CasesDetailPage = () => {
+  const { contractCaseDetail, isLoading } = useCasesDetail();
+
   return (
-    <RootLayout>
+    <RootLayout isLoading={isLoading}>
       <div className="w-full flex flex-col lg:flex-row gap-[40px] lg:gap-[120px] layout-padding-y">
         <span className="bold-heading4 lg:bold-heading3 text-center lg:text-left whitespace-nowrap">
           시공사례
@@ -18,18 +21,18 @@ const CasesDetailPage = () => {
         <div className="flex flex-col w-full gap-[65px] lg:gap-[120px]">
           <div className="w-full flex flex-col gap-[37px] lg:gap-[85px]">
             {/* 프로젝트 개요/요약 */}
-            <CasesDetailOverview />
+            <CasesDetailOverview data={contractCaseDetail} />
 
             <div className="w-full flex flex-col lg:flex-row gap-[37px] lg:gap-[26px]">
               {/* 시공 자재 */}
-              <CasesDetailMaterials />
+              <CasesDetailMaterials data={contractCaseDetail} />
 
               {/* 설치 후기 */}
-              <CasesDetailReview />
+              <CasesDetailReview data={contractCaseDetail} />
             </div>
 
             {/* 설치 사진 */}
-            <CasesDetailGallery />
+            <CasesDetailGallery data={contractCaseDetail} />
           </div>
 
           <Link href="/cases">
