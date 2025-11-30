@@ -1,13 +1,6 @@
-import { isNotNullish, Parameter, UseMutationParams } from "@repo/types";
+import { UseMutationParams } from "@repo/types";
 import emailApi from "./EmailApi";
 import { useMutation } from "@tanstack/react-query";
-
-export const EMAIL_API_MUTATION_KEY = {
-  SEND_VERIFICATION: (params?: Parameter<typeof emailApi.sendVerification>) =>
-    ["email-send-verification", params].filter(isNotNullish),
-  VERIFY_CODE: (params?: Parameter<typeof emailApi.verifyCode>) =>
-    ["email-verify-code", params].filter(isNotNullish),
-};
 
 // 이메일 인증 코드 전송
 export const useSendVerificationMutation = (

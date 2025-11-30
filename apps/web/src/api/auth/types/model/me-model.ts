@@ -1,6 +1,7 @@
 import {
   ApiResponse,
   ApplyStatus,
+  ContractCaseItem,
   PartnerInfoType,
   Provider,
   Role,
@@ -29,4 +30,5 @@ export type MeModel = ApiResponse<{
   createdAt: string;
   partnerStatus: ApplyStatus | null;
   partner?: PartnerInfoType;
+  recentContractCases?: ContractCaseItem[];
 }>;

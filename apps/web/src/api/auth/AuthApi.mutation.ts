@@ -1,25 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { isNotNullish, Parameter, UseMutationParams } from "@repo/types";
+import { UseMutationParams } from "@repo/types";
 import authApi from "./AuthApi";
-
-export const AUTH_API_MUTATION_KEY = {
-  SIGNUP: (params?: Parameter<typeof authApi.signup>) =>
-    ["signup", params].filter(isNotNullish),
-  LOGIN: (params?: Parameter<typeof authApi.login>) =>
-    ["login", params].filter(isNotNullish),
-  LOGOUT: (params?: Parameter<typeof authApi.logout>) =>
-    ["logout", params].filter(isNotNullish),
-  REFRESH: (params?: Parameter<typeof authApi.refresh>) =>
-    ["refresh", params].filter(isNotNullish),
-  FIND_ACCOUNT: (params?: Parameter<typeof authApi.findAccount>) =>
-    ["find-account", params].filter(isNotNullish),
-  PASSWORD_RESET_CONFIRM: (
-    params?: Parameter<typeof authApi.passwordResetConfirm>
-  ) => ["password-reset-confirm", params].filter(isNotNullish),
-  PASSWORD_RESET_REQUEST: (
-    params?: Parameter<typeof authApi.passwordResetRequest>
-  ) => ["password-reset-request", params].filter(isNotNullish),
-};
 
 // 회원가입
 export const useSignupMutation = (
@@ -97,6 +78,16 @@ export const useWithdrawMutation = (
 ) => {
   return useMutation({
     mutationFn: authApi.withdraw,
+    ...params?.options,
+  });
+};
+
+// 비밀번호 변경
+export const usePasswordChangeMutation = (
+  params?: UseMutationParams<typeof authApi.passwordChange>
+) => {
+  return useMutation({
+    mutationFn: authApi.passwordChange,
     ...params?.options,
   });
 };
